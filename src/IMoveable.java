@@ -1,3 +1,4 @@
-public interface IMoveable {
+public interface IMoveable
+{
     public void move(double msElapsed);
 }
