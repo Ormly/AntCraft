@@ -13,11 +13,15 @@ cd AntCraft
 ```
 
 <b>Want to start to write some code?</b>
-1. Create your own branch
+1. Make sure you have the most recent version of the code
+```
+git pull
+```
+2. Create your own branch
 ```
 git checkout -b feature/new_branch_desctiptive_name
 ```
-2. Write code like crazy
+3. Write code like crazy
 
 <b>Ready to share with the world?</b>
 1. Commit your work
@@ -33,3 +37,10 @@ git push origin feature/new_branch_desctiptive_name
 this will create a new branch on the server with your *commited* work
 
 3. When you're ready, open a pull request on github requesting to merge your branch into master.
+
+<b>Ready to work on the next feature?</b>
+
+Make sure you're back on the master branch, before making another new one
+````
+git checkout master
+````
