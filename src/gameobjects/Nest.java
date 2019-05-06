@@ -1,3 +1,4 @@
+package gameobjects;
 
 public class Nest extends AGameObject
 {

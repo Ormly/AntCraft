@@ -1,4 +1,6 @@
-public final class Constants
+package utilities;
+
+public final class AConstants
 {
     public final static int SCREEN_WIDTH = 800;
     public final static int SCREEN_HEIGHT = 600;
