@@ -2,14 +2,14 @@ package gameobjects;
 
 import java.awt.*;
 
-public abstract class AGameObject
+public abstract class GameObject
 {
     protected double xPos;
     protected double yPos;
     protected int radius;
     protected Color color = new Color(96, 96, 255);
 
-    public AGameObject(double xPos, double yPos, int radius)
+    public GameObject(double xPos, double yPos, int radius)
     {
         this.xPos = xPos;
         this.yPos = yPos;

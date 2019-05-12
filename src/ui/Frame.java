@@ -1,19 +1,19 @@
 package ui;
 
-import interfaces.AFrame;
+import interfaces.IFrame;
 
 import javax.swing.*;
 
-public class BFrame extends JFrame implements AFrame
+public class Frame extends JFrame implements IFrame
 {
-    private BGraphicsSystem gm;
+    private GraphicsSystem gm;
 
-    public BFrame(int w, int h)
+    public Frame(int w, int h)
     {
         this.setSize(w, h);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        this.gm = new BGraphicsSystem(w, h);
+        this.gm = new GraphicsSystem(w, h);
         this.setContentPane(gm);
     }
 
@@ -22,6 +22,6 @@ public class BFrame extends JFrame implements AFrame
         this.setVisible(true);
     }
 
-    public BGraphicsSystem getPanel() { return this.gm; }
+    public GraphicsSystem getPanel() { return this.gm; }
 
 }
