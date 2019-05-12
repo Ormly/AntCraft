@@ -1,15 +1,20 @@
-import javax.swing.*;
+package main;
+
+import gameobjects.Nest;
+import gameobjects.AGameObject;
+import ui.BGraphicsSystem;
+
 import java.util.ArrayList;
 
-public class Game
+public class GameWorld
 {
-    private GraphicsManager graphicsManager;
+    private BGraphicsSystem graphicsManager;
     private long msSinceLastFrame;
     private double lastFrameDuration;
     private ArrayList<AGameObject> objects;
     private Nest nest;
 
-    public Game()
+    public GameWorld()
     {
         this.objects = new ArrayList<>();
         this.lastFrameDuration = System.currentTimeMillis();
@@ -20,7 +25,7 @@ public class Game
         this.nest = new Nest(400, 300, 50);
     }
 
-    public void setGraphicsManager(GraphicsManager gm)
+    public void setGraphicsManager(BGraphicsSystem gm)
     {
         this.graphicsManager = gm;
     }
@@ -69,6 +74,16 @@ public class Game
     }
 
     private void checkUserInput()
+    {
+
+    }
+
+    private void createNewObjects()
+    {
+
+    }
+
+    private void gameOver()
     {
 
     }

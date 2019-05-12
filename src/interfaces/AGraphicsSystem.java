@@ -1,6 +1,8 @@
-import javax.swing.*;
+package interfaces;
 
-public interface IGraphicsManager
+import gameobjects.AGameObject;
+
+public interface AGraphicsSystem
 {
     public void clear();
 
