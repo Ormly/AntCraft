@@ -1,13 +1,13 @@
 package ui;
 
-import gameobjects.AGameObject;
-import interfaces.AGraphicsSystem;
+import gameobjects.GameObject;
+import interfaces.IGraphicsSystem;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class BGraphicsSystem extends JPanel implements AGraphicsSystem
+public class GraphicsSystem extends JPanel implements IGraphicsSystem
 {
     private static final long serialVersionUID = 1L;
     private GraphicsConfiguration graphicsConf = GraphicsEnvironment
@@ -17,7 +17,7 @@ public class BGraphicsSystem extends JPanel implements AGraphicsSystem
     private BufferedImage imageBuffer;
     private Graphics graphics;
 
-    public BGraphicsSystem(int width, int height)
+    public GraphicsSystem(int width, int height)
     {
         this.setSize(width, height);
 
@@ -25,7 +25,7 @@ public class BGraphicsSystem extends JPanel implements AGraphicsSystem
         this.graphics = this.imageBuffer.getGraphics();
     }
 
-    public void draw(AGameObject object)
+    public void draw(GameObject object)
     {
         int x = (int) object.getX() - object.getRadius();
         int y = (int) object.getY() - object.getRadius();

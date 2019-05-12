@@ -1,17 +1,17 @@
 package main;
 
 import gameobjects.Nest;
-import gameobjects.AGameObject;
-import ui.BGraphicsSystem;
+import gameobjects.GameObject;
+import ui.GraphicsSystem;
 
 import java.util.ArrayList;
 
 public class GameWorld
 {
-    private BGraphicsSystem graphicsManager;
+    private GraphicsSystem graphicsManager;
     private long msSinceLastFrame;
     private double lastFrameDuration;
-    private ArrayList<AGameObject> objects;
+    private ArrayList<GameObject> objects;
     private Nest nest;
 
     public GameWorld()
@@ -25,7 +25,7 @@ public class GameWorld
         this.nest = new Nest(400, 300, 50);
     }
 
-    public void setGraphicsManager(BGraphicsSystem gm)
+    public void setGraphicsManager(GraphicsSystem gm)
     {
         this.graphicsManager = gm;
     }

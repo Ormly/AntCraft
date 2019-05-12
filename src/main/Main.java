@@ -1,13 +1,13 @@
 package main;
 
-import ui.BFrame;
-import utilities.AConstants;
+import ui.Frame;
+import utilities.Constants;
 
-public class AMain
+public class Main
 {
     public static void main(String[] args)
     {
-        BFrame frame = new BFrame(AConstants.SCREEN_WIDTH, AConstants.SCREEN_HEIGHT);
+        Frame frame = new Frame(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         frame.display();
 
         GameWorld game = new GameWorld();

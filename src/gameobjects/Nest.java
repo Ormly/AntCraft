@@ -1,6 +1,6 @@
 package gameobjects;
 
-public class Nest extends AGameObject
+public class Nest extends GameObject
 {
     public Nest(double xPos, double yPos, int radius)
     {
