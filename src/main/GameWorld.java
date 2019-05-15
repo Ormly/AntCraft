@@ -3,12 +3,19 @@ package main;
 import gameobjects.Nest;
 import gameobjects.GameObject;
 import ui.GraphicsSystem;
+import ui.InputSystem;
+import ui.UserInput;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class GameWorld
 {
-    private GraphicsSystem graphicsManager;
+    private GraphicsSystem graphicsSystem;
+    private InputSystem inputSystem;
+    private UserInput userInput;
+
     private long msSinceLastFrame;
     private double lastFrameDuration;
     private ArrayList<GameObject> objects;
@@ -22,12 +29,8 @@ public class GameWorld
 
     public void init()
     {
+        setInputSystem(graphicsSystem.getInputSystem());
         this.nest = new Nest(400, 300, 50);
-    }
-
-    public void setGraphicsManager(GraphicsSystem gm)
-    {
-        this.graphicsManager = gm;
     }
 
     public void run()
@@ -67,15 +70,45 @@ public class GameWorld
     {
         // iterate over all objects and redraw them
 //        this.logger.debug("Drawing element!");
-        this.graphicsManager.clear();
+        this.graphicsSystem.clear();
 //        this.graphicsManager.draw();
-        this.graphicsManager.draw(this.nest);
-        this.graphicsManager.swapBuffers();
+        this.graphicsSystem.draw(this.nest);
+        this.graphicsSystem.swapBuffers();
     }
 
     private void checkUserInput()
     {
+        userInput = inputSystem.getUserInput();
 
+        int mouseCode;
+        int keyCode;
+
+        boolean mousePressed = userInput.isMousePressed();
+        boolean mouseHeldDown = userInput.isMouseHeldDown();
+        boolean keyPressed = userInput.isKeyPressed();
+
+        if(mousePressed)
+        {
+            mouseCode = userInput.getMousePressedCode();
+            if(mouseCode == MouseEvent.BUTTON1)
+            {
+                System.out.println("Left Mouse button pressed at coordinates X: "+userInput.getMousePressedX()+"|Y: "+userInput.getMousePressedY());
+            }
+            if(mouseCode == MouseEvent.BUTTON3)
+            {
+                System.out.println("Right Mouse button pressed at coordinates X: "+userInput.getMousePressedX()+"|Y: "+userInput.getMousePressedY());
+            }
+        }
+
+        if(keyPressed)
+        {
+            keyCode = userInput.getKeyPressedCode();
+            System.out.println("Key Pressed(code "+keyCode+")");
+            if(keyCode == KeyEvent.VK_A)
+                System.out.println("'a' has been pressed ("+keyCode+")");
+        }
+
+        userInput.clear();
     }
 
     private void createNewObjects()
@@ -86,5 +119,15 @@ public class GameWorld
     private void gameOver()
     {
 
+    }
+
+    private void setInputSystem(InputSystem inputSystem)
+    {
+        this.inputSystem = inputSystem;
+    }
+
+    public void setGraphicsSystem(GraphicsSystem graphicsSystem)
+    {
+        this.graphicsSystem = graphicsSystem;
     }
 }

@@ -6,15 +6,24 @@ import javax.swing.*;
 
 public class Frame extends JFrame implements IFrame
 {
-    private GraphicsSystem gm;
+    private GraphicsSystem graphicsSystem;
 
-    public Frame(int w, int h)
+    public Frame(int width, int height)
     {
-        this.setSize(w, h);
+        this.setSize(width, height);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        this.gm = new GraphicsSystem(w, h);
-        this.setContentPane(gm);
+        this.setAlwaysOnTop(true);
+        //this.setUndecorated(true);
+
+        this.setResizable(false);
+
+        this.graphicsSystem = new GraphicsSystem(width, height);
+
+        graphicsSystem.setFocusable(true);
+        graphicsSystem.requestFocusInWindow();
+
+        this.setContentPane(graphicsSystem);
     }
 
     public void display()
@@ -22,6 +31,6 @@ public class Frame extends JFrame implements IFrame
         this.setVisible(true);
     }
 
-    public GraphicsSystem getPanel() { return this.gm; }
+    public GraphicsSystem getPanel() { return this.graphicsSystem; }
 
 }
