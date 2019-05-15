@@ -1,5 +1,5 @@
 # antdefense
-
+### git quick guide
 <b>First time ever?</b>
 
 1. Install git!
@@ -44,3 +44,43 @@ Make sure you're back on the master branch, before making another new one
 ````
 git checkout master
 ````
+
+### Using Logging
+The `Logging` class provides a global logging solution.
+
+One time application configuration:
+```java
+import utilities.logging.AbstractLogger;
+import utilities.logging.ConsoleLoggerFactory;
+import utilities.logging.FileLoggerFactory;
+import utilities.logging.Logging;
+
+public static void main(String[] args)
+{
+    Logging.setLoggerFactory(new FileLoggerFactory(Constants.LOG_FILE_PATH));    
+}
+```
+
+Usage anywhere
+```java
+Logging.getLogger(CurrentClass.class.getName()).info("information message");
+```
+A logger may also be stored in a class member for continuous usage throughout the class.
+```java
+private AbstractLogger logger;
+
+public ObjectClass(){
+    this.logger = Logging.getLogger(ObjectClass.class.getName());
+}
+...
+
+this.logger.debug("x:" + obj.x);
+
+...
+this.logger.error("Unable to add new object with id: " + obj.id);
+```
+Example log entries
+```text
+2019-33-15 10:33:10::utilities.logging.Logging::INFO::Started logging..
+2019-33-15 10:33:10::main.Main::INFO::Starting Game
+```
