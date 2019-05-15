@@ -16,6 +16,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
             .getDefaultConfiguration();
     private BufferedImage imageBuffer;
     private Graphics graphics;
+    private InputSystem inputSystem = new InputSystem();
 
     public GraphicsSystem(int width, int height)
     {
@@ -23,6 +24,10 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
 
         this.imageBuffer = graphicsConf.createCompatibleImage(width, height);
         this.graphics = this.imageBuffer.getGraphics();
+
+        this.addMouseListener(inputSystem);
+        this.addMouseMotionListener(inputSystem);
+        this.addKeyListener(inputSystem);
     }
 
     public void draw(GameObject object)
@@ -46,5 +51,9 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
     public void swapBuffers()
     {
         this.getGraphics().drawImage(this.imageBuffer, 0, 0, this);
+    }
+    public InputSystem getInputSystem()
+    {
+        return this.inputSystem;
     }
 }

@@ -11,8 +11,9 @@ public class Main
         frame.display();
 
         GameWorld game = new GameWorld();
+
+        game.setGraphicsSystem(frame.getPanel());
         game.init();
-        game.setGraphicsManager(frame.getPanel());
         game.run();
     }
 }

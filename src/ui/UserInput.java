@@ -4,12 +4,13 @@ public class UserInput
 {
     private int mousePressedX;
     private int mousePressedY;
-    private int mousePressedValue;
+    private int mousePressedCode;
 
     private int mouseMovedX;
     private int mouseMovedY;
 
-    private char keyPressedValue;
+    //implemented with codes instead of characters, as it is the more robust approach
+    private int keyPressedCode;
 
     private boolean isMousePressed;
     private boolean isKeyPressed;
@@ -66,29 +67,44 @@ public class UserInput
         this.mouseMovedY = mouseMovedY;
     }
 
-    public int getMousePressedValue() { return mousePressedValue; }
-
-    public void setMousePressedValue(int mousePressedValue)
+    public int getMousePressedCode()
     {
-        this.mousePressedValue = mousePressedValue;
+        return mousePressedCode;
     }
 
-    public boolean isMousePressed() { return isMousePressed; }
-
-    public void setMousePressed(boolean isMousePressed) { this.isMousePressed = isMousePressed; }
-
-    public boolean isMouseHeldDown() { return this.isMouseHeldDown; }
-
-    public void setMouseHeldDown(boolean isMouseHeldDown) { this.isMouseHeldDown = isMouseHeldDown; }
-
-    public int getKeyPressedValue()
+    public void setMousePressedCode(int mousePressedCode)
     {
-        return this.keyPressedValue;
+        this.mousePressedCode = mousePressedCode;
     }
 
-    public void setKeyPressedValue(char keyPressedValue)
+    public boolean isMousePressed()
     {
-        this.keyPressedValue = keyPressedValue;
+        return isMousePressed;
+    }
+
+    public void setMousePressed(boolean isMousePressed)
+    {
+        this.isMousePressed = isMousePressed;
+    }
+
+    public boolean isMouseHeldDown()
+    {
+        return this.isMouseHeldDown;
+    }
+
+    public void setMouseHeldDown(boolean isMouseHeldDown)
+    {
+        this.isMouseHeldDown = isMouseHeldDown;
+    }
+
+    public int getKeyPressedCode()
+    {
+        return this.keyPressedCode;
+    }
+
+    public void setKeyPressedCode(int keyPressedCode)
+    {
+        this.keyPressedCode = keyPressedCode;
     }
 
     public boolean isKeyPressed()

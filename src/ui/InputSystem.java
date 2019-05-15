@@ -19,8 +19,12 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
     {
         this.userInput.setIsKeyPressed(true);
 
-        if(keyEvent.getID() == KeyEvent.KEY_TYPED)
-            this.userInput.setKeyPressedValue(keyEvent.getKeyChar());
+        this.userInput.setKeyPressedCode(keyEvent.getKeyCode());
+
+        /* KEY TESTS
+        System.out.println("entered KeyPressed");
+        displayInfo(keyEvent);
+        */
     }
 
     @Override
@@ -32,7 +36,7 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
         this.userInput.setMousePressedX(mouseEvent.getX());
         this.userInput.setMousePressedY(mouseEvent.getY());
 
-        this.userInput.setMousePressedValue(mouseEvent.getButton());
+        this.userInput.setMousePressedCode(mouseEvent.getButton());
     }
 
     @Override
@@ -56,10 +60,22 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
 
 
     @Override
-    public void keyTyped(KeyEvent keyEvent) {}
+    public void keyTyped(KeyEvent keyEvent)
+    {
+        /* KEY TESTS
+        System.out.println("entered KeyTyped");
+        displayInfo(keyEvent);
+        */
+    }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) {}
+    public void keyReleased(KeyEvent keyEvent)
+    {
+        /* KEY TESTS
+        System.out.println("entered KeyReleased");
+        displayInfo(keyEvent);
+        */
+    }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {}
@@ -69,4 +85,20 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {}
+
+    /* KEY TESTS
+    private void displayInfo(KeyEvent keyEvent)
+    {
+        if(keyEvent.getID() == KeyEvent.KEY_TYPED)
+        {
+            char c = keyEvent.getKeyChar();
+            System.out.println("Typed char ["+c+"]");
+        }
+        else
+        {
+            int code = keyEvent.getKeyCode();
+            System.out.println("Keycode "+code+"("+keyEvent.getKeyText(code)+")");
+        }
+    }
+    */
 }
