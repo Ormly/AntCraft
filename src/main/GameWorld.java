@@ -5,6 +5,8 @@ import gameobjects.GameObject;
 import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
+import utilities.logging.AbstractLogger;
+import utilities.logging.Logging;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 
 public class GameWorld
 {
+    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
     private GraphicsSystem graphicsSystem;
     private InputSystem inputSystem;
     private UserInput userInput;
@@ -92,20 +95,20 @@ public class GameWorld
             mouseCode = userInput.getMousePressedCode();
             if(mouseCode == MouseEvent.BUTTON1)
             {
-                System.out.println("Left Mouse button pressed at coordinates X: "+userInput.getMousePressedX()+"|Y: "+userInput.getMousePressedY());
+                logger.debug("Left Mouse button pressed at coordinates X: " + userInput.getMousePressedX() + "|Y: " + userInput.getMousePressedY());
             }
             if(mouseCode == MouseEvent.BUTTON3)
             {
-                System.out.println("Right Mouse button pressed at coordinates X: "+userInput.getMousePressedX()+"|Y: "+userInput.getMousePressedY());
+                logger.debug("Right Mouse button pressed at coordinates X: "+userInput.getMousePressedX()+"|Y: "+userInput.getMousePressedY());
             }
         }
 
         if(keyPressed)
         {
             keyCode = userInput.getKeyPressedCode();
-            System.out.println("Key Pressed(code "+keyCode+")");
+            logger.debug("Key Pressed(code "+keyCode+")");
             if(keyCode == KeyEvent.VK_A)
-                System.out.println("'a' has been pressed ("+keyCode+")");
+                logger.debug("'a' has been pressed ("+keyCode+")");
         }
 
         userInput.clear();
