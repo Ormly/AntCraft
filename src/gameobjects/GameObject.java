@@ -86,38 +86,38 @@ public abstract class GameObject
     public void update(double lastFrameDuration) {}
 
     public double getXPos() { return this.xPos; }
-    public void setXPos(double xPos) { this.xPos = xPos;}
+    //public void setXPos(double xPos) { this.xPos = xPos;}
 
     public double getYPos() { return this.yPos; }
-    public void setYPos(double yPos) { this.yPos = yPos; }
+    //public void setYPos(double yPos) { this.yPos = yPos; }
 
-    public double getDestinationXPos() { return this.destinationXPos; }
-    public double getDestinationYPos() { return this.destinationYPos; }
+    //public double getDestinationXPos() { return this.destinationXPos; }
+    //public double getDestinationYPos() { return this.destinationYPos; }
 
-    public double getPreviousXPos() { return this.previousXPos; }
-    public void setPreviousXPos(double previousXPos) { this.previousXPos = previousXPos; }
+    //public double getPreviousXPos() { return this.previousXPos; }
+    //public void setPreviousXPos(double previousXPos) { this.previousXPos = previousXPos; }
 
-    public double getPreviousYPos() { return this.previousYPos; }
-    public void setPreviousYPos(double previousYPos) { this.previousYPos = previousYPos; }
+    //public double getPreviousYPos() { return this.previousYPos; }
+    //public void setPreviousYPos(double previousYPos) { this.previousYPos = previousYPos; }
 
     public int getRadius() { return this.radius; }
-    public void setRadius(int radius) { this.radius = radius; }
+    //public void setRadius(int radius) { this.radius = radius; }
 
     public double getAngle() { return this.angle; }
-    public void setAngle(double angle) { this.angle = angle; }
+    //public void setAngle(double angle) { this.angle = angle; }
 
     public double getSpeed() { return this.speed; }
-    public void setSpeed(double speed) { this.speed = speed; }
+    //public void setSpeed(double speed) { this.speed = speed; }
 
     public Color getColor() { return this.color; }
     public void setColor(Color color) { this.color = color; }
 
     public boolean isMoving() { return this.isMoving; }
-    public void setIsMoving(boolean isMoving) { this.isMoving = isMoving; }
+    //public void setIsMoving(boolean isMoving) { this.isMoving = isMoving; }
 
     public boolean isVulnerable() { return this.isVulnerable; }
-    public void setIsVulnerable(boolean isVulnerable) { this.isVulnerable = isVulnerable; }
+    //public void setIsVulnerable(boolean isVulnerable) { this.isVulnerable = isVulnerable; }
 
     public boolean hasDestination() { return this.hasDestination; }
-    public void setHasDestination(boolean hasDestination) { this.hasDestination = hasDestination; }
+    //public void setHasDestination(boolean hasDestination) { this.hasDestination = hasDestination; }
 }

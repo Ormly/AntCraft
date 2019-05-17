@@ -16,13 +16,7 @@ public class Ant extends GameObject
         //this.setIsVulnerable(true);
     }
 
-    public void move(double lastFrameDuration)
-    {
-        super.move(lastFrameDuration);
-    }
+    public void move(double lastFrameDuration) { super.move(lastFrameDuration); }
 
-    public void update(double lastFrameDuration)
-    {
-        this.move(lastFrameDuration);
-    }
+    public void update(double lastFrameDuration) { this.move(lastFrameDuration); }
 }

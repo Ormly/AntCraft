@@ -105,6 +105,7 @@ public class GameWorld
                     gameObject.setDestination(userInput.getMousePressedX(),userInput.getMousePressedY());
             }
         }
+
         /*TESTS
         if(mousePressed)
         {
@@ -136,10 +137,7 @@ public class GameWorld
         //this.logger.debug("Creating new Objects...");
     }
 
-    private void gameOver()
-    {
-
-    }
+    private void gameOver() {}
 
     private void setInputSystem(InputSystem inputSystem) { this.inputSystem = inputSystem; }
     public void setGraphicsSystem(GraphicsSystem graphicsSystem) { this.graphicsSystem = graphicsSystem; }
