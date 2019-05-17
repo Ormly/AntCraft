@@ -52,38 +52,32 @@ public abstract class GameObject
         angle = Math.atan2(this.destinationYPos - yPos, this.destinationXPos - xPos);
     }
 
-    public void move(double lastFrameDuration)
+    public void update(double lastFrameDuration)
     {
-        //TODO handle collisions
-
-        if(!isMoving)
-            return;
-
-        if(hasDestination)
+        if(isMoving)
         {
-            double differenceX = Math.abs(xPos - destinationXPos);
-            double differenceY = Math.abs(yPos - yPos);
-
-            if(differenceX < 3 && differenceY < 3)
+            if(hasDestination)
             {
-                isMoving = false;
-                return;
+                double differenceX = Math.abs(xPos - destinationXPos);
+                double differenceY = Math.abs(yPos - yPos);
+
+                if(differenceX < 3 && differenceY < 3)
+                {
+                    isMoving = false;
+                    return;
+                }
             }
+
+            previousXPos = xPos;
+            previousYPos = yPos;
+
+            double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
+            double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
+
+            xPos = updatedX;
+            yPos = updatedY;
         }
-
-        previousXPos = xPos;
-        previousYPos = yPos;
-
-        double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
-        double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
-
-        xPos = updatedX;
-        yPos = updatedY;
-
-        //this.logger.debug("oldX/newX: "+this.getPreviousXPos()+"/"+updatedX+" oldY/newY: "+this.getPreviousYPos()+"/"+updatedY);
     }
-
-    public void update(double lastFrameDuration) {}
 
     public double getXPos() { return this.xPos; }
     //public void setXPos(double xPos) { this.xPos = xPos;}
