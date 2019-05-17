@@ -10,10 +10,9 @@ public class Ant extends GameObject
 {
     private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
 
-    public Ant(double xPos, double yPos, int radius)
+    public Ant(double xPos, double yPos)
     {
-        super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 30, radius, new Color(128, 0, 0));
-        //this.setIsVulnerable(true);
+        super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 20, 15, new Color(128, 0, 0));
     }
 
     public void update(double lastFrameDuration) { super.update(lastFrameDuration); }

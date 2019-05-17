@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Bug extends GameObject
 {
-    public Bug(double xPos, double yPos, int radius)
+    public Bug(double xPos, double yPos, double angle, double speed)
     {
-        super(xPos,yPos,0,15,radius,new Color(96, 96, 255));
+        super(xPos,yPos,angle,speed,22,new Color(220, 20, 60));
     }
 }
