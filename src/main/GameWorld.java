@@ -11,6 +11,7 @@ import utilities.logging.Logging;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class GameWorld
 {
@@ -51,6 +52,7 @@ public class GameWorld
         calcFrameDuration();
         this.checkUserInput();
         // move stuff
+        this.updateObjects(this.lastFrameDuration);
         // collision detection
         this.redrawObjects();
     }
@@ -62,10 +64,17 @@ public class GameWorld
         this.msSinceLastFrame = now;
     }
 
-    private void updateObjects(long elapsed)
+    private void updateObjects(double elapsed)
     {
+        //ask timeline for next
+        //TimeLineEvent event = timerline.getNextEvent()
+        //createNewObjects(evet.getObjects())
         // traverse all game objects and update their position
         // should maybe happen in userInputCheck
+
+    }
+
+    private void createNewObject(ArrayList<GameObject> objects){
 
     }
 
@@ -81,6 +90,7 @@ public class GameWorld
 
     private void checkUserInput()
     {
+
         userInput = inputSystem.getUserInput();
 
         int mouseCode;
