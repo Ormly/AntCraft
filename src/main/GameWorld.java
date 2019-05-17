@@ -92,7 +92,7 @@ public class GameWorld
                 gameOver();
             }
 
-            this.createNewObjects(event.getObjects());
+            this.gameObjectsToCreate.addAll(event.getObjects());
         }
 
         // is nest.health == 0 gameOver();
