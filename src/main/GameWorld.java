@@ -27,6 +27,7 @@ public class GameWorld
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
     private Nest nest;
+    private int numOfAnts = 6;
 
     public GameWorld()
     {
@@ -100,10 +101,14 @@ public class GameWorld
             mouseCode = userInput.getMousePressedCode();
             if(mouseCode == MouseEvent.BUTTON1)
             {
-                //TODO check for remaining ants
-                Ant ant = new Ant(Constants.NEST_X_POS,Constants.NEST_Y_POS);
-                ant.setDestination(userInput.getMousePressedX(),userInput.getMousePressedY());
-                gameObjectsToCreate.add(ant);
+                //TODO make numOfAnts make sense
+                if(numOfAnts > 0)
+                {
+                    Ant ant = new Ant(Constants.NEST_X_POS, Constants.NEST_Y_POS);
+                    ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
+                    gameObjectsToCreate.add(ant);
+                    numOfAnts--;
+                }
             }
         }
 
