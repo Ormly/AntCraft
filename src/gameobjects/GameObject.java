@@ -20,12 +20,12 @@ public abstract class GameObject
     private double destinationXPos;
     private double destinationYPos;
 
+    //think about whether we need this
     private double previousXPos;
     private double previousYPos;
 
     private boolean isMoving;
     private boolean isVulnerable;
-    private boolean hasDestination;
 
     public GameObject(double xPos, double yPos, double angle, double speed, int radius, Color color)
     {
@@ -37,14 +37,12 @@ public abstract class GameObject
         this.color = color;
 
         isMoving = false;
-        hasDestination = false;
         isVulnerable = false;
     }
 
     public void setDestination(double destinationXPos, double destinationYPos)
     {
         isMoving = true;
-        hasDestination = true;
 
         this.destinationXPos = destinationXPos;
         this.destinationYPos = destinationYPos;
@@ -56,27 +54,24 @@ public abstract class GameObject
     {
         if(isMoving)
         {
-            if(hasDestination)
+            double differenceX = Math.abs(xPos - destinationXPos);
+            double differenceY = Math.abs(yPos - destinationYPos);
+
+            if(differenceX < 3 && differenceY < 3)
             {
-                double differenceX = Math.abs(xPos - destinationXPos);
-                double differenceY = Math.abs(yPos - yPos);
-
-                if(differenceX < 3 && differenceY < 3)
-                {
-                    isMoving = false;
-                    return;
-                }
+                isMoving = false;
+                return;
             }
-
-            previousXPos = xPos;
-            previousYPos = yPos;
-
-            double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
-            double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
-
-            xPos = updatedX;
-            yPos = updatedY;
         }
+
+        previousXPos = xPos;
+        previousYPos = yPos;
+
+        double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
+        double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
+
+        xPos = updatedX;
+        yPos = updatedY;
     }
 
     public double getXPos() { return this.xPos; }
@@ -112,6 +107,6 @@ public abstract class GameObject
     public boolean isVulnerable() { return this.isVulnerable; }
     //public void setIsVulnerable(boolean isVulnerable) { this.isVulnerable = isVulnerable; }
 
-    public boolean hasDestination() { return this.hasDestination; }
+    //public boolean hasDestination() { return this.hasDestination; }
     //public void setHasDestination(boolean hasDestination) { this.hasDestination = hasDestination; }
 }
