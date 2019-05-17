@@ -1,5 +1,6 @@
 package main;
 
+import gameobjects.Ant;
 import gameobjects.Nest;
 import gameobjects.GameObject;
 import ui.GraphicsSystem;
@@ -21,66 +22,71 @@ public class GameWorld
 
     private long msSinceLastFrame;
     private double lastFrameDuration;
-    private ArrayList<GameObject> objects;
+    private ArrayList<GameObject> gameObjects;
     private Nest nest;
 
     public GameWorld()
     {
-        this.objects = new ArrayList<>();
+        this.gameObjects = new ArrayList<>();
         this.lastFrameDuration = System.currentTimeMillis();
     }
 
     public void init()
     {
         setInputSystem(graphicsSystem.getInputSystem());
-        this.nest = new Nest(400, 300, 50);
+
+        nest = new Nest(400, 300, 50);
+
+        gameObjects.add(new Ant(100,100,10));
     }
 
     public void run()
     {
-        this.msSinceLastFrame = System.currentTimeMillis();
+        msSinceLastFrame = System.currentTimeMillis();
 
         while(true)
-        {
-            this.gameLoop();
-        }
+            gameLoop();
     }
 
     public void gameLoop()
     {
         calcFrameDuration();
-        this.checkUserInput();
-        // move stuff
-        // collision detection
-        this.redrawObjects();
+        checkUserInput();
+        updateObjects(msSinceLastFrame);
+        redrawObjects();
     }
 
     private void calcFrameDuration()
     {
+        //this.logger.debug("Calculating Frame Duration...");
+
         long now = System.currentTimeMillis();
-        this.lastFrameDuration = (now - this.msSinceLastFrame) / 1000.0;
-        this.msSinceLastFrame = now;
+        lastFrameDuration = (now - msSinceLastFrame) / 1000.0;
+        msSinceLastFrame = now;
     }
 
     private void updateObjects(long elapsed)
     {
-        // traverse all game objects and update their position
-        // should maybe happen in userInputCheck
-
+        for(GameObject gameObject : gameObjects)
+            gameObject.update(lastFrameDuration);
     }
 
     private void redrawObjects()
     {
-        // iterate over all objects and redraw them
-//        this.logger.debug("Drawing element!");
-        this.graphicsSystem.clear();
-//        this.graphicsManager.draw();
-        this.graphicsSystem.draw(this.nest);
-        this.graphicsSystem.swapBuffers();
+        //this.logger.debug("Drawing elements...");
+
+        graphicsSystem.clear();
+        for(GameObject gameObject : gameObjects)
+            graphicsSystem.draw(gameObject);
+        graphicsSystem.draw(nest);
+
+        graphicsSystem.swapBuffers();
     }
 
     private void checkUserInput()
     {
+        //this.logger.debug("Checking User Input...");
+
         userInput = inputSystem.getUserInput();
 
         int mouseCode;
@@ -90,6 +96,16 @@ public class GameWorld
         boolean mouseHeldDown = userInput.isMouseHeldDown();
         boolean keyPressed = userInput.isKeyPressed();
 
+        if(mousePressed)
+        {
+            mouseCode = userInput.getMousePressedCode();
+            if(mouseCode == MouseEvent.BUTTON1)
+            {
+                for(GameObject gameObject : gameObjects)
+                    gameObject.setDestination(userInput.getMousePressedX(),userInput.getMousePressedY());
+            }
+        }
+        /*TESTS
         if(mousePressed)
         {
             mouseCode = userInput.getMousePressedCode();
@@ -110,13 +126,14 @@ public class GameWorld
             if(keyCode == KeyEvent.VK_A)
                 logger.debug("'a' has been pressed ("+keyCode+")");
         }
+        */
 
         userInput.clear();
     }
 
     private void createNewObjects()
     {
-
+        //this.logger.debug("Creating new Objects...");
     }
 
     private void gameOver()
@@ -124,13 +141,6 @@ public class GameWorld
 
     }
 
-    private void setInputSystem(InputSystem inputSystem)
-    {
-        this.inputSystem = inputSystem;
-    }
-
-    public void setGraphicsSystem(GraphicsSystem graphicsSystem)
-    {
-        this.graphicsSystem = graphicsSystem;
-    }
+    private void setInputSystem(InputSystem inputSystem) { this.inputSystem = inputSystem; }
+    public void setGraphicsSystem(GraphicsSystem graphicsSystem) { this.graphicsSystem = graphicsSystem; }
 }

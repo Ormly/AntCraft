@@ -14,6 +14,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
             .getLocalGraphicsEnvironment()
             .getDefaultScreenDevice()
             .getDefaultConfiguration();
+
     private BufferedImage imageBuffer;
     private Graphics graphics;
     private InputSystem inputSystem = new InputSystem();
@@ -32,8 +33,8 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
 
     public void draw(GameObject object)
     {
-        int x = (int) object.getX() - object.getRadius();
-        int y = (int) object.getY() - object.getRadius();
+        int x = (int) object.getXPos() - object.getRadius();
+        int y = (int) object.getYPos() - object.getRadius();
         int r = object.getRadius() * 2;
 
         graphics.setColor(object.getColor());
@@ -48,12 +49,6 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         graphics.fillRect(0, 0, 1000, 600);
     }
 
-    public void swapBuffers()
-    {
-        this.getGraphics().drawImage(this.imageBuffer, 0, 0, this);
-    }
-    public InputSystem getInputSystem()
-    {
-        return this.inputSystem;
-    }
+    public void swapBuffers() { this.getGraphics().drawImage(this.imageBuffer, 0, 0, this); }
+    public InputSystem getInputSystem() { return this.inputSystem; }
 }
