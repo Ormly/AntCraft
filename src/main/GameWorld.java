@@ -1,17 +1,21 @@
 package main;
 
+import gameobjects.Bug;
 import gameobjects.Nest;
 import gameobjects.GameObject;
 import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
+import utilities.GameOverEvent;
+import utilities.SpawnEvent;
+import utilities.Timeline;
+import utilities.TimelineEvent;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class GameWorld
 {
@@ -22,6 +26,7 @@ public class GameWorld
 
     private long msSinceLastFrame;
     private double lastFrameDuration;
+    private Timeline timeline;
     private ArrayList<GameObject> objects;
     private Nest nest;
 
@@ -35,11 +40,21 @@ public class GameWorld
     {
         setInputSystem(graphicsSystem.getInputSystem());
         this.nest = new Nest(400, 300, 50);
+
+        ArrayList<GameObject> bugs = new ArrayList();
+        bugs.add(new Bug(10,10,10));
+        bugs.add(new Bug(10,10,10));
+        bugs.add(new Bug(10,10,10));
+        bugs.add(new Bug(10,10,10));
+        this.timeline = new Timeline();
+        this.timeline.addEvent(new GameOverEvent(20 * 1000));
+        this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
     }
 
     public void run()
     {
         this.msSinceLastFrame = System.currentTimeMillis();
+        this.timeline.start();
 
         while(true)
         {
@@ -66,6 +81,19 @@ public class GameWorld
 
     private void updateObjects(double elapsed)
     {
+        TimelineEvent event = timeline.getNextEvent();
+
+        // if no event has occurred, it'll come back as null!
+        if(event != null){
+            if(event.isGameOverEvent()){
+                gameOver();
+            }
+
+            createNewObject(event.getObjects());
+        }
+
+        // is nest.health == 0 gameOver();
+
         //ask timeline for next
         //TimeLineEvent event = timerline.getNextEvent()
         //createNewObjects(evet.getObjects())
@@ -129,6 +157,7 @@ public class GameWorld
 
     }
 
+    // check why the game was over (win/lose)
     private void gameOver()
     {
 
