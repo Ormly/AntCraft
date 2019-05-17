@@ -1,5 +1,6 @@
 package main;
 
+import gameobjects.Ant;
 import gameobjects.Bug;
 import gameobjects.Nest;
 import gameobjects.GameObject;
@@ -12,6 +13,7 @@ import utilities.Timeline;
 import utilities.TimelineEvent;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
+import utilities.Constants;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -27,12 +29,15 @@ public class GameWorld
     private long msSinceLastFrame;
     private double lastFrameDuration;
     private Timeline timeline;
-    private ArrayList<GameObject> objects;
+    private ArrayList<GameObject> gameObjects;
+    private ArrayList<GameObject> gameObjectsToCreate;
     private Nest nest;
+    private int numOfAnts = 6;
 
     public GameWorld()
     {
-        this.objects = new ArrayList<>();
+        this.gameObjects = new ArrayList<>();
+        this.gameObjectsToCreate = new ArrayList<>();
         this.lastFrameDuration = System.currentTimeMillis();
     }
 
@@ -42,13 +47,15 @@ public class GameWorld
         this.nest = new Nest(400, 300, 50);
 
         ArrayList<GameObject> bugs = new ArrayList();
-        bugs.add(new Bug(10,10,10));
-        bugs.add(new Bug(10,10,10));
-        bugs.add(new Bug(10,10,10));
-        bugs.add(new Bug(10,10,10));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
         this.timeline = new Timeline();
         this.timeline.addEvent(new GameOverEvent(20 * 1000));
         this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
+        nest = new Nest(400, 300, 50);
+        gameObjects.add(nest);
     }
 
     public void run()
@@ -57,19 +64,15 @@ public class GameWorld
         this.timeline.start();
 
         while(true)
-        {
-            this.gameLoop();
-        }
+            gameLoop();
     }
 
     public void gameLoop()
     {
         calcFrameDuration();
-        this.checkUserInput();
-        // move stuff
-        this.updateObjects(this.lastFrameDuration);
-        // collision detection
-        this.redrawObjects();
+        checkUserInput();
+        updateObjects(this.msSinceLastFrame);
+        redrawObjects();
     }
 
     private void calcFrameDuration()
@@ -89,7 +92,7 @@ public class GameWorld
                 gameOver();
             }
 
-            createNewObject(event.getObjects());
+            this.createNewObjects(event.getObjects());
         }
 
         // is nest.health == 0 gameOver();
@@ -99,26 +102,24 @@ public class GameWorld
         //createNewObjects(evet.getObjects())
         // traverse all game objects and update their position
         // should maybe happen in userInputCheck
+        createNewObjects(gameObjectsToCreate);
 
-    }
-
-    private void createNewObject(ArrayList<GameObject> objects){
-
+        for(GameObject gameObject : gameObjects)
+            gameObject.update(lastFrameDuration);
     }
 
     private void redrawObjects()
     {
-        // iterate over all objects and redraw them
-//        this.logger.debug("Drawing element!");
-        this.graphicsSystem.clear();
-//        this.graphicsManager.draw();
-        this.graphicsSystem.draw(this.nest);
-        this.graphicsSystem.swapBuffers();
+        graphicsSystem.clear();
+        for(GameObject gameObject : gameObjects)
+            graphicsSystem.draw(gameObject);
+        graphicsSystem.draw(nest);
+
+        graphicsSystem.swapBuffers();
     }
 
     private void checkUserInput()
     {
-
         userInput = inputSystem.getUserInput();
 
         int mouseCode;
@@ -128,6 +129,23 @@ public class GameWorld
         boolean mouseHeldDown = userInput.isMouseHeldDown();
         boolean keyPressed = userInput.isKeyPressed();
 
+        if(mousePressed)
+        {
+            mouseCode = userInput.getMousePressedCode();
+            if(mouseCode == MouseEvent.BUTTON1)
+            {
+                //TODO make numOfAnts make sense
+                if(numOfAnts > 0)
+                {
+                    Ant ant = new Ant(Constants.NEST_X_POS, Constants.NEST_Y_POS);
+                    ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
+                    gameObjectsToCreate.add(ant);
+                    numOfAnts--;
+                }
+            }
+        }
+
+        /*TESTS
         if(mousePressed)
         {
             mouseCode = userInput.getMousePressedCode();
@@ -148,28 +166,18 @@ public class GameWorld
             if(keyCode == KeyEvent.VK_A)
                 logger.debug("'a' has been pressed ("+keyCode+")");
         }
+        */
 
         userInput.clear();
     }
 
-    private void createNewObjects()
+    private void createNewObjects(ArrayList<GameObject> newGameObjects)
     {
-
+        gameObjects.addAll(newGameObjects);
     }
 
-    // check why the game was over (win/lose)
-    private void gameOver()
-    {
+    private void gameOver() {}
 
-    }
-
-    private void setInputSystem(InputSystem inputSystem)
-    {
-        this.inputSystem = inputSystem;
-    }
-
-    public void setGraphicsSystem(GraphicsSystem graphicsSystem)
-    {
-        this.graphicsSystem = graphicsSystem;
-    }
+    private void setInputSystem(InputSystem inputSystem) { this.inputSystem = inputSystem; }
+    public void setGraphicsSystem(GraphicsSystem graphicsSystem) { this.graphicsSystem = graphicsSystem; }
 }
