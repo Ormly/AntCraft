@@ -13,7 +13,9 @@ public class Main
     {
         Logging.setLoggerFactory(new FileLoggerFactory(Constants.LOG_FILE_PATH));
         AbstractLogger logger = Logging.getLogger(Main.class.getName());
+
         logger.info("Starting Game");
+
         Frame frame = new Frame(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
         frame.display();
 
@@ -22,7 +24,7 @@ public class Main
         game.setGraphicsSystem(frame.getPanel());
         game.init();
         game.run();
-        logger.info("Ending Game");
 
+        logger.info("Ending Game");
     }
 }
