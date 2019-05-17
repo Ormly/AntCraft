@@ -62,16 +62,17 @@ public abstract class GameObject
                 isMoving = false;
                 return;
             }
+            previousXPos = xPos;
+            previousYPos = yPos;
+
+            double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
+            double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
+
+            xPos = updatedX;
+            yPos = updatedY;
         }
 
-        previousXPos = xPos;
-        previousYPos = yPos;
 
-        double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
-        double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
-
-        xPos = updatedX;
-        yPos = updatedY;
     }
 
     public double getXPos() { return this.xPos; }

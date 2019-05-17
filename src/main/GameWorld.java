@@ -7,9 +7,13 @@ import gameobjects.GameObject;
 import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
-import utilities.Constants;
+import utilities.GameOverEvent;
+import utilities.SpawnEvent;
+import utilities.Timeline;
+import utilities.TimelineEvent;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
+import utilities.Constants;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -24,6 +28,7 @@ public class GameWorld
 
     private long msSinceLastFrame;
     private double lastFrameDuration;
+    private Timeline timeline;
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
     private Nest nest;
@@ -39,14 +44,24 @@ public class GameWorld
     public void init()
     {
         setInputSystem(graphicsSystem.getInputSystem());
+        this.nest = new Nest(400, 300, 50);
 
+        ArrayList<GameObject> bugs = new ArrayList();
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        this.timeline = new Timeline();
+        this.timeline.addEvent(new GameOverEvent(20 * 1000));
+        this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
         nest = new Nest(400, 300, 50);
         gameObjects.add(nest);
     }
 
     public void run()
     {
-        msSinceLastFrame = System.currentTimeMillis();
+        this.msSinceLastFrame = System.currentTimeMillis();
+        this.timeline.start();
 
         while(true)
             gameLoop();
@@ -56,19 +71,37 @@ public class GameWorld
     {
         calcFrameDuration();
         checkUserInput();
-        updateObjects(msSinceLastFrame);
+        updateObjects(this.msSinceLastFrame);
         redrawObjects();
     }
 
     private void calcFrameDuration()
     {
         long now = System.currentTimeMillis();
-        lastFrameDuration = (now - msSinceLastFrame) / 1000.0;
-        msSinceLastFrame = now;
+        this.lastFrameDuration = (now - this.msSinceLastFrame) / 1000.0;
+        this.msSinceLastFrame = now;
     }
 
-    private void updateObjects(long elapsed)
+    private void updateObjects(double elapsed)
     {
+        TimelineEvent event = timeline.getNextEvent();
+
+        // if no event has occurred, it'll come back as null!
+        if(event != null){
+            if(event.isGameOverEvent()){
+                gameOver();
+            }
+
+            this.gameObjectsToCreate.addAll(event.getObjects());
+        }
+
+        // is nest.health == 0 gameOver();
+
+        //ask timeline for next
+        //TimeLineEvent event = timerline.getNextEvent()
+        //createNewObjects(evet.getObjects())
+        // traverse all game objects and update their position
+        // should maybe happen in userInputCheck
         createNewObjects(gameObjectsToCreate);
 
         for(GameObject gameObject : gameObjects)
