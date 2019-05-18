@@ -2,7 +2,9 @@ package interfaces;
 
 import gameobjects.GameObject;
 
+import java.util.ArrayList;
+
 public interface IPhysicsSystem
 {
-    public IGameObjectList getCollisions(GameObject object);
+    public ArrayList<GameObject> getCollisions(GameObject object);
 }
