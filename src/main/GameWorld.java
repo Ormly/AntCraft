@@ -2,20 +2,15 @@ package main;
 
 import gameobjects.Ant;
 import gameobjects.Bug;
-import gameobjects.Nest;
 import gameobjects.GameObject;
+import gameobjects.Nest;
 import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
-import utilities.GameOverEvent;
-import utilities.SpawnEvent;
-import utilities.Timeline;
-import utilities.TimelineEvent;
+import utilities.*;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
-import utilities.Constants;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -56,6 +51,10 @@ public class GameWorld
         this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
         nest = new Nest(400, 300, 50);
         gameObjects.add(nest);
+    }
+
+    public ArrayList<GameObject> getGameObjects() {
+        return gameObjects;
     }
 
     public void run()
