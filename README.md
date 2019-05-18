@@ -1,5 +1,64 @@
 # antdefense
 
+### Using the timeline
+The timeline is included in the `GameWorld` allows scheduling spawn events to occur throughout the game.
+The time line is to be set up during `init()` and queried in the `gameLoop()` to find out if spawning new object is required, or the game has ended.
+
+```java
+    private Timeline timeline;
+
+    public void initializeTimeline()
+    {
+        ...
+        // create and array objects that will be spawned in a given event
+        ArrayList<GameObject> bugs = new ArrayList();
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        
+        // initialize the timeline
+        this.timeline = new Timeline();
+        
+        // a new event, will trigger 5 seconds into the game, will spawn all the game objects in 'bugs'
+        this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
+        
+        // a new GameOverEvent, will trigger 20 seconds into the game and indicate game is over.
+        this.timeline.addEvent(new GameOverEvent(20 * 1000));
+        
+        ...
+```
+
+Start timeline (before entering `gameloop()`)
+```java
+    public void run()
+    {
+        ...
+        // start the timeline 
+        this.timeline.start();
+    }
+```
+
+Using `timeline` to determine if a new event has occurred (in `gameloop()`)
+```java
+    private void updateObjects(double elapsed)
+    {
+        // ask timeline for next event
+        TimelineEvent event = timeline.getNextEvent();
+
+        // if no event has occurred, it'll come back as null!
+        if(event != null){
+            
+            // event might be a gameover event 
+            if(event.isGameOverEvent()){
+                gameOver();
+            }
+
+            // get object to create from event and set them to get created
+            this.gameObjectsToCreate.addAll(event.getObjects());
+        }
+```
+
 ### Using Logging
 The `Logging` class provides a global logging solution.
 
