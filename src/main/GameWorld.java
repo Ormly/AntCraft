@@ -46,14 +46,8 @@ public class GameWorld
         setInputSystem(graphicsSystem.getInputSystem());
         this.nest = new Nest(400, 300, 50);
 
-        ArrayList<GameObject> bugs = new ArrayList();
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
-        this.timeline = new Timeline();
-        this.timeline.addEvent(new GameOverEvent(20 * 1000));
-        this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
+        this.initializeTimeline();
+
         nest = new Nest(400, 300, 50);
         gameObjects.add(nest);
     }
@@ -169,6 +163,18 @@ public class GameWorld
         */
 
         userInput.clear();
+    }
+
+    private void initializeTimeline()
+    {
+        ArrayList<GameObject> bugs = new ArrayList();
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(10,10,10,20));
+        this.timeline = new Timeline();
+        this.timeline.addEvent(new GameOverEvent(20 * 1000));
+        this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
     }
 
     private void createNewObjects(ArrayList<GameObject> newGameObjects)
