@@ -53,7 +53,8 @@ public class GameWorld
         gameObjects.add(nest);
     }
 
-    public ArrayList<GameObject> getGameObjects() {
+    public ArrayList<GameObject> getGameObjects()
+    {
         return gameObjects;
     }
 
