@@ -179,7 +179,8 @@ public class GameWorld
 
     private void createNewObjects(ArrayList<GameObject> newGameObjects)
     {
-        gameObjects.addAll(newGameObjects);
+        this.gameObjects.addAll(newGameObjects);
+        this.gameObjectsToCreate.clear();
     }
 
     private void gameOver() {}
