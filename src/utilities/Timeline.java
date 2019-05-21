@@ -20,6 +20,11 @@ public class Timeline extends Thread
         this.occuredEvents = new LinkedList<>();
     }
 
+    public boolean hasEvents()
+    {
+        return occuredEvents.size() > 0;
+    }
+
     public TimelineEvent getNextEvent()
     {
         return this.occuredEvents.poll();

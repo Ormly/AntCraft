@@ -1,5 +1,6 @@
 package main;
 
+import core.PhysicsSystem;
 import gameobjects.Ant;
 import gameobjects.Bug;
 import gameobjects.GameObject;
@@ -18,9 +19,11 @@ public class GameWorld
 {
     private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
     private GraphicsSystem graphicsSystem;
+    private PhysicsSystem physicsSystem;
     private InputSystem inputSystem;
     private UserInput userInput;
 
+    private boolean isRunning;
     private long msSinceLastFrame;
     private double lastFrameDuration;
     private Timeline timeline;
@@ -38,6 +41,8 @@ public class GameWorld
 
     public void init()
     {
+        this.physicsSystem = new PhysicsSystem(this);
+        GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
         this.nest = new Nest(400, 300, 50);
 
@@ -54,6 +59,7 @@ public class GameWorld
 
     public void run()
     {
+        this.isRunning = true;
         this.msSinceLastFrame = System.currentTimeMillis();
         this.timeline.start();
 
@@ -78,15 +84,20 @@ public class GameWorld
 
     private void updateObjects(double elapsed)
     {
-        TimelineEvent event = timeline.getNextEvent();
+        if(!isRunning)
+            return;
 
-        // if no event has occurred, it'll come back as null!
-        if(event != null){
+        if(this.timeline.hasEvents()){
+            TimelineEvent event = timeline.getNextEvent();
+
             if(event.isGameOverEvent()){
-                gameOver();
+                gameOver(); // end the game
             }
 
-            this.gameObjectsToCreate.addAll(event.getObjects());
+            ArrayList<GameObject> newObjects = event.getObjects();
+
+            if(newObjects != null)
+                this.gameObjectsToCreate.addAll(event.getObjects());
         }
 
         // is nest.health == 0 gameOver();
@@ -98,8 +109,16 @@ public class GameWorld
         // should maybe happen in userInputCheck
         createNewObjects(gameObjectsToCreate);
 
+        ArrayList<GameObject> toRemove = new ArrayList<>();
+
         for(GameObject gameObject : gameObjects)
-            gameObject.update(lastFrameDuration);
+        {
+            if(gameObject.isDead())
+                toRemove.add(gameObject);
+            else
+                gameObject.update(lastFrameDuration);
+        }
+        this.gameObjects.removeAll(toRemove);
     }
 
     private void redrawObjects()
@@ -168,13 +187,11 @@ public class GameWorld
     private void initializeTimeline()
     {
         ArrayList<GameObject> bugs = new ArrayList();
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(100,100,10,20));
+        bugs.add(new Bug(400,700,10,20));
         this.timeline = new Timeline();
         this.timeline.addEvent(new GameOverEvent(20 * 1000));
-        this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
+        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
     }
 
     private void createNewObjects(ArrayList<GameObject> newGameObjects)
@@ -182,8 +199,24 @@ public class GameWorld
         gameObjects.addAll(newGameObjects);
     }
 
-    private void gameOver() {}
+    private void gameOver()
+    {
+        this.isRunning = false;
+        logger.info("Game is over!");
+    }
 
-    private void setInputSystem(InputSystem inputSystem) { this.inputSystem = inputSystem; }
-    public void setGraphicsSystem(GraphicsSystem graphicsSystem) { this.graphicsSystem = graphicsSystem; }
+    private void setInputSystem(InputSystem inputSystem)
+    {
+        this.inputSystem = inputSystem;
+    }
+
+    public void setGraphicsSystem(GraphicsSystem graphicsSystem)
+    {
+        this.graphicsSystem = graphicsSystem;
+    }
+
+    public ArrayList<GameObject> getCollisions(GameObject object)
+    {
+        return this.physicsSystem.getCollisions(object);
+    }
 }

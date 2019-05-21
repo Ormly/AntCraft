@@ -1,5 +1,6 @@
 package gameobjects;
 
+import main.GameWorld;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
@@ -7,25 +8,30 @@ import java.awt.*;
 
 public abstract class GameObject
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    public static GameWorld world;
 
-    private double xPos;
-    private double yPos;
-    private int radius;
-    private double angle;
-    private double speed;
+    protected AbstractLogger logger = Logging.getLogger(this.getClass().getName());
 
-    private Color color;
+    protected double xPos;
+    protected double yPos;
+    protected int radius;
+    protected double angle;
+    protected double speed;
+    protected double healthStatus;
+    protected double damageFactor;
 
-    private double destinationXPos;
-    private double destinationYPos;
+    protected Color color;
+
+    protected double destinationXPos;
+    protected double destinationYPos;
 
     //think about whether we need this
-    private double previousXPos;
-    private double previousYPos;
+    protected double previousXPos;
+    protected double previousYPos;
 
-    private boolean isMoving;
-    private boolean isVulnerable;
+    protected boolean isMoving;
+    protected boolean isVulnerable;
+    protected boolean isDead = false;
 
     public GameObject(double xPos, double yPos, double angle, double speed, int radius, Color color)
     {
@@ -42,6 +48,7 @@ public abstract class GameObject
 
     public void setDestination(double destinationXPos, double destinationYPos)
     {
+        logger.debug("destination is set: " + destinationXPos + " - " + destinationYPos);
         isMoving = true;
 
         this.destinationXPos = destinationXPos;
@@ -71,8 +78,20 @@ public abstract class GameObject
             xPos = updatedX;
             yPos = updatedY;
         }
+    }
 
+    public void damage(double damageFactor)
+    {
+        this.healthStatus *= damageFactor;
+        logger.debug("Bug health status: " + this.healthStatus);
+        if(this.healthStatus <= 0.02)
+            logger.debug("Bug is dead!");
+            this.isDead = true;
+    }
 
+    public boolean isDead()
+    {
+        return isDead;
     }
 
     public double getXPos() { return this.xPos; }
@@ -110,4 +129,5 @@ public abstract class GameObject
 
     //public boolean hasDestination() { return this.hasDestination; }
     //public void setHasDestination(boolean hasDestination) { this.hasDestination = hasDestination; }
+    public static void setGameWorld(GameWorld world){ GameObject.world = world; }
 }
