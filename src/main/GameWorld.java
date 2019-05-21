@@ -69,6 +69,7 @@ public class GameWorld
 
     public void gameLoop()
     {
+//        logger.debug("number of objects: " + this.gameObjects.size());
         calcFrameDuration();
         checkUserInput();
         updateObjects(this.msSinceLastFrame);
@@ -190,13 +191,14 @@ public class GameWorld
         bugs.add(new Bug(100,100,10,20));
         bugs.add(new Bug(400,700,10,20));
         this.timeline = new Timeline();
-        this.timeline.addEvent(new GameOverEvent(20 * 1000));
+//        this.timeline.addEvent(new GameOverEvent(20 * 1000));
         this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
     }
 
     private void createNewObjects(ArrayList<GameObject> newGameObjects)
     {
         gameObjects.addAll(newGameObjects);
+        this.gameObjectsToCreate.clear();
     }
 
     private void gameOver()

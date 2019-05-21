@@ -3,7 +3,7 @@ package utilities;
 public class Timer
 {
     private double secondsToExpire;
-    private double startTime;
+    private double startTime = 0.0;
     public Timer(double secondsToExpire){
         this.secondsToExpire = secondsToExpire;
     }
@@ -13,6 +13,6 @@ public class Timer
     }
 
     public boolean hasExpired(){
-        return (System.currentTimeMillis() - this.startTime) >= secondsToExpire;
+        return (System.currentTimeMillis() - this.startTime) >= secondsToExpire*1000.0;
     }
 }

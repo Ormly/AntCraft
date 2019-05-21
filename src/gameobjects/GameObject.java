@@ -1,6 +1,7 @@
 package gameobjects;
 
 import main.GameWorld;
+import utilities.Timer;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
@@ -17,8 +18,10 @@ public abstract class GameObject
     protected int radius;
     protected double angle;
     protected double speed;
+
     protected double healthStatus;
     protected double damageFactor;
+    protected Timer attackTimer;
 
     protected Color color;
 
@@ -82,11 +85,13 @@ public abstract class GameObject
 
     public void damage(double damageFactor)
     {
-        this.healthStatus *= damageFactor;
+        this.healthStatus -= damageFactor;
         logger.debug("Bug health status: " + this.healthStatus);
-        if(this.healthStatus <= 0.02)
+        if(this.healthStatus <= 0)
+        {
             logger.debug("Bug is dead!");
             this.isDead = true;
+        }
     }
 
     public boolean isDead()

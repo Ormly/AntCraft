@@ -1,6 +1,7 @@
 package gameobjects;
 
 import utilities.Constants;
+import utilities.Timer;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
@@ -22,10 +23,11 @@ public class Ant extends GameObject
 
     public Ant(double xPos, double yPos)
     {
-        super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 20, 15, new Color(128, 0, 0));
+        super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 40, 15, new Color(128, 0, 0));
         this.state = State.CHILLING;
-        this.damageFactor = 0.002;
+        this.damageFactor = 50.0;
         this.healthStatus = 100.0;
+        this.attackTimer = new Timer(1);
     }
 
     public void update(double lastFrameDuration)
@@ -34,19 +36,24 @@ public class Ant extends GameObject
 
         if(this.state == State.FIGHTING)
         {
-            logger.debug("Ant is fighting bug!");
-            if(this.opponent != null)
+            if(this.attackTimer.hasExpired()) // attack in fixed intervals
             {
-                if(this.opponent.isDead())
+                this.attackTimer.start();
+                logger.debug("Ant is fighting bug!");
+
+                if(this.opponent != null)
                 {
-                    this.opponent = null;
-                    this.state = State.CHILLING;
+                    if(this.opponent.isDead())
+                    {
+                        this.logger.debug("opponent is dead!");
+                        this.opponent = null;
+                        this.state = State.CHILLING;
+                    }
+                    else
+                        this.opponent.damage(this.damageFactor);
                 }
-                else
-                    this.opponent.damage(this.damageFactor);
             }
         }
-
         ArrayList<GameObject> collisions = world.getCollisions(this);
         for(GameObject object: collisions)
         {
