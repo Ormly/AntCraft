@@ -74,7 +74,7 @@ public abstract class GameObject
             }
             previousXPos = xPos;
             previousYPos = yPos;
-
+//            this.logger.debug("elapsed: "+ lastFrameDuration);
             double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
             double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
 

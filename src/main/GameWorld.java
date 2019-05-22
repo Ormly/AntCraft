@@ -24,8 +24,8 @@ public class GameWorld
     private UserInput userInput;
 
     private boolean isRunning;
-    private long msSinceLastFrame;
-    private double lastFrameDuration;
+    private long timestampLast;
+    private double frameDuration;
     private Timeline timeline;
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
@@ -36,7 +36,6 @@ public class GameWorld
     {
         this.gameObjects = new ArrayList<>();
         this.gameObjectsToCreate = new ArrayList<>();
-        this.lastFrameDuration = System.currentTimeMillis();
     }
 
     public void init()
@@ -60,8 +59,8 @@ public class GameWorld
     public void run()
     {
         this.isRunning = true;
-        this.msSinceLastFrame = System.currentTimeMillis();
         this.timeline.start();
+        this.timestampLast = System.currentTimeMillis();
 
         while(true)
             gameLoop();
@@ -69,21 +68,23 @@ public class GameWorld
 
     public void gameLoop()
     {
-//        logger.debug("number of objects: " + this.gameObjects.size());
         calcFrameDuration();
+
         checkUserInput();
-        updateObjects(this.msSinceLastFrame);
+
+        updateObjects();
+
         redrawObjects();
     }
 
     private void calcFrameDuration()
     {
         long now = System.currentTimeMillis();
-        this.lastFrameDuration = (now - this.msSinceLastFrame) / 1000.0;
-        this.msSinceLastFrame = now;
+        this.frameDuration = (now - this.timestampLast) / 1000.0;
+        this.timestampLast = now;
     }
 
-    private void updateObjects(double elapsed)
+    private void updateObjects()
     {
         if(!isRunning)
             return;
@@ -101,32 +102,29 @@ public class GameWorld
                 this.gameObjectsToCreate.addAll(event.getObjects());
         }
 
-        // is nest.health == 0 gameOver();
-
-        //ask timeline for next
-        //TimeLineEvent event = timerline.getNextEvent()
-        //createNewObjects(evet.getObjects())
-        // traverse all game objects and update their position
-        // should maybe happen in userInputCheck
-        createNewObjects(gameObjectsToCreate);
+        createNewObjects();
 
         ArrayList<GameObject> toRemove = new ArrayList<>();
 
+        // update all game objects and remove dead ones
         for(GameObject gameObject : gameObjects)
         {
             if(gameObject.isDead())
                 toRemove.add(gameObject);
             else
-                gameObject.update(lastFrameDuration);
+                gameObject.update(this.frameDuration);
         }
+
         this.gameObjects.removeAll(toRemove);
     }
 
     private void redrawObjects()
     {
         graphicsSystem.clear();
+
         for(GameObject gameObject : gameObjects)
             graphicsSystem.draw(gameObject);
+
         graphicsSystem.draw(nest);
 
         graphicsSystem.swapBuffers();
@@ -159,29 +157,6 @@ public class GameWorld
             }
         }
 
-        /*TESTS
-        if(mousePressed)
-        {
-            mouseCode = userInput.getMousePressedCode();
-            if(mouseCode == MouseEvent.BUTTON1)
-            {
-                logger.debug("Left Mouse button pressed at coordinates X: " + userInput.getMousePressedX() + "|Y: " + userInput.getMousePressedY());
-            }
-            if(mouseCode == MouseEvent.BUTTON3)
-            {
-                logger.debug("Right Mouse button pressed at coordinates X: "+userInput.getMousePressedX()+"|Y: "+userInput.getMousePressedY());
-            }
-        }
-
-        if(keyPressed)
-        {
-            keyCode = userInput.getKeyPressedCode();
-            logger.debug("Key Pressed(code "+keyCode+")");
-            if(keyCode == KeyEvent.VK_A)
-                logger.debug("'a' has been pressed ("+keyCode+")");
-        }
-        */
-
         userInput.clear();
     }
 
@@ -195,10 +170,13 @@ public class GameWorld
         this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
     }
 
-    private void createNewObjects(ArrayList<GameObject> newGameObjects)
+    private void createNewObjects()
     {
-        gameObjects.addAll(newGameObjects);
-        this.gameObjectsToCreate.clear();
+        if(!this.gameObjectsToCreate.isEmpty())
+        {
+            gameObjects.addAll(this.gameObjectsToCreate);
+            this.gameObjectsToCreate.clear();
+        }
     }
 
     private void gameOver()
