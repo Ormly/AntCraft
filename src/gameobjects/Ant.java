@@ -14,9 +14,12 @@ public class Ant extends GameObject
     public Ant(double xPos, double yPos)
     {
         super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 100, 15, new Color(128, 0, 0));
+
+        this.healthStatus = Constants.MAX_ANT_HEALTH;
+        this.maxHealth = Constants.MAX_ANT_HEALTH;
         this.damageFactor = 50.0;
-        this.healthStatus = 100.0;
         this.attackTimer = new Timer(1);
+
         this.state = State.CHILLING;
     }
 

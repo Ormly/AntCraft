@@ -26,6 +26,7 @@ public abstract class GameObject
     protected double angle;
     protected double speed;
 
+    protected double maxHealth;
     protected double healthStatus;
     protected double damageFactor;
     protected Timer attackTimer;
@@ -161,6 +162,16 @@ public abstract class GameObject
     //public void setIsMoving(boolean isMoving) { this.isMoving = isMoving; }
 
     public boolean isVulnerable() { return this.isVulnerable; }
+
+    public double getMaxHealth()
+    {
+        return this.maxHealth;
+    }
+
+    public double getHealthStatus()
+    {
+        return this.healthStatus;
+    }
     //public void setIsVulnerable(boolean isVulnerable) { this.isVulnerable = isVulnerable; }
 
     //public boolean hasDestination() { return this.hasDestination; }

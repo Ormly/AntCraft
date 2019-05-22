@@ -2,6 +2,7 @@ package ui;
 
 import gameobjects.GameObject;
 import interfaces.IGraphicsSystem;
+import utilities.logging.Logging;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +42,18 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         graphics.fillOval(x, y, r, r);
         graphics.setColor(Color.BLACK);
         graphics.drawOval(x, y, r, r);
+
+        //healthbar
+        graphics.setColor(Color.GREEN);
+
+        double health = (object.getHealthStatus() / object.getMaxHealth()) * 100.0;
+        double barLength = 100.0;
+
+        y = (int) object.getYPos() - object.getRadius() - 15;
+        x = (int) (object.getXPos() - (barLength/2.0));
+
+        graphics.drawRect(x,y,(int)barLength,10);
+        graphics.fillRect(x,y,(int)health,10);
     }
 
     public void clear()

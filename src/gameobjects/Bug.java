@@ -11,9 +11,13 @@ public class Bug extends GameObject
     public Bug(double xPos, double yPos, double angle, double speed)
     {
         super(xPos,yPos,angle,speed,22,new Color(220, 20, 60));
+
+        this.healthStatus = Constants.MAX_BUG_HEALTH;
+        this.maxHealth = Constants.MAX_BUG_HEALTH;
         this.damageFactor = 20;
-        this.healthStatus = 1000.0;
         this.attackTimer = new Timer(2);
+
+
         this.setDestination(Constants.NEST_X_POS, Constants.NEST_Y_POS);
         this.state = State.HUNTING;
     }
