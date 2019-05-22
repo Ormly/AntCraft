@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 
 public abstract class AbstractLogger
 {
-    protected final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+    protected final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     protected String owner;
 
     public void info(String msg) {
