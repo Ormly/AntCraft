@@ -9,6 +9,13 @@ import java.awt.*;
 
 public abstract class GameObject
 {
+    protected enum State
+    {
+        FIGHTING,
+        CHILLING,
+        HUNTING
+    }
+
     public static GameWorld world;
 
     protected AbstractLogger logger = Logging.getLogger(this.getClass().getName());
@@ -22,6 +29,9 @@ public abstract class GameObject
     protected double healthStatus;
     protected double damageFactor;
     protected Timer attackTimer;
+    protected State state;
+    protected GameObject opponent = null;
+
 
     protected Color color;
 
@@ -52,17 +62,38 @@ public abstract class GameObject
     public void setDestination(double destinationXPos, double destinationYPos)
     {
         logger.debug("destination is set: " + destinationXPos + " - " + destinationYPos);
-        isMoving = true;
 
         this.destinationXPos = destinationXPos;
         this.destinationYPos = destinationYPos;
 
         angle = Math.atan2(this.destinationYPos - yPos, this.destinationXPos - xPos);
+
+        this.state = State.HUNTING;
     }
 
     public void update(double lastFrameDuration)
     {
-        if(isMoving)
+        if(this.state == State.FIGHTING)
+        {
+            if(this.attackTimer.hasExpired()) // attack in fixed intervals
+            {
+                this.attackTimer.start();
+                logger.debug("Ant is fighting bug!");
+
+                if(this.opponent != null)
+                {
+                    if(this.opponent.isDead())
+                    {
+                        this.logger.debug("opponent is dead!");
+                        this.opponent = null;
+                        this.state = State.HUNTING;
+                    }
+                    else
+                        this.opponent.damage(this.damageFactor);
+                }
+            }
+        }
+        else if(this.state == State.HUNTING)
         {
             double differenceX = Math.abs(xPos - destinationXPos);
             double differenceY = Math.abs(yPos - destinationYPos);
