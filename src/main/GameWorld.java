@@ -1,10 +1,7 @@
 package main;
 
 import core.PhysicsSystem;
-import gameobjects.Ant;
-import gameobjects.Bug;
-import gameobjects.GameObject;
-import gameobjects.Nest;
+import gameobjects.*;
 import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
@@ -12,6 +9,7 @@ import utilities.*;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -33,6 +31,7 @@ public class GameWorld
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
     private ArrayList<GameObject> gameObjectsSelected;
+    private MouseAreaSelection mouseAreaSelection;
 
     private Nest nest;
 
@@ -51,6 +50,8 @@ public class GameWorld
         GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
         this.nest = new Nest(400, 300, 50);
+
+        this.mouseAreaSelection = new MouseAreaSelection();
 
         this.initializeTimeline();
 
@@ -134,6 +135,9 @@ public class GameWorld
         for(GameObject gameObject : gameObjects)
             graphicsSystem.draw(gameObject);
 
+        if(mouseAreaSelection.isVisible())
+            graphicsSystem.draw(mouseAreaSelection);
+
         graphicsSystem.draw(nest);
 
         graphicsSystem.swapBuffers();
@@ -151,6 +155,7 @@ public class GameWorld
         boolean mousePressed = userInput.isMousePressed();
         boolean mouseHeldDown = userInput.isMouseHeldDown();
         boolean keyPressed = userInput.isKeyPressed();
+        boolean mouseDragged = userInput.isMouseDragged();
 
         if(mousePressed)
         {
@@ -194,6 +199,47 @@ public class GameWorld
                 }
             }
         }
+
+        if(mouseDragged)
+        {
+            //TODO get rid of points
+            Point startDrag = this.userInput.getStartDrag();
+            Point endDrag = this.userInput.getEndDrag();
+
+            int width = Math.abs(endDrag.x - startDrag.x);
+            int height = Math.abs(endDrag.y - startDrag.y);
+
+            int endX = endDrag.x;
+            int endY = endDrag.y;
+            int startX = startDrag.x;
+            int startY = startDrag.y;
+
+            int originX;
+            int originY;
+
+            if(endX >= startX && endY >= startY)
+            {
+                originX = startX;
+                originY = startY;
+            }
+            else if(endY < startY && endX > startX)
+            {
+                originX = startX;
+                originY = endY;
+            }
+            else if(endX < startX && endY > startY)
+            {
+                originX = endX;
+                originY = startY;
+            }
+            else
+            {
+                originX = endX;
+                originY = endY;
+            }
+
+            this.mouseAreaSelection.update(originX,originY,width,height);
+        } else this.mouseAreaSelection.setIsVisible(false);
 
         userInput.clear();
     }

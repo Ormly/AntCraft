@@ -1,7 +1,9 @@
 package ui;
 
 import gameobjects.GameObject;
+import gameobjects.HUDObject;
 import interfaces.IGraphicsSystem;
+import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
 import javax.swing.*;
@@ -10,6 +12,7 @@ import java.awt.image.BufferedImage;
 
 public class GraphicsSystem extends JPanel implements IGraphicsSystem
 {
+    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
     private static final long serialVersionUID = 1L;
     private GraphicsConfiguration graphicsConf = GraphicsEnvironment
             .getLocalGraphicsEnvironment()
@@ -60,6 +63,19 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
     {
         graphics.setColor(Color.LIGHT_GRAY);
         graphics.fillRect(0, 0, 1000, 600);
+    }
+
+    public void draw(HUDObject hudObject)
+    {
+        int xPos = hudObject.getxPos();
+        int yPos = hudObject.getyPos();
+        int width = hudObject.getWidth();
+        int height = hudObject.getHeight();
+
+        graphics.setColor(Color.RED);
+        //graphics.drawRect(xPos,yPos,width,height);
+
+        graphics.fillRect(xPos,yPos,width,height);
     }
 
     public void swapBuffers() { this.getGraphics().drawImage(this.imageBuffer, 0, 0, this); }

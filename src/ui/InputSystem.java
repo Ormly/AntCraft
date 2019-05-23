@@ -2,6 +2,7 @@ package ui;
 
 import interfaces.IInputSystem;
 
+import java.awt.*;
 import java.awt.event.*;
 
 public class InputSystem implements IInputSystem, KeyListener, MouseListener, MouseMotionListener
@@ -17,45 +18,48 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
     @Override
     public void keyPressed(KeyEvent keyEvent)
     {
-        this.userInput.setIsKeyPressed(true);
-
-        this.userInput.setKeyPressedCode(keyEvent.getKeyCode());
-
-        /* KEY TESTS
-        System.out.println("entered KeyPressed");
-        displayInfo(keyEvent);
-        */
+        this.userInput.isKeyPressed = true;
+        this.userInput.keyPressedCode = keyEvent.getKeyCode();
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent)
     {
-        this.userInput.setMousePressed(true);
-        this.userInput.setMouseHeldDown(true);
+        this.userInput.isMousePressed = true;
+        this.userInput.isMouseHeldDown = true;
+        //this.userInput.isMouseDragged = true;
 
-        this.userInput.setMousePressedX(mouseEvent.getX());
-        this.userInput.setMousePressedY(mouseEvent.getY());
+        this.userInput.mousePressedX = mouseEvent.getX();
+        this.userInput.mousePressedY = mouseEvent.getY();
 
-        this.userInput.setMousePressedCode(mouseEvent.getButton());
+        this.userInput.mousePressedCode = mouseEvent.getButton();
+
+        this.userInput.startDrag = mouseEvent.getPoint();
+        this.userInput.endDrag = this.userInput.startDrag;
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent)
     {
-        this.userInput.setMouseHeldDown(false);
+        this.userInput.isMouseDragged = false;
+        this.userInput.endDrag = mouseEvent.getPoint();
+
+        //(this.userInput.startDrag != null && this.userInput.endDrag != null)
+            //this.userInput.isMouseDragged = true;
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent)
     {
-        /*TODO figure out how this works for purpose of selecting multiple ants*/
+        this.userInput.isMouseDragged = true;
+        this.userInput.endDrag = mouseEvent.getPoint();
     }
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent)
     {
-        this.userInput.setMouseMovedX(mouseEvent.getX());
-        this.userInput.setMouseMovedY(mouseEvent.getY());
+        this.userInput.mouseMovedX = mouseEvent.getX();
+        this.userInput.mouseMovedY = mouseEvent.getY();
     }
 
 
