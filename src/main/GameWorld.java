@@ -23,19 +23,26 @@ public class GameWorld
     private InputSystem inputSystem;
     private UserInput userInput;
 
-    private boolean isRunning;
     private long timestampLast;
     private double frameDuration;
+
     private Timeline timeline;
+
+    private boolean isRunning;
+
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
+    private ArrayList<GameObject> gameObjectsSelected;
+
     private Nest nest;
+
     private int numOfAnts = 6;
 
     public GameWorld()
     {
         this.gameObjects = new ArrayList<>();
         this.gameObjectsToCreate = new ArrayList<>();
+        this.gameObjectsSelected = new ArrayList<>();
     }
 
     public void init()
@@ -49,6 +56,8 @@ public class GameWorld
 
         nest = new Nest(400, 300, 50);
         gameObjects.add(nest);
+
+        gameObjects.add(new Ant(100,400));
     }
 
     public ArrayList<GameObject> getGameObjects()
@@ -136,6 +145,8 @@ public class GameWorld
 
         int mouseCode;
         int keyCode;
+        int mouseX;
+        int mouseY;
 
         boolean mousePressed = userInput.isMousePressed();
         boolean mouseHeldDown = userInput.isMouseHeldDown();
@@ -143,9 +154,23 @@ public class GameWorld
 
         if(mousePressed)
         {
+            mouseX = userInput.getMousePressedX();
+            mouseY = userInput.getMousePressedY();
             mouseCode = userInput.getMousePressedCode();
+
             if(mouseCode == MouseEvent.BUTTON1)
             {
+                GameObject object = getClickedObject(mouseX,mouseY);
+                gameObjectsSelected.clear();
+                if(object != null)
+                {
+                    logger.debug("Object at ("+mouseX+"|"+mouseY+") clicked.");
+                    gameObjectsSelected.add(object);
+                }
+                else
+                    logger.debug("Background clicked.");
+
+                /*
                 //TODO make numOfAnts make sense
                 if(numOfAnts > 0)
                 {
@@ -154,10 +179,41 @@ public class GameWorld
                     gameObjectsToCreate.add(ant);
                     numOfAnts--;
                 }
+                */
+            }
+
+            if(mouseCode == MouseEvent.BUTTON3)
+            {
+                if(!gameObjectsSelected.isEmpty())
+                {
+                    for(GameObject gameObject : gameObjectsSelected)
+                    {
+                        if(gameObject instanceof Ant)
+                            gameObject.setDestination(mouseX, mouseY);
+                    }
+                }
             }
         }
 
         userInput.clear();
+    }
+
+    private GameObject getClickedObject(int mouseX, int mouseY)
+    {
+        double distanceX;
+        double distanceY;
+        double radius;
+
+        for(GameObject gameObject : gameObjects)
+        {
+            distanceX = Math.abs(mouseX - gameObject.getXPos());
+            distanceY = Math.abs(mouseY - gameObject.getYPos());
+            radius = gameObject.getRadius();
+
+            if((distanceX + distanceY <= radius) || (Math.pow(distanceX,2) + Math.pow(distanceY,2)) <= Math.pow(radius,2))
+                return gameObject;
+        }
+        return null;
     }
 
     private void initializeTimeline()
