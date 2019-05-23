@@ -1,8 +1,10 @@
 package core;
 
 import gameobjects.GameObject;
+import gameobjects.Nest;
 import interfaces.IPhysicsSystem;
 import main.GameWorld;
+import utilities.logging.Logging;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ public class PhysicsSystem implements IPhysicsSystem
             if(distancex*distancex+distancey*distancey < distance*distance)
             {
                 result.add(currentObj);
+                //Logging.getLogger(this.getClass().getName()).debug("collision: " + object.getClass().getName() + " with " + currentObj.getClass().getName());
             }
         }
         return result;

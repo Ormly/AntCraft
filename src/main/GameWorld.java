@@ -1,5 +1,6 @@
 package main;
 
+import core.PhysicsSystem;
 import gameobjects.Ant;
 import gameobjects.Bug;
 import gameobjects.GameObject;
@@ -18,11 +19,13 @@ public class GameWorld
 {
     private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
     private GraphicsSystem graphicsSystem;
+    private PhysicsSystem physicsSystem;
     private InputSystem inputSystem;
     private UserInput userInput;
 
-    private long msSinceLastFrame;
-    private double lastFrameDuration;
+    private boolean isRunning;
+    private long timestampLast;
+    private double frameDuration;
     private Timeline timeline;
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
@@ -33,11 +36,12 @@ public class GameWorld
     {
         this.gameObjects = new ArrayList<>();
         this.gameObjectsToCreate = new ArrayList<>();
-        this.lastFrameDuration = System.currentTimeMillis();
     }
 
     public void init()
     {
+        this.physicsSystem = new PhysicsSystem(this);
+        GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
         this.nest = new Nest(400, 300, 50);
 
@@ -54,8 +58,9 @@ public class GameWorld
 
     public void run()
     {
-        this.msSinceLastFrame = System.currentTimeMillis();
+        this.isRunning = true;
         this.timeline.start();
+        this.timestampLast = System.currentTimeMillis();
 
         while(true)
             gameLoop();
@@ -64,49 +69,62 @@ public class GameWorld
     public void gameLoop()
     {
         calcFrameDuration();
+
         checkUserInput();
-        updateObjects(this.msSinceLastFrame);
+
+        updateObjects();
+
         redrawObjects();
     }
 
     private void calcFrameDuration()
     {
         long now = System.currentTimeMillis();
-        this.lastFrameDuration = (now - this.msSinceLastFrame) / 1000.0;
-        this.msSinceLastFrame = now;
+        this.frameDuration = (now - this.timestampLast) / 1000.0;
+        this.timestampLast = now;
     }
 
-    private void updateObjects(double elapsed)
+    private void updateObjects()
     {
-        TimelineEvent event = timeline.getNextEvent();
+        if(!isRunning)
+            return;
 
-        // if no event has occurred, it'll come back as null!
-        if(event != null){
+        if(this.timeline.hasEvents()){
+            TimelineEvent event = timeline.getNextEvent();
+
             if(event.isGameOverEvent()){
-                gameOver();
+                gameOver(); // end the game
             }
 
-            this.gameObjectsToCreate.addAll(event.getObjects());
+            ArrayList<GameObject> newObjects = event.getObjects();
+
+            if(newObjects != null)
+                this.gameObjectsToCreate.addAll(event.getObjects());
         }
 
-        // is nest.health == 0 gameOver();
+        createNewObjects();
 
-        //ask timeline for next
-        //TimeLineEvent event = timerline.getNextEvent()
-        //createNewObjects(evet.getObjects())
-        // traverse all game objects and update their position
-        // should maybe happen in userInputCheck
-        createNewObjects(gameObjectsToCreate);
+        ArrayList<GameObject> toRemove = new ArrayList<>();
 
+        // update all game objects and remove dead ones
         for(GameObject gameObject : gameObjects)
-            gameObject.update(lastFrameDuration);
+        {
+            if(gameObject.isDead())
+                toRemove.add(gameObject);
+            else
+                gameObject.update(this.frameDuration);
+        }
+
+        this.gameObjects.removeAll(toRemove);
     }
 
     private void redrawObjects()
     {
         graphicsSystem.clear();
+
         for(GameObject gameObject : gameObjects)
             graphicsSystem.draw(gameObject);
+
         graphicsSystem.draw(nest);
 
         graphicsSystem.swapBuffers();
@@ -139,51 +157,46 @@ public class GameWorld
             }
         }
 
-        /*TESTS
-        if(mousePressed)
-        {
-            mouseCode = userInput.getMousePressedCode();
-            if(mouseCode == MouseEvent.BUTTON1)
-            {
-                logger.debug("Left Mouse button pressed at coordinates X: " + userInput.getMousePressedX() + "|Y: " + userInput.getMousePressedY());
-            }
-            if(mouseCode == MouseEvent.BUTTON3)
-            {
-                logger.debug("Right Mouse button pressed at coordinates X: "+userInput.getMousePressedX()+"|Y: "+userInput.getMousePressedY());
-            }
-        }
-
-        if(keyPressed)
-        {
-            keyCode = userInput.getKeyPressedCode();
-            logger.debug("Key Pressed(code "+keyCode+")");
-            if(keyCode == KeyEvent.VK_A)
-                logger.debug("'a' has been pressed ("+keyCode+")");
-        }
-        */
-
         userInput.clear();
     }
 
     private void initializeTimeline()
     {
         ArrayList<GameObject> bugs = new ArrayList();
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
-        bugs.add(new Bug(10,10,10,20));
+        bugs.add(new Bug(100,100,10,20));
+        bugs.add(new Bug(400,700,10,20));
         this.timeline = new Timeline();
-        this.timeline.addEvent(new GameOverEvent(20 * 1000));
-        this.timeline.addEvent(new SpawnEvent(bugs, 5 * 1000));
+//        this.timeline.addEvent(new GameOverEvent(20 * 1000));
+        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
     }
 
-    private void createNewObjects(ArrayList<GameObject> newGameObjects)
+    private void createNewObjects()
     {
-        gameObjects.addAll(newGameObjects);
+        if(!this.gameObjectsToCreate.isEmpty())
+        {
+            gameObjects.addAll(this.gameObjectsToCreate);
+            this.gameObjectsToCreate.clear();
+        }
     }
 
-    private void gameOver() {}
+    private void gameOver()
+    {
+        this.isRunning = false;
+        logger.info("Game is over!");
+    }
 
-    private void setInputSystem(InputSystem inputSystem) { this.inputSystem = inputSystem; }
-    public void setGraphicsSystem(GraphicsSystem graphicsSystem) { this.graphicsSystem = graphicsSystem; }
+    private void setInputSystem(InputSystem inputSystem)
+    {
+        this.inputSystem = inputSystem;
+    }
+
+    public void setGraphicsSystem(GraphicsSystem graphicsSystem)
+    {
+        this.graphicsSystem = graphicsSystem;
+    }
+
+    public ArrayList<GameObject> getCollisions(GameObject object)
+    {
+        return this.physicsSystem.getCollisions(object);
+    }
 }
