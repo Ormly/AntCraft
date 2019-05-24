@@ -20,6 +20,10 @@ public class UserInput
     protected boolean isMouseDragged;
 
     protected Point endDrag, startDrag;
+    protected int endDragX;
+    protected int endDragY;
+    protected int startDragX;
+    protected int startDragY;
 
     public UserInput()
     {
@@ -36,6 +40,27 @@ public class UserInput
     {
         return mousePressedX;
     }
+
+    public int getEndDragX()
+    {
+        return endDragX;
+    }
+
+    public int getEndDragY()
+    {
+        return endDragY;
+    }
+
+    public int getStartDragX()
+    {
+        return startDragX;
+    }
+
+    public int getStartDragY()
+    {
+        return startDragY;
+    }
+
     public int getMousePressedY()
     {
         return mousePressedY;
@@ -48,16 +73,6 @@ public class UserInput
     public int getKeyPressedCode()
     {
         return this.keyPressedCode;
-    }
-
-    public Point getEndDrag()
-    {
-        return this.endDrag;
-    }
-
-    public Point getStartDrag()
-    {
-        return this.startDrag;
     }
 
     public boolean isMousePressed()
@@ -75,11 +90,6 @@ public class UserInput
     public boolean isMouseDragged()
     {
         return isMouseDragged;
-    }
-
-    public void clearDragData()
-    {
-        this.isMouseDragged = false;
     }
 }
 

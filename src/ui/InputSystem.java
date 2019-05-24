@@ -34,15 +34,18 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
 
         this.userInput.mousePressedCode = mouseEvent.getButton();
 
-        this.userInput.startDrag = mouseEvent.getPoint();
-        this.userInput.endDrag = this.userInput.startDrag;
+        this.userInput.startDragX = mouseEvent.getX();
+        this.userInput.startDragY = mouseEvent.getY();
+        this.userInput.endDragX = this.userInput.startDragX;
+        this.userInput.endDragY = this.userInput.startDragY;
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent)
     {
         this.userInput.isMouseDragged = false;
-        this.userInput.endDrag = mouseEvent.getPoint();
+        this.userInput.endDragX = mouseEvent.getX();
+        this.userInput.endDragY = mouseEvent.getY();
 
         //(this.userInput.startDrag != null && this.userInput.endDrag != null)
             //this.userInput.isMouseDragged = true;
@@ -52,7 +55,9 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
     public void mouseDragged(MouseEvent mouseEvent)
     {
         this.userInput.isMouseDragged = true;
-        this.userInput.endDrag = mouseEvent.getPoint();
+        this.userInput.endDragX = mouseEvent.getX();
+        this.userInput.endDragY = mouseEvent.getY();
+
     }
 
     @Override

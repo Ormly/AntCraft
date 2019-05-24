@@ -72,10 +72,9 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         int width = hudObject.getWidth();
         int height = hudObject.getHeight();
 
-        graphics.setColor(Color.RED);
-        //graphics.drawRect(xPos,yPos,width,height);
-
-        graphics.fillRect(xPos,yPos,width,height);
+        graphics.setColor(Color.GREEN);
+        graphics.drawRect(xPos,yPos,width,height);
+        //graphics.fillRect(xPos,yPos,width,height);
     }
 
     public void swapBuffers() { this.getGraphics().drawImage(this.imageBuffer, 0, 0, this); }

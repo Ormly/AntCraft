@@ -165,7 +165,7 @@ public class GameWorld
 
             if(mouseCode == MouseEvent.BUTTON1)
             {
-                GameObject object = getClickedObject(mouseX,mouseY);
+                GameObject object = getClickSelectedObject(mouseX, mouseY);
                 gameObjectsSelected.clear();
                 if(object != null)
                 {
@@ -202,17 +202,13 @@ public class GameWorld
 
         if(mouseDragged)
         {
-            //TODO get rid of points
-            Point startDrag = this.userInput.getStartDrag();
-            Point endDrag = this.userInput.getEndDrag();
+            int width = Math.abs(userInput.getEndDragX() - userInput.getStartDragX());
+            int height = Math.abs(userInput.getEndDragY() - userInput.getStartDragY());
 
-            int width = Math.abs(endDrag.x - startDrag.x);
-            int height = Math.abs(endDrag.y - startDrag.y);
-
-            int endX = endDrag.x;
-            int endY = endDrag.y;
-            int startX = startDrag.x;
-            int startY = startDrag.y;
+            int endX = this.userInput.getEndDragX();
+            int endY = this.userInput.getEndDragY();
+            int startX = this.userInput.getStartDragX();
+            int startY = this.userInput.getStartDragY();
 
             int originX;
             int originY;
@@ -222,7 +218,7 @@ public class GameWorld
                 originX = startX;
                 originY = startY;
             }
-            else if(endY < startY && endX > startX)
+            else if(endX > startX && endY < startY)
             {
                 originX = startX;
                 originY = endY;
@@ -244,7 +240,7 @@ public class GameWorld
         userInput.clear();
     }
 
-    private GameObject getClickedObject(int mouseX, int mouseY)
+    private GameObject getClickSelectedObject(int mouseX, int mouseY)
     {
         double distanceX;
         double distanceY;
@@ -261,6 +257,8 @@ public class GameWorld
         }
         return null;
     }
+
+    //private ArrayList<GameObject> getAreaSelectedObjects()
 
     private void initializeTimeline()
     {
