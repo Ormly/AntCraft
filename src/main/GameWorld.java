@@ -59,6 +59,7 @@ public class GameWorld
         gameObjects.add(nest);
 
         gameObjects.add(new Ant(100,400));
+        gameObjects.add(new Ant(100,450));
     }
 
     public ArrayList<GameObject> getGameObjects()
@@ -233,8 +234,14 @@ public class GameWorld
                 originX = endX;
                 originY = endY;
             }
-
             this.mouseAreaSelection.update(originX,originY,width,height);
+
+            ArrayList<GameObject> areaSelectedObjects = getAreaSelectedObjects(startX,startY,endX,endY);
+            gameObjectsSelected.clear();
+
+            if(!areaSelectedObjects.isEmpty())
+                gameObjectsSelected.addAll(areaSelectedObjects);
+
         } else this.mouseAreaSelection.setIsVisible(false);
 
         userInput.clear();
@@ -258,7 +265,20 @@ public class GameWorld
         return null;
     }
 
-    //private ArrayList<GameObject> getAreaSelectedObjects()
+    private ArrayList<GameObject> getAreaSelectedObjects(int startX, int startY, int endX, int endY)
+    {
+        double objectX;
+        double objectY;
+        ArrayList<GameObject> areaSelectedObjects = new ArrayList<>();
+        for(GameObject gameObject : gameObjects)
+        {
+            objectX = gameObject.getXPos();
+            objectY = gameObject.getYPos();
+            if(objectX >= startX && objectX <= endX && objectY >= startY && objectY <= endY)
+                areaSelectedObjects.add(gameObject);
+        }
+        return areaSelectedObjects;
+    }
 
     private void initializeTimeline()
     {
