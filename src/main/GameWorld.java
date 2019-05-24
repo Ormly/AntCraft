@@ -148,10 +148,10 @@ public class GameWorld
     {
         userInput = inputSystem.getUserInput();
 
-        int mouseCode;
-        int keyCode;
-        int mouseX;
-        int mouseY;
+        int mouseCode = userInput.getMousePressedCode();
+        int keyCode = userInput.getKeyPressedCode();
+        int mouseX = userInput.getMousePressedX();
+        int mouseY = userInput.getMousePressedY();
 
         boolean mousePressed = userInput.isMousePressed();
         boolean mouseHeldDown = userInput.isMouseHeldDown();
@@ -160,10 +160,6 @@ public class GameWorld
 
         if(mousePressed)
         {
-            mouseX = userInput.getMousePressedX();
-            mouseY = userInput.getMousePressedY();
-            mouseCode = userInput.getMousePressedCode();
-
             if(mouseCode == MouseEvent.BUTTON1)
             {
                 GameObject object = getClickSelectedObject(mouseX, mouseY);
@@ -201,7 +197,8 @@ public class GameWorld
             }
         }
 
-        if(mouseDragged)
+        mouseCode = userInput.getMousePressedCode();
+        if(mouseDragged && (mouseCode != MouseEvent.BUTTON3))
         {
             int width = Math.abs(userInput.getEndDragX() - userInput.getStartDragX());
             int height = Math.abs(userInput.getEndDragY() - userInput.getStartDragY());
