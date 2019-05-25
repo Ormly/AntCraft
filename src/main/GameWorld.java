@@ -158,6 +158,8 @@ public class GameWorld
         boolean keyPressed = userInput.isKeyPressed();
         boolean mouseDragged = userInput.isMouseDragged();
 
+        boolean nestSelected;
+
         if(mousePressed)
         {
             if(mouseCode == MouseEvent.BUTTON1)
@@ -197,43 +199,58 @@ public class GameWorld
             }
         }
 
-        mouseCode = userInput.getMousePressedCode();
         if(mouseDragged && (mouseCode != MouseEvent.BUTTON3))
         {
-            int width = Math.abs(userInput.getEndDragX() - userInput.getStartDragX());
-            int height = Math.abs(userInput.getEndDragY() - userInput.getStartDragY());
-
             int endX = this.userInput.getEndDragX();
             int endY = this.userInput.getEndDragY();
             int startX = this.userInput.getStartDragX();
             int startY = this.userInput.getStartDragY();
 
-            int originX;
-            int originY;
+            int width = Math.abs(endX - startX);
+            int height = Math.abs(endY - startY);
 
-            if(endX >= startX && endY >= startY)
+            int topLeftX;
+            int topLeftY;
+            int bottomRightX;
+            int bottomRightY;
+
+            if(endX >= startX)
             {
-                originX = startX;
-                originY = startY;
-            }
-            else if(endX > startX && endY < startY)
-            {
-                originX = startX;
-                originY = endY;
-            }
-            else if(endX < startX && endY > startY)
-            {
-                originX = endX;
-                originY = startY;
+                if(endY >= startY)
+                {
+                    topLeftX = startX;
+                    topLeftY = startY;
+                    bottomRightX = endX;
+                    bottomRightY = endY;
+                }
+                else
+                {
+                    topLeftX = startX;
+                    topLeftY = endY;
+                    bottomRightX = endX;
+                    bottomRightY = endY + height;
+                }
             }
             else
             {
-                originX = endX;
-                originY = endY;
+                if(endY > startY)
+                {
+                    topLeftX = endX;
+                    topLeftY = startY;
+                    bottomRightX = endX + width;
+                    bottomRightY = endY;
+                }
+                else
+                {
+                    topLeftX = endX;
+                    topLeftY = endY;
+                    bottomRightX = endX + width;
+                    bottomRightY = endY + height;
+                }
             }
-            this.mouseAreaSelection.update(originX,originY,width,height);
+            this.mouseAreaSelection.update(topLeftX,topLeftY,width,height);
 
-            ArrayList<GameObject> areaSelectedObjects = getAreaSelectedObjects(startX,startY,endX,endY);
+            ArrayList<GameObject> areaSelectedObjects = getAreaSelectedObjects(topLeftX,topLeftY,bottomRightX,bottomRightY);
             gameObjectsSelected.clear();
 
             if(!areaSelectedObjects.isEmpty())
@@ -262,7 +279,7 @@ public class GameWorld
         return null;
     }
 
-    private ArrayList<GameObject> getAreaSelectedObjects(int startX, int startY, int endX, int endY)
+    private ArrayList<GameObject> getAreaSelectedObjects(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
     {
         double objectX;
         double objectY;
@@ -271,7 +288,7 @@ public class GameWorld
         {
             objectX = gameObject.getXPos();
             objectY = gameObject.getYPos();
-            if(objectX >= startX && objectX <= endX && objectY >= startY && objectY <= endY)
+            if(objectX >= topLeftX && objectX <= bottomRightX && objectY >= topLeftY && objectY <= bottomRightY)
                 areaSelectedObjects.add(gameObject);
         }
         return areaSelectedObjects;
