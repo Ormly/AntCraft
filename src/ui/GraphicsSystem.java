@@ -9,6 +9,7 @@ import utilities.logging.Logging;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class GraphicsSystem extends JPanel implements IGraphicsSystem
 {
@@ -35,28 +36,28 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         this.addKeyListener(inputSystem);
     }
 
-    public void draw(GameObject object)
+    public void draw(GameObject gameObject)
     {
-        int x = (int) object.getXPos() - object.getRadius();
-        int y = (int) object.getYPos() - object.getRadius();
-        int r = object.getRadius() * 2;
+        int xPos = (int) gameObject.getXPos() - gameObject.getRadius();
+        int yPos = (int) gameObject.getYPos() - gameObject.getRadius();
+        int radius = gameObject.getRadius() * 2;
 
-        graphics.setColor(object.getColor());
-        graphics.fillOval(x, y, r, r);
+        graphics.setColor(gameObject.getColor());
+        graphics.fillOval(xPos, yPos, radius, radius);
         graphics.setColor(Color.BLACK);
-        graphics.drawOval(x, y, r, r);
+        graphics.drawOval(xPos, yPos, radius, radius);
 
         //healthbar
         graphics.setColor(Color.GREEN);
 
-        double health = (object.getHealthStatus() / object.getMaxHealth()) * 100.0;
+        double health = (gameObject.getHealthStatus() / gameObject.getMaxHealth()) * 100.0;
         double barLength = 100.0;
 
-        y = (int) object.getYPos() - object.getRadius() - 15;
-        x = (int) (object.getXPos() - (barLength/2.0));
+        yPos = (int) gameObject.getYPos() - gameObject.getRadius() - 15;
+        xPos = (int) (gameObject.getXPos() - (barLength/2.0));
 
-        graphics.drawRect(x,y,(int)barLength,10);
-        graphics.fillRect(x,y,(int)health,10);
+        graphics.drawRect(xPos,yPos,(int)barLength,10);
+        graphics.fillRect(xPos,yPos,(int)health,10);
     }
 
     public void clear()
@@ -74,6 +75,29 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
 
         graphics.setColor(Color.MAGENTA);
         graphics.drawRect(xPos,yPos,width,height);
+    }
+
+    public void draw(ArrayList<GameObject> gameObjectsSelected)
+    {
+        int xPos;
+        int yPos;
+        int radius;
+        int widthAndHeight;
+        int ringThickness = 7;
+        graphics.setColor(Color.MAGENTA);
+
+        for(GameObject gameObject : gameObjectsSelected)
+        {
+            //TODO selection rings right now is just some rings stacked, not sure if solid ring is possible, maybe figure that out later
+            for(int i = 2; i < ringThickness; ++i)
+            {
+                radius = gameObject.getRadius() + i;
+                xPos = (int) gameObject.getXPos() - radius;
+                yPos = (int) gameObject.getYPos() - radius;
+                widthAndHeight = gameObject.getRadius() * 2;
+                graphics.drawOval(xPos, yPos, widthAndHeight + i * 2, widthAndHeight + i * 2);
+            }
+        }
     }
 
     public void swapBuffers() { this.getGraphics().drawImage(this.imageBuffer, 0, 0, this); }

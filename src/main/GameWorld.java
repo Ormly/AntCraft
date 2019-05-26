@@ -136,6 +136,8 @@ public class GameWorld
         if(mouseAreaSelection.isVisible())
             graphicsSystem.draw(mouseAreaSelection);
 
+        graphicsSystem.draw(gameObjectsSelected);
+
         graphicsSystem.draw(nest);
 
         graphicsSystem.swapBuffers();
