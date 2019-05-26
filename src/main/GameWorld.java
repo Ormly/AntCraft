@@ -12,6 +12,7 @@ import utilities.logging.Logging;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameWorld
 {
@@ -157,7 +158,8 @@ public class GameWorld
         boolean keyPressed = userInput.isKeyPressed();
         boolean mouseDragged = userInput.isMouseDragged();
 
-        boolean nestSelected;
+        boolean nestSelected = false;
+        boolean antSelected = false;
 
         if(mousePressed)
         {
@@ -174,13 +176,26 @@ public class GameWorld
                     logger.debug("Background clicked.");
             }
 
+            //TODO check if this is dumb/needs refactoring
             if(mouseCode == MouseEvent.BUTTON3)
             {
                 if(!gameObjectsSelected.isEmpty())
                 {
                     for(GameObject gameObject : gameObjectsSelected)
                     {
-                        if(gameObject instanceof Nest)
+                        if(gameObject instanceof Nest) nestSelected = true;
+                        if(gameObject instanceof Ant) antSelected = true;
+                    }
+
+                    if(nestSelected && antSelected)
+                        gameObjectsSelected.remove(nest);
+
+                    for(GameObject gameObject : gameObjectsSelected)
+                    {
+                        if(gameObject instanceof Ant)
+                            gameObject.setDestination(mouseX, mouseY);
+
+                        else if(gameObject instanceof Nest)
                         {
                             if(numOfAnts > 0)
                             {
@@ -190,8 +205,6 @@ public class GameWorld
                                 numOfAnts--;
                             }
                         }
-                        else if(gameObject instanceof Ant)
-                            gameObject.setDestination(mouseX, mouseY);
                     }
                 }
             }

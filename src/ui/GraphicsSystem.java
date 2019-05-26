@@ -1,7 +1,6 @@
 package ui;
 
-import gameobjects.GameObject;
-import gameobjects.HUDObject;
+import gameobjects.*;
 import interfaces.IGraphicsSystem;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
@@ -88,14 +87,17 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
 
         for(GameObject gameObject : gameObjectsSelected)
         {
-            //TODO selection rings right now is just some rings stacked, not sure if solid ring is possible, maybe figure that out later
-            for(int i = 2; i < ringThickness; ++i)
+            if(!(gameObject instanceof Bug))
             {
-                radius = gameObject.getRadius() + i;
-                xPos = (int) gameObject.getXPos() - radius;
-                yPos = (int) gameObject.getYPos() - radius;
-                widthAndHeight = gameObject.getRadius() * 2;
-                graphics.drawOval(xPos, yPos, widthAndHeight + i * 2, widthAndHeight + i * 2);
+                //TODO selection rings right now is just some rings stacked, not sure if solid ring is possible, maybe figure that out later
+                for(int i = 2; i < ringThickness; ++i)
+                {
+                    radius = gameObject.getRadius() + i;
+                    xPos = (int) gameObject.getXPos() - radius;
+                    yPos = (int) gameObject.getYPos() - radius;
+                    widthAndHeight = gameObject.getRadius() * 2;
+                    graphics.drawOval(xPos, yPos, widthAndHeight + i * 2, widthAndHeight + i * 2);
+                }
             }
         }
     }
