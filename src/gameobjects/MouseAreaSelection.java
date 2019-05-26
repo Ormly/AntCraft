@@ -9,11 +9,7 @@ public class MouseAreaSelection extends HUDObject
 
     public MouseAreaSelection(int xPos, int yPos, int width, int height)
     {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.width = width;
-        this.height = height;
-        this.isVisible = false;
+        this.update(xPos,yPos,width,height);
     }
 
     public void update(int xPos, int yPos, int width, int height)

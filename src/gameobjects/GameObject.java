@@ -22,9 +22,11 @@ public abstract class GameObject
 
     protected double xPos;
     protected double yPos;
-    protected int radius;
     protected double angle;
     protected double speed;
+    protected int radius;
+
+    protected Color color;
 
     protected double maxHealth;
     protected double healthStatus;
@@ -32,9 +34,6 @@ public abstract class GameObject
     protected Timer attackTimer;
     protected State state;
     protected GameObject opponent = null;
-
-
-    protected Color color;
 
     protected double destinationXPos;
     protected double destinationYPos;

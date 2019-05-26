@@ -11,7 +11,6 @@ public class UserInput
     protected int mouseMovedX;
     protected int mouseMovedY;
 
-    //implemented with codes instead of characters, as it is the more robust approach
     protected int keyPressedCode;
 
     protected boolean isMousePressed;

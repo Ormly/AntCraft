@@ -27,7 +27,6 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
     {
         this.userInput.isMousePressed = true;
         this.userInput.isMouseHeldDown = true;
-        //this.userInput.isMouseDragged = true;
 
         this.userInput.mousePressedX = mouseEvent.getX();
         this.userInput.mousePressedY = mouseEvent.getY();
@@ -46,9 +45,6 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
         this.userInput.isMouseDragged = false;
         this.userInput.endDragX = mouseEvent.getX();
         this.userInput.endDragY = mouseEvent.getY();
-
-        //(this.userInput.startDrag != null && this.userInput.endDrag != null)
-            //this.userInput.isMouseDragged = true;
     }
 
     @Override
@@ -69,22 +65,10 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
 
 
     @Override
-    public void keyTyped(KeyEvent keyEvent)
-    {
-        /* KEY TESTS
-        System.out.println("entered KeyTyped");
-        displayInfo(keyEvent);
-        */
-    }
+    public void keyTyped(KeyEvent keyEvent) {}
 
     @Override
-    public void keyReleased(KeyEvent keyEvent)
-    {
-        /* KEY TESTS
-        System.out.println("entered KeyReleased");
-        displayInfo(keyEvent);
-        */
-    }
+    public void keyReleased(KeyEvent keyEvent) {}
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {}
@@ -94,20 +78,4 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {}
-
-    /* KEY TESTS
-    private void displayInfo(KeyEvent keyEvent)
-    {
-        if(keyEvent.getID() == KeyEvent.KEY_TYPED)
-        {
-            char c = keyEvent.getKeyChar();
-            System.out.println("Typed char ["+c+"]");
-        }
-        else
-        {
-            int code = keyEvent.getKeyCode();
-            System.out.println("Keycode "+code+"("+keyEvent.getKeyText(code)+")");
-        }
-    }
-    */
 }

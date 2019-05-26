@@ -1,6 +1,6 @@
 package gameobjects;
 
-public class HUDObject
+public abstract class HUDObject
 {
     protected int xPos;
     protected int yPos;

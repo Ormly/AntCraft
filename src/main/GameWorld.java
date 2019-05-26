@@ -57,9 +57,6 @@ public class GameWorld
 
         nest = new Nest(400, 300, 50);
         gameObjects.add(nest);
-
-        gameObjects.add(new Ant(100,400));
-        gameObjects.add(new Ant(100,450));
     }
 
     public ArrayList<GameObject> getGameObjects()

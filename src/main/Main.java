@@ -11,7 +11,6 @@ public class Main
 {
     public static void main(String[] args)
     {
-//        Logging.setLoggerFactory(new FileLoggerFactory(Constants.LOG_FILE_PATH));
         Logging.setLoggerFactory(new ConsoleLoggerFactory());
         AbstractLogger logger = Logging.getLogger(Main.class.getName());
 
