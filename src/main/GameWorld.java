@@ -170,17 +170,6 @@ public class GameWorld
                 }
                 else
                     logger.debug("Background clicked.");
-
-                /*
-                //TODO make numOfAnts make sense
-                if(numOfAnts > 0)
-                {
-                    Ant ant = new Ant(Constants.NEST_X_POS, Constants.NEST_Y_POS);
-                    ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
-                    gameObjectsToCreate.add(ant);
-                    numOfAnts--;
-                }
-                */
             }
 
             if(mouseCode == MouseEvent.BUTTON3)
@@ -189,7 +178,17 @@ public class GameWorld
                 {
                     for(GameObject gameObject : gameObjectsSelected)
                     {
-                        if(gameObject instanceof Ant)
+                        if(gameObject instanceof Nest)
+                        {
+                            if(numOfAnts > 0)
+                            {
+                                Ant ant = new Ant();
+                                ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
+                                gameObjectsToCreate.add(ant);
+                                numOfAnts--;
+                            }
+                        }
+                        else if(gameObject instanceof Ant)
                             gameObject.setDestination(mouseX, mouseY);
                     }
                 }
