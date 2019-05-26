@@ -2,6 +2,7 @@ package ui;
 
 import interfaces.IInputSystem;
 
+import java.awt.*;
 import java.awt.event.*;
 
 public class InputSystem implements IInputSystem, KeyListener, MouseListener, MouseMotionListener
@@ -17,65 +18,57 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
     @Override
     public void keyPressed(KeyEvent keyEvent)
     {
-        this.userInput.setIsKeyPressed(true);
-
-        this.userInput.setKeyPressedCode(keyEvent.getKeyCode());
-
-        /* KEY TESTS
-        System.out.println("entered KeyPressed");
-        displayInfo(keyEvent);
-        */
+        this.userInput.isKeyPressed = true;
+        this.userInput.keyPressedCode = keyEvent.getKeyCode();
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent)
     {
-        this.userInput.setMousePressed(true);
-        this.userInput.setMouseHeldDown(true);
+        this.userInput.isMousePressed = true;
+        this.userInput.isMouseHeldDown = true;
 
-        this.userInput.setMousePressedX(mouseEvent.getX());
-        this.userInput.setMousePressedY(mouseEvent.getY());
+        this.userInput.mousePressedX = mouseEvent.getX();
+        this.userInput.mousePressedY = mouseEvent.getY();
 
-        this.userInput.setMousePressedCode(mouseEvent.getButton());
+        this.userInput.mousePressedCode = mouseEvent.getButton();
+
+        this.userInput.startDragX = mouseEvent.getX();
+        this.userInput.startDragY = mouseEvent.getY();
+        this.userInput.endDragX = this.userInput.startDragX;
+        this.userInput.endDragY = this.userInput.startDragY;
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent)
     {
-        this.userInput.setMouseHeldDown(false);
+        this.userInput.isMouseDragged = false;
+        this.userInput.endDragX = mouseEvent.getX();
+        this.userInput.endDragY = mouseEvent.getY();
     }
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent)
     {
-        /*TODO figure out how this works for purpose of selecting multiple ants*/
+        this.userInput.isMouseDragged = true;
+        this.userInput.endDragX = mouseEvent.getX();
+        this.userInput.endDragY = mouseEvent.getY();
+
     }
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent)
     {
-        this.userInput.setMouseMovedX(mouseEvent.getX());
-        this.userInput.setMouseMovedY(mouseEvent.getY());
+        this.userInput.mouseMovedX = mouseEvent.getX();
+        this.userInput.mouseMovedY = mouseEvent.getY();
     }
 
 
     @Override
-    public void keyTyped(KeyEvent keyEvent)
-    {
-        /* KEY TESTS
-        System.out.println("entered KeyTyped");
-        displayInfo(keyEvent);
-        */
-    }
+    public void keyTyped(KeyEvent keyEvent) {}
 
     @Override
-    public void keyReleased(KeyEvent keyEvent)
-    {
-        /* KEY TESTS
-        System.out.println("entered KeyReleased");
-        displayInfo(keyEvent);
-        */
-    }
+    public void keyReleased(KeyEvent keyEvent) {}
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {}
@@ -85,20 +78,4 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {}
-
-    /* KEY TESTS
-    private void displayInfo(KeyEvent keyEvent)
-    {
-        if(keyEvent.getID() == KeyEvent.KEY_TYPED)
-        {
-            char c = keyEvent.getKeyChar();
-            System.out.println("Typed char ["+c+"]");
-        }
-        else
-        {
-            int code = keyEvent.getKeyCode();
-            System.out.println("Keycode "+code+"("+keyEvent.getKeyText(code)+")");
-        }
-    }
-    */
 }

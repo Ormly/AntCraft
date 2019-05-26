@@ -22,9 +22,11 @@ public abstract class GameObject
 
     protected double xPos;
     protected double yPos;
-    protected int radius;
     protected double angle;
     protected double speed;
+    protected int radius;
+
+    protected Color color;
 
     protected double maxHealth;
     protected double healthStatus;
@@ -32,9 +34,6 @@ public abstract class GameObject
     protected Timer attackTimer;
     protected State state;
     protected GameObject opponent = null;
-
-
-    protected Color color;
 
     protected double destinationXPos;
     protected double destinationYPos;
@@ -45,7 +44,7 @@ public abstract class GameObject
 
     protected boolean isMoving;
     protected boolean isVulnerable;
-    protected boolean isDead = false;
+    protected boolean isDead;
 
     public GameObject(double xPos, double yPos, double angle, double speed, int radius, Color color)
     {
@@ -58,6 +57,7 @@ public abstract class GameObject
 
         isMoving = false;
         isVulnerable = false;
+        isDead = false;
     }
 
     public void setDestination(double destinationXPos, double destinationYPos)

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 public class Ant extends GameObject
 {
     private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
-    public Ant(double xPos, double yPos)
+    public Ant()
     {
-        super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 100, 15, new Color(128, 0, 0));
+        super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 100.0, 15, new Color(128, 0, 0));
 
         this.healthStatus = Constants.MAX_ANT_HEALTH;
         this.maxHealth = Constants.MAX_ANT_HEALTH;
@@ -38,8 +38,6 @@ public class Ant extends GameObject
                 logger.debug("Ant collided with a bug!");
 
                 this.isMoving = false;
-//                this.xPos = this.previousXPos;
-//                this.yPos = this.previousYPos;
 
                 this.opponent = (Bug)object;
                 this.state = State.FIGHTING;

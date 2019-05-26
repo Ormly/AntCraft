@@ -1,10 +1,7 @@
 package main;
 
 import core.PhysicsSystem;
-import gameobjects.Ant;
-import gameobjects.Bug;
-import gameobjects.GameObject;
-import gameobjects.Nest;
+import gameobjects.*;
 import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
@@ -12,6 +9,7 @@ import utilities.*;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -23,19 +21,27 @@ public class GameWorld
     private InputSystem inputSystem;
     private UserInput userInput;
 
-    private boolean isRunning;
     private long timestampLast;
     private double frameDuration;
+
     private Timeline timeline;
+
+    private boolean isRunning;
+
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
+    private ArrayList<GameObject> gameObjectsSelected;
+    private MouseAreaSelection mouseAreaSelection;
+
     private Nest nest;
+
     private int numOfAnts = 6;
 
     public GameWorld()
     {
         this.gameObjects = new ArrayList<>();
         this.gameObjectsToCreate = new ArrayList<>();
+        this.gameObjectsSelected = new ArrayList<>();
     }
 
     public void init()
@@ -44,6 +50,8 @@ public class GameWorld
         GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
         this.nest = new Nest(400, 300, 50);
+
+        this.mouseAreaSelection = new MouseAreaSelection();
 
         this.initializeTimeline();
 
@@ -125,6 +133,9 @@ public class GameWorld
         for(GameObject gameObject : gameObjects)
             graphicsSystem.draw(gameObject);
 
+        if(mouseAreaSelection.isVisible())
+            graphicsSystem.draw(mouseAreaSelection);
+
         graphicsSystem.draw(nest);
 
         graphicsSystem.swapBuffers();
@@ -134,18 +145,33 @@ public class GameWorld
     {
         userInput = inputSystem.getUserInput();
 
-        int mouseCode;
-        int keyCode;
+        int mouseCode = userInput.getMousePressedCode();
+        int keyCode = userInput.getKeyPressedCode();
+        int mouseX = userInput.getMousePressedX();
+        int mouseY = userInput.getMousePressedY();
 
         boolean mousePressed = userInput.isMousePressed();
         boolean mouseHeldDown = userInput.isMouseHeldDown();
         boolean keyPressed = userInput.isKeyPressed();
+        boolean mouseDragged = userInput.isMouseDragged();
+
+        boolean nestSelected;
 
         if(mousePressed)
         {
-            mouseCode = userInput.getMousePressedCode();
             if(mouseCode == MouseEvent.BUTTON1)
             {
+                GameObject object = getClickSelectedObject(mouseX, mouseY);
+                gameObjectsSelected.clear();
+                if(object != null)
+                {
+                    logger.debug("Object at ("+mouseX+"|"+mouseY+") clicked.");
+                    gameObjectsSelected.add(object);
+                }
+                else
+                    logger.debug("Background clicked.");
+
+                /*
                 //TODO make numOfAnts make sense
                 if(numOfAnts > 0)
                 {
@@ -154,10 +180,115 @@ public class GameWorld
                     gameObjectsToCreate.add(ant);
                     numOfAnts--;
                 }
+                */
+            }
+
+            if(mouseCode == MouseEvent.BUTTON3)
+            {
+                if(!gameObjectsSelected.isEmpty())
+                {
+                    for(GameObject gameObject : gameObjectsSelected)
+                    {
+                        if(gameObject instanceof Ant)
+                            gameObject.setDestination(mouseX, mouseY);
+                    }
+                }
             }
         }
 
+        if(mouseDragged && (mouseCode != MouseEvent.BUTTON3))
+        {
+            int endX = this.userInput.getEndDragX();
+            int endY = this.userInput.getEndDragY();
+            int startX = this.userInput.getStartDragX();
+            int startY = this.userInput.getStartDragY();
+
+            int width = Math.abs(endX - startX);
+            int height = Math.abs(endY - startY);
+
+            int topLeftX;
+            int topLeftY;
+            int bottomRightX;
+            int bottomRightY;
+
+            if(endX >= startX)
+            {
+                if(endY >= startY)
+                {
+                    topLeftX = startX;
+                    topLeftY = startY;
+                    bottomRightX = endX;
+                    bottomRightY = endY;
+                }
+                else
+                {
+                    topLeftX = startX;
+                    topLeftY = endY;
+                    bottomRightX = endX;
+                    bottomRightY = endY + height;
+                }
+            }
+            else
+            {
+                if(endY > startY)
+                {
+                    topLeftX = endX;
+                    topLeftY = startY;
+                    bottomRightX = endX + width;
+                    bottomRightY = endY;
+                }
+                else
+                {
+                    topLeftX = endX;
+                    topLeftY = endY;
+                    bottomRightX = endX + width;
+                    bottomRightY = endY + height;
+                }
+            }
+            this.mouseAreaSelection.update(topLeftX,topLeftY,width,height);
+
+            ArrayList<GameObject> areaSelectedObjects = getAreaSelectedObjects(topLeftX,topLeftY,bottomRightX,bottomRightY);
+            gameObjectsSelected.clear();
+
+            if(!areaSelectedObjects.isEmpty())
+                gameObjectsSelected.addAll(areaSelectedObjects);
+
+        } else this.mouseAreaSelection.setIsVisible(false);
+
         userInput.clear();
+    }
+
+    private GameObject getClickSelectedObject(int mouseX, int mouseY)
+    {
+        double distanceX;
+        double distanceY;
+        double radius;
+
+        for(GameObject gameObject : gameObjects)
+        {
+            distanceX = Math.abs(mouseX - gameObject.getXPos());
+            distanceY = Math.abs(mouseY - gameObject.getYPos());
+            radius = gameObject.getRadius();
+
+            if((distanceX + distanceY <= radius) || (Math.pow(distanceX,2) + Math.pow(distanceY,2)) <= Math.pow(radius,2))
+                return gameObject;
+        }
+        return null;
+    }
+
+    private ArrayList<GameObject> getAreaSelectedObjects(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
+    {
+        double objectX;
+        double objectY;
+        ArrayList<GameObject> areaSelectedObjects = new ArrayList<>();
+        for(GameObject gameObject : gameObjects)
+        {
+            objectX = gameObject.getXPos();
+            objectY = gameObject.getYPos();
+            if(objectX >= topLeftX && objectX <= bottomRightX && objectY >= topLeftY && objectY <= bottomRightY)
+                areaSelectedObjects.add(gameObject);
+        }
+        return areaSelectedObjects;
     }
 
     private void initializeTimeline()

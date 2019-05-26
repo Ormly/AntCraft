@@ -1,22 +1,33 @@
 package ui;
 
+import java.awt.*;
+
 public class UserInput
 {
-    private int mousePressedX;
-    private int mousePressedY;
-    private int mousePressedCode;
+    protected int mousePressedX;
+    protected int mousePressedY;
+    protected int mousePressedCode;
 
-    private int mouseMovedX;
-    private int mouseMovedY;
+    protected int mouseMovedX;
+    protected int mouseMovedY;
 
-    //implemented with codes instead of characters, as it is the more robust approach
-    private int keyPressedCode;
+    protected int keyPressedCode;
 
-    private boolean isMousePressed;
-    private boolean isKeyPressed;
-    private boolean isMouseHeldDown;
+    protected boolean isMousePressed;
+    protected boolean isKeyPressed;
+    protected boolean isMouseHeldDown;
+    protected boolean isMouseDragged;
 
-    public UserInput() { this.clear(); }
+    protected Point endDrag, startDrag;
+    protected int endDragX;
+    protected int endDragY;
+    protected int startDragX;
+    protected int startDragY;
+
+    public UserInput()
+    {
+        this.clear();
+    }
 
     public void clear()
     {
@@ -24,31 +35,60 @@ public class UserInput
         this.isMousePressed = false;
     }
 
-    public int getMousePressedX() { return mousePressedX; }
-    public void setMousePressedX(int mousePressedX) { this.mousePressedX = mousePressedX; }
+    public int getMousePressedX()
+    {
+        return mousePressedX;
+    }
 
-    public int getMousePressedY() { return mousePressedY; }
-    public void setMousePressedY(int mousePressedY) { this.mousePressedY = mousePressedY; }
+    public int getEndDragX()
+    {
+        return endDragX;
+    }
 
-    public int getMouseMovedX() { return mouseMovedX; }
-    public void setMouseMovedX(int mouseMovedX) { this.mouseMovedX = mouseMovedX; }
+    public int getEndDragY()
+    {
+        return endDragY;
+    }
 
-    public int getMouseMovedY() { return mouseMovedY; }
-    public void setMouseMovedY(int mouseMovedY) { this.mouseMovedY = mouseMovedY; }
+    public int getStartDragX()
+    {
+        return startDragX;
+    }
 
-    public int getMousePressedCode() { return mousePressedCode; }
-    public void setMousePressedCode(int mousePressedCode) { this.mousePressedCode = mousePressedCode; }
+    public int getStartDragY()
+    {
+        return startDragY;
+    }
 
-    public boolean isMousePressed() { return isMousePressed; }
-    public void setMousePressed(boolean isMousePressed) { this.isMousePressed = isMousePressed; }
+    public int getMousePressedY()
+    {
+        return mousePressedY;
+    }
 
-    public boolean isMouseHeldDown() { return this.isMouseHeldDown; }
-    public void setMouseHeldDown(boolean isMouseHeldDown) { this.isMouseHeldDown = isMouseHeldDown; }
+    public int getMousePressedCode()
+    {
+        return mousePressedCode;
+    }
+    public int getKeyPressedCode()
+    {
+        return this.keyPressedCode;
+    }
 
-    public int getKeyPressedCode() { return this.keyPressedCode; }
-    public void setKeyPressedCode(int keyPressedCode) { this.keyPressedCode = keyPressedCode; }
-
-    public boolean isKeyPressed() { return isKeyPressed; }
-    public void setIsKeyPressed(boolean isKeyPressed) { this.isKeyPressed = isKeyPressed; }
+    public boolean isMousePressed()
+    {
+        return isMousePressed;
+    }
+    public boolean isMouseHeldDown()
+    {
+        return this.isMouseHeldDown;
+    }
+    public boolean isKeyPressed()
+    {
+        return isKeyPressed;
+    }
+    public boolean isMouseDragged()
+    {
+        return isMouseDragged;
+    }
 }
 
