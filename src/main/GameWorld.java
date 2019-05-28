@@ -134,12 +134,12 @@ public class GameWorld
         for(GameObject gameObject : gameObjects)
             graphicsSystem.draw(gameObject);
 
-        if(mouseAreaSelection.isVisible())
-            graphicsSystem.draw(mouseAreaSelection);
-
         graphicsSystem.draw(gameObjectsSelected);
 
         graphicsSystem.draw(nest);
+
+        if(mouseAreaSelection.isVisible())
+            graphicsSystem.draw(mouseAreaSelection);
 
         graphicsSystem.swapBuffers();
     }
@@ -166,14 +166,12 @@ public class GameWorld
             if(mouseCode == MouseEvent.BUTTON1)
             {
                 GameObject object = getClickSelectedObject(mouseX, mouseY);
+
                 gameObjectsSelected.clear();
+
                 if(object != null)
-                {
-                    logger.debug("Object at ("+mouseX+"|"+mouseY+") clicked.");
                     gameObjectsSelected.add(object);
-                }
-                else
-                    logger.debug("Background clicked.");
+
             }
 
             //TODO check if this is dumb/needs refactoring
@@ -203,14 +201,14 @@ public class GameWorld
                                 ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
                                 gameObjectsToCreate.add(ant);
                                 numOfAnts--;
-                            }
+                            } //TODO else prompt no more ants in nest
                         }
                     }
                 }
             }
         }
 
-        if(mouseDragged && (mouseCode != MouseEvent.BUTTON3))
+        if(mouseDragged && (mouseCode == MouseEvent.BUTTON1))
         {
             int endX = this.userInput.getEndDragX();
             int endY = this.userInput.getEndDragY();
@@ -261,11 +259,8 @@ public class GameWorld
             }
             this.mouseAreaSelection.update(topLeftX,topLeftY,width,height);
 
-            ArrayList<GameObject> areaSelectedObjects = getAreaSelectedObjects(topLeftX,topLeftY,bottomRightX,bottomRightY);
             gameObjectsSelected.clear();
-
-            if(!areaSelectedObjects.isEmpty())
-                gameObjectsSelected.addAll(areaSelectedObjects);
+            gameObjectsSelected.addAll(getAreaSelectedObjects(topLeftX,topLeftY,bottomRightX,bottomRightY));
 
         } else this.mouseAreaSelection.setIsVisible(false);
 
@@ -295,10 +290,12 @@ public class GameWorld
         double objectX;
         double objectY;
         ArrayList<GameObject> areaSelectedObjects = new ArrayList<>();
+
         for(GameObject gameObject : gameObjects)
         {
             objectX = gameObject.getXPos();
             objectY = gameObject.getYPos();
+
             if(objectX >= topLeftX && objectX <= bottomRightX && objectY >= topLeftY && objectY <= bottomRightY)
                 areaSelectedObjects.add(gameObject);
         }

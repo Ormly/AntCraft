@@ -80,7 +80,8 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
     {
         int xPos;
         int yPos;
-        int radius;
+        int ringRadius;
+        int objectRadius;
         int widthAndHeight;
         int ringThickness = 7;
         graphics.setColor(Color.MAGENTA);
@@ -92,10 +93,11 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
                 //TODO selection rings right now is just some rings stacked, not sure if solid ring is possible, maybe figure that out later
                 for(int i = 2; i < ringThickness; ++i)
                 {
-                    radius = gameObject.getRadius() + i;
-                    xPos = (int) gameObject.getXPos() - radius;
-                    yPos = (int) gameObject.getYPos() - radius;
-                    widthAndHeight = gameObject.getRadius() * 2;
+                    objectRadius = gameObject.getRadius();
+                    ringRadius = objectRadius + i;
+                    xPos = (int) gameObject.getXPos() - ringRadius;
+                    yPos = (int) gameObject.getYPos() - ringRadius;
+                    widthAndHeight = objectRadius * 2;
                     graphics.drawOval(xPos, yPos, widthAndHeight + i * 2, widthAndHeight + i * 2);
                 }
             }
