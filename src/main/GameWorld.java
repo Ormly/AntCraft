@@ -12,6 +12,7 @@ import utilities.logging.Logging;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameWorld
 {
@@ -133,10 +134,12 @@ public class GameWorld
         for(GameObject gameObject : gameObjects)
             graphicsSystem.draw(gameObject);
 
-        if(mouseAreaSelection.isVisible())
-            graphicsSystem.draw(mouseAreaSelection);
+        graphicsSystem.draw(gameObjectsSelected);
 
         graphicsSystem.draw(nest);
+
+        if(mouseAreaSelection.isVisible())
+            graphicsSystem.draw(mouseAreaSelection);
 
         graphicsSystem.swapBuffers();
     }
@@ -155,48 +158,57 @@ public class GameWorld
         boolean keyPressed = userInput.isKeyPressed();
         boolean mouseDragged = userInput.isMouseDragged();
 
-        boolean nestSelected;
+        boolean nestSelected = false;
+        boolean antSelected = false;
 
         if(mousePressed)
         {
             if(mouseCode == MouseEvent.BUTTON1)
             {
                 GameObject object = getClickSelectedObject(mouseX, mouseY);
-                gameObjectsSelected.clear();
-                if(object != null)
-                {
-                    logger.debug("Object at ("+mouseX+"|"+mouseY+") clicked.");
-                    gameObjectsSelected.add(object);
-                }
-                else
-                    logger.debug("Background clicked.");
 
-                /*
-                //TODO make numOfAnts make sense
-                if(numOfAnts > 0)
-                {
-                    Ant ant = new Ant(Constants.NEST_X_POS, Constants.NEST_Y_POS);
-                    ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
-                    gameObjectsToCreate.add(ant);
-                    numOfAnts--;
-                }
-                */
+                gameObjectsSelected.clear();
+
+                if(object != null)
+                    gameObjectsSelected.add(object);
+
             }
 
+            //TODO check if this is dumb/needs refactoring
             if(mouseCode == MouseEvent.BUTTON3)
             {
                 if(!gameObjectsSelected.isEmpty())
                 {
                     for(GameObject gameObject : gameObjectsSelected)
                     {
+                        if(gameObject instanceof Nest) nestSelected = true;
+                        if(gameObject instanceof Ant) antSelected = true;
+                    }
+
+                    if(nestSelected && antSelected)
+                        gameObjectsSelected.remove(nest);
+
+                    for(GameObject gameObject : gameObjectsSelected)
+                    {
                         if(gameObject instanceof Ant)
                             gameObject.setDestination(mouseX, mouseY);
+
+                        else if(gameObject instanceof Nest)
+                        {
+                            if(numOfAnts > 0)
+                            {
+                                Ant ant = new Ant();
+                                ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
+                                gameObjectsToCreate.add(ant);
+                                numOfAnts--;
+                            } //TODO else prompt no more ants in nest
+                        }
                     }
                 }
             }
         }
 
-        if(mouseDragged && (mouseCode != MouseEvent.BUTTON3))
+        if(mouseDragged && (mouseCode == MouseEvent.BUTTON1))
         {
             int endX = this.userInput.getEndDragX();
             int endY = this.userInput.getEndDragY();
@@ -247,11 +259,8 @@ public class GameWorld
             }
             this.mouseAreaSelection.update(topLeftX,topLeftY,width,height);
 
-            ArrayList<GameObject> areaSelectedObjects = getAreaSelectedObjects(topLeftX,topLeftY,bottomRightX,bottomRightY);
             gameObjectsSelected.clear();
-
-            if(!areaSelectedObjects.isEmpty())
-                gameObjectsSelected.addAll(areaSelectedObjects);
+            gameObjectsSelected.addAll(getAreaSelectedObjects(topLeftX,topLeftY,bottomRightX,bottomRightY));
 
         } else this.mouseAreaSelection.setIsVisible(false);
 
@@ -281,10 +290,12 @@ public class GameWorld
         double objectX;
         double objectY;
         ArrayList<GameObject> areaSelectedObjects = new ArrayList<>();
+
         for(GameObject gameObject : gameObjects)
         {
             objectX = gameObject.getXPos();
             objectY = gameObject.getYPos();
+
             if(objectX >= topLeftX && objectX <= bottomRightX && objectY >= topLeftY && objectY <= bottomRightY)
                 areaSelectedObjects.add(gameObject);
         }
