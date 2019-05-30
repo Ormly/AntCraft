@@ -10,4 +10,10 @@ public class Nest extends GameObject
     {
         super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 0,radius, new Color(0, 100, 0));
     }
+
+    @Override
+    public void update(double lastFrameDuration)
+    {
+        // Does nothing
+    }
 }

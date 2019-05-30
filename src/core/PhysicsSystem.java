@@ -42,4 +42,23 @@ public class PhysicsSystem implements IPhysicsSystem
         }
         return result;
     }
+
+    public GameObject getGameObjectAtCoordinate(int xPos,int yPos)
+    {
+        double distanceX;
+        double distanceY;
+        double radius;
+
+        for(GameObject gameObject : this.world.getGameObjects())
+        {
+            distanceX = Math.abs(xPos - gameObject.getXPos());
+            distanceY = Math.abs(yPos - gameObject.getYPos());
+            radius = gameObject.getRadius();
+
+            if((distanceX + distanceY <= radius) || (Math.pow(distanceX,2) + Math.pow(distanceY,2)) <= Math.pow(radius,2))
+                return gameObject;
+        }
+        return null;
+
+    }
 }

@@ -6,16 +6,10 @@ import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class GameObject
 {
-    protected enum State
-    {
-        FIGHTING,
-        CHILLING,
-        HUNTING
-    }
-
     public static GameWorld world;
 
     protected AbstractLogger logger = Logging.getLogger(this.getClass().getName());
@@ -32,7 +26,6 @@ public abstract class GameObject
     protected double healthStatus;
     protected double damageFactor;
     protected Timer attackTimer;
-    protected State state;
     protected GameObject opponent = null;
 
     protected double destinationXPos;
@@ -68,50 +61,56 @@ public abstract class GameObject
         this.destinationYPos = destinationYPos;
 
         angle = Math.atan2(this.destinationYPos - yPos, this.destinationXPos - xPos);
-
-        this.state = State.HUNTING;
     }
 
-    public void update(double lastFrameDuration)
+    public abstract void update(double lastFrameDuration);
+
+    protected ArrayList<GameObject> getCollisions()
     {
-        if(this.state == State.FIGHTING)
-        {
-            if(this.attackTimer.hasExpired()) // attack in fixed intervals
-            {
-                this.attackTimer.start();
-                logger.debug("Ant is fighting bug!");
+        return this.world.getCollisions(this);
+    }
 
-                if(this.opponent != null)
-                {
-                    if(this.opponent.isDead())
-                    {
-                        this.logger.debug("opponent is dead!");
-                        this.opponent = null;
-                        this.state = State.HUNTING;
-                    }
-                    else
-                        this.opponent.damage(this.damageFactor);
-                }
-            }
+    // returns true if reached destination, false otherwise
+    protected boolean moveToDestination(double lastFrameDuration)
+    {
+        double differenceX = Math.abs(xPos - destinationXPos);
+        double differenceY = Math.abs(yPos - destinationYPos);
+
+        if(differenceX < 3 && differenceY < 3)
+        {
+            return true;
         }
-        else if(this.state == State.HUNTING)
-        {
-            double differenceX = Math.abs(xPos - destinationXPos);
-            double differenceY = Math.abs(yPos - destinationYPos);
 
-            if(differenceX < 3 && differenceY < 3)
-            {
-                isMoving = false;
-                return;
-            }
-            previousXPos = xPos;
-            previousYPos = yPos;
+        previousXPos = xPos;
+        previousYPos = yPos;
 //            this.logger.debug("elapsed: "+ lastFrameDuration);
-            double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
-            double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
+        double updatedX = xPos + Math.cos(angle) * speed * lastFrameDuration;
+        double updatedY = yPos + Math.sin(angle) * speed * lastFrameDuration;
 
-            xPos = updatedX;
-            yPos = updatedY;
+        xPos = updatedX;
+        yPos = updatedY;
+
+        return false;
+    }
+
+    // returns true if opponent is dead, false otherwise
+    protected void attackOpponent()
+    {
+        if(this.attackTimer.hasExpired()) // attack in fixed intervals
+        {
+            this.attackTimer.start();
+            logger.debug("Ant is fighting bug!");
+
+            if(this.opponent != null)
+            {
+                if(this.opponent.isDead())
+                {
+                    this.logger.debug("opponent is dead!");
+                    this.opponent = null;
+                }
+                else
+                    this.opponent.damage(this.damageFactor);
+            }
         }
     }
 

@@ -10,7 +10,20 @@ import java.util.ArrayList;
 
 public class Ant extends GameObject
 {
+    private enum State
+    {
+        MOVING,
+        INNEST,
+        WAITING,
+        ATTACKING,
+        HUNTING,
+        DEAD,
+        RETURNING
+    }
+
     private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private State state;
+
     public Ant()
     {
         super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 100.0, 15, new Color(128, 0, 0));
@@ -20,28 +33,66 @@ public class Ant extends GameObject
         this.damageFactor = 50.0;
         this.attackTimer = new Timer(1);
 
-        this.state = State.CHILLING;
+        this.state = State.INNEST;
     }
 
     public void update(double lastFrameDuration)
     {
-        super.update(lastFrameDuration);
-
-        if(this.state == State.FIGHTING)
-            return;
-
-        ArrayList<GameObject> collisions = world.getCollisions(this);
-        for(GameObject object: collisions)
+        switch(this.state)
         {
-            if(object instanceof Bug)
-            {
-                logger.debug("Ant collided with a bug!");
-
-                this.isMoving = false;
-
-                this.opponent = (Bug)object;
-                this.state = State.FIGHTING;
-            }
+            case MOVING:
+                // move, check if arrived, if yes changeg to waiting
+                if(this.moveToDestination(lastFrameDuration))
+                    this.state = State.WAITING;
+                // if collided with bug attack
+                if(this.hasCollidedWithBug())
+                    this.state = State.ATTACKING;
+                // if collided with powerup, pickup
+                break;
+            case HUNTING:
+                // move
+                if(this.hasCollidedWithBug())
+                    this.state = State.ATTACKING;
+                else
+                    this.moveToDestination(lastFrameDuration);
+                // if collided with bug state->attack
+                break;
+            case DEAD:
+                break;
+            case INNEST:
+                break;
+            case WAITING:
+                // if collided with bug state->attack
+                if(this.hasCollidedWithBug())
+                    this.state = State.ATTACKING;
+                break;
+            case ATTACKING:
+                // attack, if opponent dead, is waiting
+                break;
+            case RETURNING:
+                // move, if arrived state->innest
+                if(arrivedBackToNest())
+                    this.state = State.INNEST;
+                else
+                    this.moveToDestination(lastFrameDuration);
+                break;
         }
+
+        if(this.healthStatus <= 0)
+        {
+            this.state = State.DEAD;
+        }
+
+    }
+
+    private boolean hasCollidedWithBug()
+    {
+        ArrayList<GameObject> collisions = this.getCollisions();
+        return (!collisions.isEmpty() && collisions.get(0) instanceof Bug);
+    }
+
+    private boolean arrivedBackToNest()
+    {
+        return this.world.getGameObjectAtCoordinate((int)this.xPos,(int)this.yPos) instanceof Nest;
     }
 }

@@ -341,4 +341,10 @@ public class GameWorld
     {
         return this.physicsSystem.getCollisions(object);
     }
+
+    public GameObject getGameObjectAtCoordinate(int xPos, int yPos)
+    {
+        return this.physicsSystem.getGameObjectAtCoordinate(xPos,yPos);
+    }
+
 }
