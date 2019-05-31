@@ -1,5 +1,6 @@
 package gameobjects;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import utilities.Constants;
 import utilities.Timer;
 import utilities.logging.AbstractLogger;
@@ -30,8 +31,9 @@ public class Ant extends GameObject
 
         this.healthStatus = Constants.MAX_ANT_HEALTH;
         this.maxHealth = Constants.MAX_ANT_HEALTH;
-        this.damageFactor = 50.0;
-        this.attackTimer = new Timer(1);
+        this.damageFactor = Constants.ANT_DAMAGE_FACTOR;
+        this.attackTimer = new Timer(Constants.ANT_ATTACK_FREQ);
+        this.healingTimer = new Timer(Constants.ANT_HEALING_FREQ);
 
         this.state = State.IN_NEST;
     }
@@ -70,13 +72,15 @@ public class Ant extends GameObject
                 else
                     this.moveToDestination(lastFrameDuration);
                 break;
+            case IN_NEST:
+                this.heal();
+                break;
         }
 
         if(this.healthStatus <= 0)
         {
             setState(State.DEAD);
         }
-
     }
 
     @Override
@@ -128,7 +132,6 @@ public class Ant extends GameObject
 
     private boolean arrivedBackToNest()
     {
-        logger.debug("checkifarrived");
         return this.world.getGameObjectAtCoordinate((int)this.xPos,(int)this.yPos) instanceof Nest;
     }
 

@@ -25,7 +25,9 @@ public abstract class GameObject
     protected double maxHealth;
     protected double healthStatus;
     protected double damageFactor;
+    protected double healingFactor;
     protected Timer attackTimer;
+    protected Timer healingTimer;
     protected GameObject opponent = null;
 
     protected double destinationXPos;
@@ -91,6 +93,19 @@ public abstract class GameObject
         yPos = updatedY;
 
         return false;
+    }
+
+    protected void heal()
+    {
+        if(this.healingTimer.hasExpired()) // attack in fixed intervals
+        {
+            this.healingTimer.start();
+            if(this.healthStatus < this.maxHealth)
+                this.healthStatus+=this.healingFactor;
+
+            if(this.healthStatus > this.maxHealth) // just in case we overshoot
+                this.healthStatus = this.maxHealth;
+        }
     }
 
     // returns true if opponent is dead, false otherwise

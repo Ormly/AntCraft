@@ -134,7 +134,10 @@ public class GameWorld
         for(GameObject gameObject : gameObjects)
         {
             if(gameObject instanceof Ant && ((Ant)gameObject).isInNest() && !this.antsInNest.contains(gameObject))
+            {
                 this.antsInNest.add((Ant)gameObject);
+                this.gameObjectsSelected.remove(gameObject);
+            }
 
             if(gameObject.isDead())
                 toRemove.add(gameObject);
