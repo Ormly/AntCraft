@@ -185,7 +185,7 @@ public class GameWorld
         {
             if(mouseCode == MouseEvent.BUTTON1)
             {
-                GameObject object = getClickSelectedObject(mouseX, mouseY);
+                GameObject object = getGameObjectAtCoordinate(mouseX, mouseY);
 
                 gameObjectsSelected.clear();
 
@@ -290,24 +290,6 @@ public class GameWorld
         userInput.clear();
     }
 
-    private GameObject getClickSelectedObject(int mouseX, int mouseY)
-    {
-        double distanceX;
-        double distanceY;
-        double radius;
-
-        for(GameObject gameObject : gameObjects)
-        {
-            distanceX = Math.abs(mouseX - gameObject.getXPos());
-            distanceY = Math.abs(mouseY - gameObject.getYPos());
-            radius = gameObject.getRadius();
-
-            if((distanceX + distanceY <= radius) || (Math.pow(distanceX,2) + Math.pow(distanceY,2)) <= Math.pow(radius,2))
-                return gameObject;
-        }
-        return null;
-    }
-
     private ArrayList<GameObject> getAreaSelectedObjects(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
     {
         double objectX;
@@ -327,12 +309,12 @@ public class GameWorld
 
     private void initializeTimeline()
     {
-//        ArrayList<GameObject> bugs = new ArrayList();
-//        bugs.add(new Bug(100,100,10,20));
-//        bugs.add(new Bug(400,700,10,20));
+        ArrayList<GameObject> bugs = new ArrayList();
+        bugs.add(new Bug(100,100,10,20));
+        bugs.add(new Bug(400,700,10,20));
         this.timeline = new Timeline();
 //        this.timeline.addEvent(new GameOverEvent(20 * 1000));
-//        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
+        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
     }
 
     private void createNewObjects()
