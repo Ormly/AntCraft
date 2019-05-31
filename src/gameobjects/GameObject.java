@@ -37,10 +37,6 @@ public abstract class GameObject
     protected double previousXPos;
     protected double previousYPos;
 
-    protected boolean isMoving;
-    protected boolean isVulnerable;
-    protected boolean isDead;
-
     public GameObject(double xPos, double yPos, double angle, double speed, int radius, Color color)
     {
         this.xPos = xPos;
@@ -49,10 +45,6 @@ public abstract class GameObject
         this.speed = speed;
         this.radius = radius;
         this.color = color;
-
-        isMoving = false;
-        isVulnerable = false;
-        isDead = false;
     }
 
     public void setDestination(double destinationXPos, double destinationYPos)
@@ -112,18 +104,15 @@ public abstract class GameObject
         if(this.attackTimer.hasExpired()) // attack in fixed intervals
         {
             this.attackTimer.start();
-            logger.debug("Ant is fighting bug!");
 
             if(this.opponent != null)
             {
+                this.opponent.damage(this.damageFactor);
                 if(this.opponent.isDead())
                 {
                     this.logger.debug("opponent is dead!");
-                    this.opponent = null;
                     return true;
                 }
-                else
-                    this.opponent.damage(this.damageFactor);
             }
         }
         return false;
@@ -132,11 +121,10 @@ public abstract class GameObject
     public void damage(double damageFactor)
     {
         this.healthStatus -= damageFactor;
-        logger.debug("Bug health status: " + this.healthStatus);
+//        logger.debug("Bug health status: " + this.healthStatus);
         if(this.healthStatus <= 0)
         {
-            logger.debug("Bug is dead!");
-            this.isDead = true;
+            logger.debug("I'm dead!");
         }
     }
 
@@ -144,40 +132,22 @@ public abstract class GameObject
 
     public boolean isDead()
     {
-        return isDead;
+        return this.healthStatus <= 0;
     }
 
     public double getXPos() { return this.xPos; }
-    //public void setXPos(double xPos) { this.xPos = xPos;}
 
     public double getYPos() { return this.yPos; }
-    //public void setYPos(double yPos) { this.yPos = yPos; }
-
-    //public double getDestinationXPos() { return this.destinationXPos; }
-    //public double getDestinationYPos() { return this.destinationYPos; }
-
-    //public double getPreviousXPos() { return this.previousXPos; }
-    //public void setPreviousXPos(double previousXPos) { this.previousXPos = previousXPos; }
-
-    //public double getPreviousYPos() { return this.previousYPos; }
-    //public void setPreviousYPos(double previousYPos) { this.previousYPos = previousYPos; }
 
     public int getRadius() { return this.radius; }
-    //public void setRadius(int radius) { this.radius = radius; }
 
     public double getAngle() { return this.angle; }
-    //public void setAngle(double angle) { this.angle = angle; }
 
     public double getSpeed() { return this.speed; }
-    //public void setSpeed(double speed) { this.speed = speed; }
 
     public Color getColor() { return this.color; }
     public void setColor(Color color) { this.color = color; }
 
-    public boolean isMoving() { return this.isMoving; }
-    //public void setIsMoving(boolean isMoving) { this.isMoving = isMoving; }
-
-    public boolean isVulnerable() { return this.isVulnerable; }
 
     public double getMaxHealth()
     {
@@ -188,9 +158,6 @@ public abstract class GameObject
     {
         return this.healthStatus;
     }
-    //public void setIsVulnerable(boolean isVulnerable) { this.isVulnerable = isVulnerable; }
 
-    //public boolean hasDestination() { return this.hasDestination; }
-    //public void setHasDestination(boolean hasDestination) { this.hasDestination = hasDestination; }
     public static void setGameWorld(GameWorld world){ GameObject.world = world; }
 }

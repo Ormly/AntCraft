@@ -128,24 +128,34 @@ public class GameWorld
 
         createNewObjects();
 
-        ArrayList<GameObject> toRemove = new ArrayList<>();
+        removeTheDead();
 
-        // update all game objects and remove dead ones
+        // update all game objects
         for(GameObject gameObject : gameObjects)
         {
+            // is ant back to nest?
             if(gameObject instanceof Ant && ((Ant)gameObject).isInNest() && !this.antsInNest.contains(gameObject))
             {
                 this.antsInNest.add((Ant)gameObject);
                 this.gameObjectsSelected.remove(gameObject);
             }
 
+            gameObject.update(this.frameDuration);
+        }
+    }
+
+    private void removeTheDead()
+    {
+        ArrayList<GameObject> toRemove = new ArrayList<>();
+        for(GameObject gameObject : gameObjects)
+        {
             if(gameObject.isDead())
                 toRemove.add(gameObject);
-            else
-                gameObject.update(this.frameDuration);
+
         }
 
         this.gameObjects.removeAll(toRemove);
+        this.gameObjectsSelected.removeAll(toRemove);
     }
 
     private void redrawObjects()

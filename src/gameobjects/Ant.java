@@ -18,7 +18,6 @@ public class Ant extends GameObject
         WAITING,
         ATTACKING,
         HUNTING,
-        DEAD,
         RETURNING
     }
 
@@ -92,11 +91,6 @@ public class Ant extends GameObject
                 this.heal();
                 break;
         }
-
-        if(this.healthStatus <= 0)
-        {
-            setState(State.DEAD);
-        }
     }
 
     @Override
@@ -136,7 +130,7 @@ public class Ant extends GameObject
 
     private void setState(State newState)
     {
-//        logger.debug("Transition to " + newState);
+//        logger.debug(this.state + " -> " + newState);
         this.state = newState;
     }
 
@@ -154,10 +148,5 @@ public class Ant extends GameObject
     private boolean arrivedBackToNest()
     {
         return this.world.getGameObjectAtCoordinate((int)this.xPos,(int)this.yPos) instanceof Nest;
-    }
-
-    public boolean isDead()
-    {
-        return this.state == State.DEAD;
     }
 }
