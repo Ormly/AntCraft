@@ -8,6 +8,15 @@ import java.util.ArrayList;
 
 public class Bug extends GameObject
 {
+    private enum State
+    {
+        HUNTING,
+        FIGHTING,
+        DEAD
+    }
+
+    private State state;
+
     public Bug(double xPos, double yPos, double angle, double speed)
     {
         super(xPos,yPos,angle,speed,22,new Color(220, 20, 60));
@@ -24,7 +33,7 @@ public class Bug extends GameObject
 
     public void update(double elapsed)
     {
-        super.update(elapsed);
+        this.moveToDestination(elapsed);
 
         if(this.state == State.FIGHTING)
             return;

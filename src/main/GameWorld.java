@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class GameWorld
 {
@@ -32,7 +34,9 @@ public class GameWorld
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
     private ArrayList<GameObject> gameObjectsSelected;
+    private Queue<Ant> antsInNest;
     private MouseAreaSelection mouseAreaSelection;
+
 
     private Nest nest;
 
@@ -43,6 +47,7 @@ public class GameWorld
         this.gameObjects = new ArrayList<>();
         this.gameObjectsToCreate = new ArrayList<>();
         this.gameObjectsSelected = new ArrayList<>();
+        this.antsInNest = new LinkedList<>();
     }
 
     public void init()
@@ -55,9 +60,18 @@ public class GameWorld
         this.mouseAreaSelection = new MouseAreaSelection();
 
         this.initializeTimeline();
+        this.initAntsInNest();
 
-        nest = new Nest(400, 300, 50);
+        nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 50);
         gameObjects.add(nest);
+    }
+
+    private void initAntsInNest()
+    {
+        for(int i=0; i<this.numOfAnts; ++i)
+        {
+            this.antsInNest.add(new Ant());
+        }
     }
 
     public ArrayList<GameObject> getGameObjects()
@@ -118,6 +132,12 @@ public class GameWorld
         // update all game objects and remove dead ones
         for(GameObject gameObject : gameObjects)
         {
+            if(gameObject instanceof Ant && ((Ant)gameObject).isInNest())
+            {
+                toRemove.add(gameObject);
+                this.antsInNest.add((Ant)gameObject);
+            }
+
             if(gameObject.isDead())
                 toRemove.add(gameObject);
             else
@@ -195,13 +215,16 @@ public class GameWorld
 
                         else if(gameObject instanceof Nest)
                         {
-                            if(numOfAnts > 0)
+                            if(!this.antsInNest.isEmpty())
                             {
-                                Ant ant = new Ant();
+                                Ant ant = this.antsInNest.poll();
                                 ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
                                 gameObjectsToCreate.add(ant);
-                                numOfAnts--;
-                            } //TODO else prompt no more ants in nest
+                            }
+                            else
+                            {
+                                logger.info("No more ants available in nest!");
+                            }
                         }
                     }
                 }
@@ -304,12 +327,12 @@ public class GameWorld
 
     private void initializeTimeline()
     {
-        ArrayList<GameObject> bugs = new ArrayList();
-        bugs.add(new Bug(100,100,10,20));
-        bugs.add(new Bug(400,700,10,20));
+//        ArrayList<GameObject> bugs = new ArrayList();
+//        bugs.add(new Bug(100,100,10,20));
+//        bugs.add(new Bug(400,700,10,20));
         this.timeline = new Timeline();
 //        this.timeline.addEvent(new GameOverEvent(20 * 1000));
-        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
+//        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
     }
 
     private void createNewObjects()

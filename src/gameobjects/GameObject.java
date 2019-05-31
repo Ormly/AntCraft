@@ -94,7 +94,7 @@ public abstract class GameObject
     }
 
     // returns true if opponent is dead, false otherwise
-    protected void attackOpponent()
+    protected boolean attackOpponent()
     {
         if(this.attackTimer.hasExpired()) // attack in fixed intervals
         {
@@ -107,11 +107,13 @@ public abstract class GameObject
                 {
                     this.logger.debug("opponent is dead!");
                     this.opponent = null;
+                    return true;
                 }
                 else
                     this.opponent.damage(this.damageFactor);
             }
         }
+        return false;
     }
 
     public void damage(double damageFactor)

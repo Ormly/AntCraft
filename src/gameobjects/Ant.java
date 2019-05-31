@@ -13,7 +13,7 @@ public class Ant extends GameObject
     private enum State
     {
         MOVING,
-        INNEST,
+        IN_NEST,
         WAITING,
         ATTACKING,
         HUNTING,
@@ -33,7 +33,7 @@ public class Ant extends GameObject
         this.damageFactor = 50.0;
         this.attackTimer = new Timer(1);
 
-        this.state = State.INNEST;
+        this.state = State.IN_NEST;
     }
 
     public void update(double lastFrameDuration)
@@ -43,36 +43,38 @@ public class Ant extends GameObject
             case MOVING:
                 // move, check if arrived, if yes changeg to waiting
                 if(this.moveToDestination(lastFrameDuration))
-                    this.state = State.WAITING;
+                    setState(State.WAITING);
                 // if collided with bug attack
                 if(this.hasCollidedWithBug())
-                    this.state = State.ATTACKING;
+                    setState(State.ATTACKING);
                 // if collided with powerup, pickup
                 break;
             case HUNTING:
                 // move
                 if(this.hasCollidedWithBug())
-                    this.state = State.ATTACKING;
+                    setState(State.ATTACKING);
                 else
                     this.moveToDestination(lastFrameDuration);
                 // if collided with bug state->attack
                 break;
-            case DEAD:
-                break;
-            case INNEST:
-                break;
             case WAITING:
                 // if collided with bug state->attack
                 if(this.hasCollidedWithBug())
-                    this.state = State.ATTACKING;
+                    setState(State.ATTACKING);
                 break;
             case ATTACKING:
                 // attack, if opponent dead, is waiting
+                if(this.attackOpponent())
+                    setState(State.WAITING);
                 break;
             case RETURNING:
                 // move, if arrived state->innest
                 if(arrivedBackToNest())
-                    this.state = State.INNEST;
+                {
+                    setState(State.IN_NEST);
+                    this.xPos = Constants.NEST_X_POS;
+                    this.yPos = Constants.NEST_Y_POS;
+                }
                 else
                     this.moveToDestination(lastFrameDuration);
                 break;
@@ -80,9 +82,43 @@ public class Ant extends GameObject
 
         if(this.healthStatus <= 0)
         {
-            this.state = State.DEAD;
+            setState(State.DEAD);
         }
 
+    }
+
+    @Override
+    public void setDestination(double destinationXPos, double destinationYPos)
+    {
+        double xDest = destinationXPos;
+        double yDest = destinationYPos;
+
+        GameObject destObj = this.world.getGameObjectAtCoordinate((int) destinationXPos, (int) destinationYPos);
+        if(destObj == null)
+            this.setState(State.MOVING);
+        else if(destObj instanceof Bug)
+            this.setState(State.HUNTING);
+        else if(destObj instanceof Nest)
+            this.setState(State.RETURNING);
+        else if(destObj instanceof Ant)
+        {
+            xDest+=10;
+            yDest+=10;
+            this.setState(State.MOVING);
+        }
+
+        super.setDestination(xDest, yDest);
+    }
+
+    public boolean isInNest()
+    {
+        return this.state == State.IN_NEST;
+    }
+
+    private void setState(State newState)
+    {
+        logger.debug("Transition to " + newState);
+        this.state = newState;
     }
 
     private boolean hasCollidedWithBug()
@@ -94,5 +130,10 @@ public class Ant extends GameObject
     private boolean arrivedBackToNest()
     {
         return this.world.getGameObjectAtCoordinate((int)this.xPos,(int)this.yPos) instanceof Nest;
+    }
+
+    public boolean isDead()
+    {
+        return this.state == State.DEAD;
     }
 }
