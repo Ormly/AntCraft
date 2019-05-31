@@ -11,10 +11,7 @@ import utilities.logging.Logging;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class GameWorld
 {
@@ -40,7 +37,7 @@ public class GameWorld
 
     private Nest nest;
 
-    private int numOfAnts = 3;
+    private int numOfAnts = 30;
 
     public GameWorld()
     {
@@ -305,10 +302,20 @@ public class GameWorld
 
     private void initializeTimeline()
     {
-        ArrayList<GameObject> bugs = new ArrayList();
-        bugs.add(new Bug(100,100,10,20));
-        bugs.add(new Bug(400,700,10,20));
         this.timeline = new Timeline();
+        Random rand = new Random();
+
+        ArrayList<GameObject> bugs = new ArrayList();
+
+        for(int i=0; i<10; ++i)
+        {
+            double theta = rand.nextDouble()*Math.PI*2;
+            double radius = 600.0;
+            double x = Constants.NEST_X_POS + radius * Math.cos(theta);
+            double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
+            bugs.add(new Bug(x,y,10,20));
+        }
+
 //        this.timeline.addEvent(new GameOverEvent(20 * 1000));
         this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
     }
