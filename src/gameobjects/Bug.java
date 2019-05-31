@@ -31,28 +31,28 @@ public class Bug extends GameObject
         this.state = State.HUNTING;
     }
 
+    @Override
+    public boolean isVisible()
+    {
+        // a bug is visible as long as it's alive
+        return this.state != State.DEAD;
+    }
+
     public void update(double elapsed)
     {
-        this.moveToDestination(elapsed);
-
-        if(this.state == State.FIGHTING)
-            return;
-
-        ArrayList<GameObject> collisions = world.getCollisions(this);
-        for(GameObject object: collisions)
-        {
-            if(object instanceof Ant)
-            {
-                logger.debug("Bug collided with Ant!");
-
-                this.isMoving = false;
-//                this.xPos = this.previousXPos;
-//                this.yPos = this.previousYPos;
-
-                this.opponent = (Ant)object;
-                this.state = State.FIGHTING;
-            }
-        }
 
     }
+
+    private boolean hasCollidedWithAnt()
+    {
+        ArrayList<GameObject> collisions = this.getCollisions();
+        return (!collisions.isEmpty() && collisions.get(0) instanceof Ant);
+    }
+
+    private boolean hasCollidedWithNest()
+    {
+        ArrayList<GameObject> collisions = this.getCollisions();
+        return (!collisions.isEmpty() && collisions.get(0) instanceof Nest);
+    }
+
 }

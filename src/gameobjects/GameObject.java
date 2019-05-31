@@ -127,6 +127,8 @@ public abstract class GameObject
         }
     }
 
+    public abstract boolean isVisible();
+
     public boolean isDead()
     {
         return isDead;

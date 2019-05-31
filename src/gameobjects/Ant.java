@@ -41,34 +41,26 @@ public class Ant extends GameObject
         switch(this.state)
         {
             case MOVING:
-                // move, check if arrived, if yes changeg to waiting
                 if(this.moveToDestination(lastFrameDuration))
                     setState(State.WAITING);
-                // if collided with bug attack
                 if(this.hasCollidedWithBug())
                     setState(State.ATTACKING);
-                // if collided with powerup, pickup
                 break;
             case HUNTING:
-                // move
                 if(this.hasCollidedWithBug())
                     setState(State.ATTACKING);
                 else
                     this.moveToDestination(lastFrameDuration);
-                // if collided with bug state->attack
                 break;
             case WAITING:
-                // if collided with bug state->attack
                 if(this.hasCollidedWithBug())
                     setState(State.ATTACKING);
                 break;
             case ATTACKING:
-                // attack, if opponent dead, is waiting
                 if(this.attackOpponent())
                     setState(State.WAITING);
                 break;
             case RETURNING:
-                // move, if arrived state->innest
                 if(arrivedBackToNest())
                 {
                     setState(State.IN_NEST);
@@ -85,6 +77,13 @@ public class Ant extends GameObject
             setState(State.DEAD);
         }
 
+    }
+
+    @Override
+    public boolean isVisible()
+    {
+        // an Ant is visible as long as it's not in nest
+        return !this.isInNest();
     }
 
     @Override
@@ -129,6 +128,7 @@ public class Ant extends GameObject
 
     private boolean arrivedBackToNest()
     {
+        logger.debug("checkifarrived");
         return this.world.getGameObjectAtCoordinate((int)this.xPos,(int)this.yPos) instanceof Nest;
     }
 

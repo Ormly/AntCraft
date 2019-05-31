@@ -40,7 +40,7 @@ public class GameWorld
 
     private Nest nest;
 
-    private int numOfAnts = 6;
+    private int numOfAnts = 3;
 
     public GameWorld()
     {
@@ -58,12 +58,12 @@ public class GameWorld
         this.nest = new Nest(400, 300, 50);
 
         this.mouseAreaSelection = new MouseAreaSelection();
+        nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 50);
+        gameObjects.add(nest);
 
         this.initializeTimeline();
         this.initAntsInNest();
 
-        nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 50);
-        gameObjects.add(nest);
     }
 
     private void initAntsInNest()
@@ -72,6 +72,7 @@ public class GameWorld
         {
             this.antsInNest.add(new Ant());
         }
+        this.gameObjects.addAll(this.antsInNest);
     }
 
     public ArrayList<GameObject> getGameObjects()
@@ -132,11 +133,8 @@ public class GameWorld
         // update all game objects and remove dead ones
         for(GameObject gameObject : gameObjects)
         {
-            if(gameObject instanceof Ant && ((Ant)gameObject).isInNest())
-            {
-                toRemove.add(gameObject);
+            if(gameObject instanceof Ant && ((Ant)gameObject).isInNest() && !this.antsInNest.contains(gameObject))
                 this.antsInNest.add((Ant)gameObject);
-            }
 
             if(gameObject.isDead())
                 toRemove.add(gameObject);
@@ -152,7 +150,10 @@ public class GameWorld
         graphicsSystem.clear();
 
         for(GameObject gameObject : gameObjects)
-            graphicsSystem.draw(gameObject);
+        {
+            if(gameObject.isVisible()) // only draw visible objects
+                graphicsSystem.draw(gameObject);
+        }
 
         graphicsSystem.draw(gameObjectsSelected);
 
@@ -217,9 +218,8 @@ public class GameWorld
                         {
                             if(!this.antsInNest.isEmpty())
                             {
-                                Ant ant = this.antsInNest.poll();
+                                Ant ant = this.antsInNest.remove();
                                 ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
-                                gameObjectsToCreate.add(ant);
                             }
                             else
                             {
@@ -283,28 +283,11 @@ public class GameWorld
             this.mouseAreaSelection.update(topLeftX,topLeftY,width,height);
 
             gameObjectsSelected.clear();
-            gameObjectsSelected.addAll(getAreaSelectedObjects(topLeftX,topLeftY,bottomRightX,bottomRightY));
+            gameObjectsSelected.addAll(this.physicsSystem.getAreaSelectedObjects(topLeftX,topLeftY,bottomRightX,bottomRightY));
 
         } else this.mouseAreaSelection.setIsVisible(false);
 
         userInput.clear();
-    }
-
-    private ArrayList<GameObject> getAreaSelectedObjects(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
-    {
-        double objectX;
-        double objectY;
-        ArrayList<GameObject> areaSelectedObjects = new ArrayList<>();
-
-        for(GameObject gameObject : gameObjects)
-        {
-            objectX = gameObject.getXPos();
-            objectY = gameObject.getYPos();
-
-            if(objectX >= topLeftX && objectX <= bottomRightX && objectY >= topLeftY && objectY <= bottomRightY)
-                areaSelectedObjects.add(gameObject);
-        }
-        return areaSelectedObjects;
     }
 
     private void initializeTimeline()
