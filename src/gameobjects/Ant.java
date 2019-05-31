@@ -43,35 +43,51 @@ public class Ant extends GameObject
         switch(this.state)
         {
             case MOVING:
+
                 if(this.moveToDestination(lastFrameDuration))
                     setState(State.WAITING);
-                if(this.hasCollidedWithBug())
+                if(this.handleCollisionWithBug())
                     setState(State.ATTACKING);
                 break;
+
             case HUNTING:
-                if(this.hasCollidedWithBug())
+
+                if(this.handleCollisionWithBug())
                     setState(State.ATTACKING);
                 else
                     this.moveToDestination(lastFrameDuration);
                 break;
+
             case WAITING:
-                if(this.hasCollidedWithBug())
+
+                if(this.handleCollisionWithBug())
                     setState(State.ATTACKING);
                 break;
+
             case ATTACKING:
-                if(this.attackOpponent())
+
+                if(this.handleCollisionWithBug())
+                    if(this.attackOpponent())
+                        setState(State.WAITING);    // opponent is dead
+                else    // moved away from opponent
+                {
                     setState(State.WAITING);
+                    this.opponent = null;
+                }
                 break;
+
             case RETURNING:
+
                 if(arrivedBackToNest())
                 {
                     setState(State.IN_NEST);
-                    this.xPos = Constants.NEST_X_POS;
+                    this.xPos = Constants.NEST_X_POS; // place ant in middle of nest
                     this.yPos = Constants.NEST_Y_POS;
                 }
                 else
                     this.moveToDestination(lastFrameDuration);
                 break;
+
             case IN_NEST:
                 this.heal();
                 break;
@@ -120,14 +136,19 @@ public class Ant extends GameObject
 
     private void setState(State newState)
     {
-        logger.debug("Transition to " + newState);
+//        logger.debug("Transition to " + newState);
         this.state = newState;
     }
 
-    private boolean hasCollidedWithBug()
+    private boolean handleCollisionWithBug()
     {
         ArrayList<GameObject> collisions = this.getCollisions();
-        return (!collisions.isEmpty() && collisions.get(0) instanceof Bug);
+        if(!collisions.isEmpty() && collisions.get(0) instanceof Bug)
+        {
+            this.opponent = collisions.get(0);
+            return true;
+        }
+        return false;
     }
 
     private boolean arrivedBackToNest()

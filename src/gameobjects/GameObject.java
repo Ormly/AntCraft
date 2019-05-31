@@ -57,8 +57,6 @@ public abstract class GameObject
 
     public void setDestination(double destinationXPos, double destinationYPos)
     {
-        logger.debug("destination is set: " + destinationXPos + " - " + destinationYPos);
-
         this.destinationXPos = destinationXPos;
         this.destinationYPos = destinationYPos;
 

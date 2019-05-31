@@ -11,7 +11,7 @@ public class Bug extends GameObject
     private enum State
     {
         HUNTING,
-        FIGHTING,
+        ATTACKING,
         DEAD
     }
 
@@ -26,8 +26,8 @@ public class Bug extends GameObject
         this.damageFactor = 20;
         this.attackTimer = new Timer(2);
 
+        this.opponent = this.world.getNest();   // a bug always has an opponent
 
-        this.setDestination(Constants.NEST_X_POS, Constants.NEST_Y_POS);
         this.state = State.HUNTING;
     }
 
@@ -40,19 +40,64 @@ public class Bug extends GameObject
 
     public void update(double elapsed)
     {
+        switch(this.state)
+        {
+            case HUNTING:
 
+                if(this.handleCollisionWithAntOrNest())
+                    this.setState(State.ATTACKING);
+                else
+                {
+                    this.moveToDestination(elapsed);
+                    setDestination(this.opponent.getXPos(),this.opponent.getYPos());
+                }
+
+                break;
+
+            case ATTACKING:
+
+                if(this.handleCollisionWithAntOrNest())
+                {
+                    if(this.attackOpponent())
+                    {
+                        setState(State.HUNTING);    // opponent is dead -> go for nest
+                        this.opponent = this.world.getNest();
+                    }
+                }
+                else
+                    this.setState(State.HUNTING); // opponent moved away -> chase it
+
+                break;
+        }
+
+        if(this.healthStatus <= 0)
+            setState(State.DEAD);
     }
 
-    private boolean hasCollidedWithAnt()
+    @Override
+    public void setDestination(double destinationXPos, double destinationYPos)
+    {
+        this.setState(State.HUNTING);
+        super.setDestination(destinationXPos, destinationYPos);
+    }
+
+    private void setState(State newState)
+    {
+        logger.debug("Transition to " + newState);
+        this.state = newState;
+    }
+
+
+    private boolean handleCollisionWithAntOrNest()
     {
         ArrayList<GameObject> collisions = this.getCollisions();
-        return (!collisions.isEmpty() && collisions.get(0) instanceof Ant);
-    }
+        if(!collisions.isEmpty() && (collisions.get(0) instanceof Ant || collisions.get(0) instanceof Nest))
+        {
+            this.opponent = collisions.get(0);
+            this.setDestination(this.opponent.getXPos(),this.opponent.getYPos());
+            return true;
+        }
 
-    private boolean hasCollidedWithNest()
-    {
-        ArrayList<GameObject> collisions = this.getCollisions();
-        return (!collisions.isEmpty() && collisions.get(0) instanceof Nest);
+        return false;
     }
-
 }

@@ -312,6 +312,11 @@ public class GameWorld
         }
     }
 
+    public Nest getNest()
+    {
+        return this.nest;
+    }
+
     private void gameOver()
     {
         this.isRunning = false;
