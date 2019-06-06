@@ -8,6 +8,14 @@ import java.util.ArrayList;
 
 public class Bug extends GameObject
 {
+    private enum State
+    {
+        HUNTING,
+        ATTACKING
+    }
+
+    private State state;
+
     public Bug(double xPos, double yPos, double angle, double speed)
     {
         super(xPos,yPos,angle,speed,22,new Color(220, 20, 60));
@@ -17,33 +25,73 @@ public class Bug extends GameObject
         this.damageFactor = 20;
         this.attackTimer = new Timer(2);
 
+        this.opponent = this.world.getNest();   // a bug always has an opponent
 
-        this.setDestination(Constants.NEST_X_POS, Constants.NEST_Y_POS);
         this.state = State.HUNTING;
+    }
+
+    @Override
+    public boolean isVisible()
+    {
+        // a bug is visible as long as it's alive
+        return !this.isDead();
     }
 
     public void update(double elapsed)
     {
-        super.update(elapsed);
-
-        if(this.state == State.FIGHTING)
-            return;
-
-        ArrayList<GameObject> collisions = world.getCollisions(this);
-        for(GameObject object: collisions)
+        switch(this.state)
         {
-            if(object instanceof Ant)
-            {
-                logger.debug("Bug collided with Ant!");
+            case HUNTING:
 
-                this.isMoving = false;
-//                this.xPos = this.previousXPos;
-//                this.yPos = this.previousYPos;
+                if(this.handleCollisionWithAntOrNest())
+                {
+                    this.setState(State.ATTACKING);
+                }
+                else
+                {
+                    this.followOpponent();
+                    this.moveToDestination(elapsed);
+                }
+                break;
 
-                this.opponent = (Ant)object;
-                this.state = State.FIGHTING;
-            }
+            case ATTACKING:
+                if(this.handleCollisionWithAntOrNest())
+                {
+                    if(this.attackOpponent())   // ant is dead
+                    {
+                        this.opponent = this.world.getNest();
+                        this.setState(State.HUNTING);
+                    }
+                }
+                else
+                {
+                    this.setState(State.HUNTING);
+                }
+                break;
+        }
+    }
+
+    public void followOpponent()
+    {
+        this.setDestination(this.opponent.getXPos(),this.opponent.getYPos());
+    }
+
+    private void setState(State newState)
+    {
+        logger.debug(this.state + " -> " + newState);
+        this.state = newState;
+    }
+
+    // if collided with ant or nest, set it as opponent and return true, otherwise set nest as opponent, and return false
+    private boolean handleCollisionWithAntOrNest()
+    {
+        ArrayList<GameObject> collisions = this.getCollisions();
+        if(!collisions.isEmpty() && (collisions.get(0) instanceof Ant || collisions.get(0) instanceof Nest))
+        {
+            this.opponent = collisions.get(0);
+            return true;
         }
 
+        return false;
     }
 }
