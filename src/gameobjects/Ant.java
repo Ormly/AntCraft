@@ -1,6 +1,6 @@
 package gameobjects;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import core.ResourceManager;
 import utilities.Constants;
 import utilities.Timer;
 import utilities.logging.AbstractLogger;
@@ -33,7 +33,6 @@ public class Ant extends GameObject
         this.damageFactor = Constants.ANT_DAMAGE_FACTOR;
         this.attackTimer = new Timer(Constants.ANT_ATTACK_FREQ);
         this.healingTimer = new Timer(Constants.ANT_HEALING_FREQ);
-
         this.state = State.IN_NEST;
     }
 
