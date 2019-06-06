@@ -49,7 +49,7 @@ public class Timeline extends Thread
 
                 TimelineEvent event = iterator.next();
                 // has event occurred
-                if(currTime - startTime >= event.getScheduledTimeMs()){
+                if(currTime - startTime >= event.getScheduledTimeSec()*1000){
                     logger.debug("event occurred: " + event.toString());
                     this.occuredEvents.add(event);
                     toRemove.add(event);

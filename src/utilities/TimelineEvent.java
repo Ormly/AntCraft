@@ -7,17 +7,17 @@ import java.util.ArrayList;
 public abstract class TimelineEvent
 {
     protected boolean isGameOverEvent;
-    protected double scheduledTimeMs;
+    protected double scheduledTimeSec;
     protected ArrayList<GameObject> objects;
 
-    public TimelineEvent(double scheduledTimeMs)
+    public TimelineEvent(double scheduledTimeSec)
     {
-        this.scheduledTimeMs = scheduledTimeMs;
+        this.scheduledTimeSec = scheduledTimeSec;
     }
 
-    public double getScheduledTimeMs()
+    public double getScheduledTimeSec()
     {
-        return this.scheduledTimeMs;
+        return this.scheduledTimeSec;
     }
 
     public ArrayList<GameObject> getObjects()
@@ -33,8 +33,8 @@ public abstract class TimelineEvent
     public String toString()
     {
         if(this.isGameOverEvent)
-            return "GameOver even at: " + this.scheduledTimeMs/1000;
-        return "Spawning event: " + objects.size() + " objects at: " + this.scheduledTimeMs/1000.0 + " seconds.";
+            return "GameOver even at: " + this.scheduledTimeSec;
+        return "Spawning event: " + objects.size() + " objects at: " + this.scheduledTimeSec + " seconds.";
     }
 
 }

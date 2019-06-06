@@ -23,6 +23,8 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
             .getDefaultConfiguration();
 
     private BufferedImage imageBuffer;
+    private BufferedImage backgroundImage;
+
     private Graphics graphics;
     private InputSystem inputSystem = new InputSystem();
 
@@ -31,6 +33,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         this.setSize(width, height);
 
         this.imageBuffer = graphicsConf.createCompatibleImage(width, height);
+        this.backgroundImage = ResourceManager.getInstance().getImage("background");
         this.graphics = this.imageBuffer.getGraphics();
 
         this.addMouseListener(inputSystem);
@@ -79,7 +82,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
     public void clear()
     {
         graphics.setColor(Color.LIGHT_GRAY);
-        graphics.fillRect(0, 0, 1000, 600);
+        graphics.drawImage(this.backgroundImage,0,0,null);
     }
 
     public void draw(HUDObject hudObject)

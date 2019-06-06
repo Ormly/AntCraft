@@ -303,21 +303,27 @@ public class GameWorld
     private void initializeTimeline()
     {
         this.timeline = new Timeline();
-        Random rand = new Random();
 
+        this.timeline.addEvent(new SpawnEvent(generateBugs(3,600.0), 5));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(5,600.0), 30));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(7,600.0), 120));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(3,600.0), 180));
+    }
+
+    private ArrayList<GameObject> generateBugs(int count, double radius)
+    {
+        Random rand = new Random();
         ArrayList<GameObject> bugs = new ArrayList();
 
-        for(int i=0; i<10; ++i)
+        for(int i=0; i<count; ++i)
         {
             double theta = rand.nextDouble()*Math.PI*2;
-            double radius = 600.0;
             double x = Constants.NEST_X_POS + radius * Math.cos(theta);
             double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
             bugs.add(new Bug(x,y,10,20));
         }
 
-//        this.timeline.addEvent(new GameOverEvent(20 * 1000));
-        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
+        return bugs;
     }
 
     private void createNewObjects()

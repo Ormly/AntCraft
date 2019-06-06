@@ -135,12 +135,13 @@ public class Ant extends GameObject
 
     private boolean handleCollisionWithBug()
     {
-        ArrayList<GameObject> collisions = this.getCollisions();
-        if(!collisions.isEmpty() && collisions.get(0) instanceof Bug)
-        {
-            this.opponent = collisions.get(0);
-            return true;
+        for(GameObject obj:this.getCollisions()){
+            if(obj instanceof Bug){
+                this.opponent = obj;
+                return true;
+            }
         }
+
         return false;
     }
 
