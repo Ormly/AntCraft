@@ -3,19 +3,16 @@ package main;
 import core.ResourceManager;
 import ui.Frame;
 import utilities.Constants;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.ConsoleLoggerFactory;
-import utilities.logging.FileLoggerFactory;
 import utilities.logging.Logging;
-
-import java.awt.image.BufferedImage;
 
 public class Main
 {
     public static void main(String[] args)
     {
         Logging.setLoggerFactory(new ConsoleLoggerFactory());
-        AbstractLogger logger = Logging.getLogger(Main.class.getName());
+        Logger logger = Logging.getLogger(Main.class.getName());
 
         logger.info("Starting Game");
 

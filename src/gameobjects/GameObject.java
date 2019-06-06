@@ -2,7 +2,7 @@ package gameobjects;
 
 import main.GameWorld;
 import utilities.Timer;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import java.awt.*;
@@ -13,7 +13,7 @@ public abstract class GameObject
 {
     public static GameWorld world;
 
-    protected AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    protected Logger logger = Logging.getLogger(this.getClass().getName());
 
     protected double xPos;
     protected double yPos;

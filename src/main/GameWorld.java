@@ -6,16 +6,15 @@ import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
 import utilities.*;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class GameWorld
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private GraphicsSystem graphicsSystem;
     private PhysicsSystem physicsSystem;
     private InputSystem inputSystem;

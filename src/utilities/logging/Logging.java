@@ -5,14 +5,14 @@ package utilities.logging;
 
 public class Logging
 {
-    private static AbstractLoggerFactory logFactory=null;
-    public static void setLoggerFactory(AbstractLoggerFactory factory)
+    private static LoggerFactory logFactory=null;
+    public static void setLoggerFactory(LoggerFactory factory)
     {
         logFactory = factory;
         factory.getLogger(Logging.class.getName()).info("Started logging..");
     }
 
-    public static AbstractLogger getLogger(String owner)
+    public static Logger getLogger(String owner)
     {
         if(logFactory == null)
             return null;

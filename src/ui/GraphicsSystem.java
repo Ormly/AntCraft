@@ -4,7 +4,7 @@ import gameobjects.*;
 import core.ResourceManager;
 import gameobjects.GameObject;
 import interfaces.IGraphicsSystem;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class GraphicsSystem extends JPanel implements IGraphicsSystem
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private static final long serialVersionUID = 1L;
     private GraphicsConfiguration graphicsConf = GraphicsEnvironment
             .getLocalGraphicsEnvironment()
