@@ -7,6 +7,7 @@ import utilities.logging.Logging;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 
 public abstract class GameObject
 {
@@ -29,6 +30,8 @@ public abstract class GameObject
     protected Timer attackTimer;
     protected Timer healingTimer;
     protected GameObject opponent = null;
+
+    protected BufferedImage icon;
 
     protected double destinationXPos;
     protected double destinationYPos;
@@ -148,7 +151,6 @@ public abstract class GameObject
     public Color getColor() { return this.color; }
     public void setColor(Color color) { this.color = color; }
 
-
     public double getMaxHealth()
     {
         return this.maxHealth;
@@ -160,4 +162,9 @@ public abstract class GameObject
     }
 
     public static void setGameWorld(GameWorld world){ GameObject.world = world; }
+
+    public BufferedImage getIcon()
+    {
+        return this.icon;
+    }
 }

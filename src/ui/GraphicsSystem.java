@@ -1,12 +1,15 @@
 package ui;
 
 import gameobjects.*;
+import core.ResourceManager;
+import gameobjects.GameObject;
 import interfaces.IGraphicsSystem;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -46,7 +49,21 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         graphics.setColor(Color.BLACK);
         graphics.drawOval(xPos, yPos, radius, radius);
 
-        //healthbar
+        BufferedImage icon = gameObject.getIcon();
+        if(icon != null)
+        {
+            AffineTransform at = new AffineTransform();
+            // image at bug
+            at.setToTranslation(xPos, yPos);
+
+
+            at.translate(-8, -8);
+            at.scale(0.5,0.5);
+            at.rotate(gameObject.getAngle()+Math.PI/2.0,icon.getWidth()/2,icon.getHeight()/2);
+
+            ((Graphics2D)graphics).drawImage(icon,at,null);
+        }
+
         graphics.setColor(Color.GREEN);
 
         double health = (gameObject.getHealthStatus() / gameObject.getMaxHealth()) * 100.0;
