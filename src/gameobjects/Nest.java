@@ -1,7 +1,5 @@
 package gameobjects;
 
-import core.ResourceManager;
-import javafx.beans.property.ReadOnlySetProperty;
 import utilities.Constants;
 
 import java.awt.*;
