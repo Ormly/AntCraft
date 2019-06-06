@@ -1,6 +1,6 @@
 package utilities;
 
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Queue;
 
 public class Timeline extends Thread
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private ArrayList<TimelineEvent> events;
     private Queue<TimelineEvent> occuredEvents; // a queue of events that have been triggered
 
@@ -49,7 +49,7 @@ public class Timeline extends Thread
 
                 TimelineEvent event = iterator.next();
                 // has event occurred
-                if(currTime - startTime >= event.getScheduledTimeMs()){
+                if(currTime - startTime >= event.getScheduledTimeSec()*1000){
                     logger.debug("event occurred: " + event.toString());
                     this.occuredEvents.add(event);
                     toRemove.add(event);

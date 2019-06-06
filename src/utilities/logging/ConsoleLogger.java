@@ -2,7 +2,7 @@ package utilities.logging;
 
 import java.util.Date;
 
-public class ConsoleLogger extends AbstractLogger
+public class ConsoleLogger extends Logger
 {
     public ConsoleLogger(String owner){
         this.owner = owner;

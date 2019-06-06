@@ -6,7 +6,7 @@ import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
 import utilities.*;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.util.*;
 
 public class GameWorld
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private GraphicsSystem graphicsSystem;
     private PhysicsSystem physicsSystem;
     private InputSystem inputSystem;
@@ -303,50 +303,33 @@ public class GameWorld
     private void initializeTimeline()
     {
         this.timeline = new Timeline();
+
+        // first wave
+        this.timeline.addEvent(new SpawnEvent(generateBugs(2, 600.0), 1));
+
+        // second wave
+        this.timeline.addEvent(new SpawnEvent(generateBugs(5,600.0), 30));
+
+        // third wave
+        this.timeline.addEvent(new SpawnEvent(generateBugs(10,600.0), 180));
+
+        this.timeline.addEvent(new GameOverEvent(360));
+    }
+
+    private ArrayList<GameObject> generateBugs(int count, double radius)
+    {
         Random rand = new Random();
 
         ArrayList<GameObject> bugs = new ArrayList();
-
-        // first wave
-        for(int i=0; i<2; ++i)
+        for(int i=0; i<count; ++i)
         {
             double theta = rand.nextDouble()*Math.PI*2;
-            double radius = 600.0;
             double x = Constants.NEST_X_POS + radius * Math.cos(theta);
             double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
             bugs.add(new Bug(x,y,10,20));
         }
 
-        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
-
-        bugs = new ArrayList();
-
-        // second wave
-        for(int i=0; i<5; ++i)
-        {
-            double theta = rand.nextDouble()*Math.PI*2;
-            double radius = 600.0;
-            double x = Constants.NEST_X_POS + radius * Math.cos(theta);
-            double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
-            bugs.add(new Bug(x,y,10,20));
-        }
-
-        this.timeline.addEvent(new SpawnEvent(bugs, 30 * 1000));
-
-        bugs = new ArrayList();
-        // third wave
-        for(int i=0; i<10; ++i)
-        {
-            double theta = rand.nextDouble()*Math.PI*2;
-            double radius = 600.0;
-            double x = Constants.NEST_X_POS + radius * Math.cos(theta);
-            double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
-            bugs.add(new Bug(x,y,10,20));
-        }
-
-        this.timeline.addEvent(new SpawnEvent(bugs, 120 * 1000));
-
-        this.timeline.addEvent(new GameOverEvent(360 * 1000));
+        return bugs;
     }
 
     private void createNewObjects()

@@ -4,8 +4,7 @@ import gameobjects.*;
 import core.ResourceManager;
 import gameobjects.GameObject;
 import interfaces.IGraphicsSystem;
-import utilities.Constants;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import javax.swing.*;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 
 public class GraphicsSystem extends JPanel implements IGraphicsSystem
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private static final long serialVersionUID = 1L;
     private GraphicsConfiguration graphicsConf = GraphicsEnvironment
             .getLocalGraphicsEnvironment()
@@ -24,6 +23,8 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
             .getDefaultConfiguration();
 
     private BufferedImage imageBuffer;
+    private BufferedImage backgroundImage;
+
     private Graphics graphics;
     private InputSystem inputSystem = new InputSystem();
 
@@ -32,6 +33,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         this.setSize(width, height);
 
         this.imageBuffer = graphicsConf.createCompatibleImage(width, height);
+        this.backgroundImage = ResourceManager.getInstance().getImage("background");
         this.graphics = this.imageBuffer.getGraphics();
 
         this.addMouseListener(inputSystem);
@@ -80,7 +82,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
     public void clear()
     {
         graphics.setColor(Color.LIGHT_GRAY);
-        graphics.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        graphics.drawImage(this.backgroundImage,0,0,null);
     }
 
     public void draw(HUDObject hudObject)

@@ -1,6 +1,6 @@
 package core;
 
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import javax.imageio.ImageIO;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class ResourceManager
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private static ResourceManager instance;
     private HashMap<String, BufferedImage> images;
 

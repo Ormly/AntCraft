@@ -64,7 +64,7 @@ The `Logging` class provides a global logging solution.
 
 One time application configuration:
 ```java
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.ConsoleLoggerFactory;
 import utilities.logging.FileLoggerFactory;
 import utilities.logging.Logging;

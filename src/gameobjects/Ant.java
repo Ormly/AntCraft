@@ -1,13 +1,11 @@
 package gameobjects;
 
-import core.ResourceManager;
 import utilities.Constants;
 import utilities.Timer;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Ant extends GameObject
 {
@@ -21,7 +19,7 @@ public class Ant extends GameObject
         RETURNING
     }
 
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private State state;
 
     public Ant()
@@ -135,12 +133,13 @@ public class Ant extends GameObject
 
     private boolean handleCollisionWithBug()
     {
-        ArrayList<GameObject> collisions = this.getCollisions();
-        if(!collisions.isEmpty() && collisions.get(0) instanceof Bug)
-        {
-            this.opponent = collisions.get(0);
-            return true;
+        for(GameObject obj:this.getCollisions()){
+            if(obj instanceof Bug){
+                this.opponent = obj;
+                return true;
+            }
         }
+
         return false;
     }
 
