@@ -4,6 +4,7 @@ import gameobjects.*;
 import core.ResourceManager;
 import gameobjects.GameObject;
 import interfaces.IGraphicsSystem;
+import utilities.Constants;
 import utilities.logging.AbstractLogger;
 import utilities.logging.Logging;
 
@@ -79,7 +80,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
     public void clear()
     {
         graphics.setColor(Color.LIGHT_GRAY);
-        graphics.fillRect(0, 0, 1000, 600);
+        graphics.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
     }
 
     public void draw(HUDObject hudObject)

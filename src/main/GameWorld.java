@@ -52,7 +52,7 @@ public class GameWorld
         this.physicsSystem = new PhysicsSystem(this);
         GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
-        this.nest = new Nest(400, 300, 50);
+        this.nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 50);
 
         this.mouseAreaSelection = new MouseAreaSelection();
         nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 50);
@@ -307,6 +307,34 @@ public class GameWorld
 
         ArrayList<GameObject> bugs = new ArrayList();
 
+        // first wave
+        for(int i=0; i<2; ++i)
+        {
+            double theta = rand.nextDouble()*Math.PI*2;
+            double radius = 600.0;
+            double x = Constants.NEST_X_POS + radius * Math.cos(theta);
+            double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
+            bugs.add(new Bug(x,y,10,20));
+        }
+
+        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
+
+        bugs = new ArrayList();
+
+        // second wave
+        for(int i=0; i<5; ++i)
+        {
+            double theta = rand.nextDouble()*Math.PI*2;
+            double radius = 600.0;
+            double x = Constants.NEST_X_POS + radius * Math.cos(theta);
+            double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
+            bugs.add(new Bug(x,y,10,20));
+        }
+
+        this.timeline.addEvent(new SpawnEvent(bugs, 30 * 1000));
+
+        bugs = new ArrayList();
+        // third wave
         for(int i=0; i<10; ++i)
         {
             double theta = rand.nextDouble()*Math.PI*2;
@@ -316,8 +344,9 @@ public class GameWorld
             bugs.add(new Bug(x,y,10,20));
         }
 
-//        this.timeline.addEvent(new GameOverEvent(20 * 1000));
-        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
+        this.timeline.addEvent(new SpawnEvent(bugs, 120 * 1000));
+
+        this.timeline.addEvent(new GameOverEvent(360 * 1000));
     }
 
     private void createNewObjects()
