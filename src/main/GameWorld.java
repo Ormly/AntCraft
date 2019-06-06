@@ -52,10 +52,9 @@ public class GameWorld
         this.physicsSystem = new PhysicsSystem(this);
         GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
-        this.nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 50);
 
         this.mouseAreaSelection = new MouseAreaSelection();
-        nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 50);
+        nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 65);
         gameObjects.add(nest);
 
         this.initializeTimeline();

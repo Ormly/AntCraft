@@ -47,24 +47,16 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         int yPos = (int) gameObject.getYPos() - gameObject.getRadius();
         int radius = gameObject.getRadius() * 2;
 
-        graphics.setColor(gameObject.getColor());
-        graphics.fillOval(xPos, yPos, radius, radius);
-        graphics.setColor(Color.BLACK);
-        graphics.drawOval(xPos, yPos, radius, radius);
+//        graphics.setColor(gameObject.getColor());
+//        graphics.fillOval(xPos, yPos, radius, radius);
+//        graphics.setColor(Color.BLACK);
+//        graphics.drawOval(xPos, yPos, radius, radius);
 
-        BufferedImage icon = gameObject.getIcon();
+        Icon icon = gameObject.getIcon();
         if(icon != null)
         {
-            AffineTransform at = new AffineTransform();
-            // image at bug
-            at.setToTranslation(xPos, yPos);
-
-
-            at.translate(-8, -8);
-            at.scale(0.5,0.5);
-            at.rotate(gameObject.getAngle()+Math.PI/2.0,icon.getWidth()/2,icon.getHeight()/2);
-
-            ((Graphics2D)graphics).drawImage(icon,at,null);
+            icon.update(gameObject.getXPos(),gameObject.getYPos(),gameObject.getAngle());
+            ((Graphics2D)graphics).drawImage(icon.getImage(),icon.getTransform(),null);
         }
 
         graphics.setColor(Color.GREEN);

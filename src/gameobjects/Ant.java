@@ -1,5 +1,7 @@
 package gameobjects;
 
+import core.ResourceManager;
+import ui.Icon;
 import utilities.Constants;
 import utilities.Timer;
 import utilities.logging.Logger;
@@ -32,6 +34,7 @@ public class Ant extends GameObject
         this.attackTimer = new Timer(Constants.ANT_ATTACK_FREQ);
         this.healingTimer = new Timer(Constants.ANT_HEALING_FREQ);
         this.state = State.IN_NEST;
+        this.icon = new Icon(ResourceManager.getInstance().getImage("ant"),-20,0.40);
     }
 
     public void update(double lastFrameDuration)
