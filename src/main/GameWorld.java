@@ -307,10 +307,10 @@ public class GameWorld
         this.timeline.addEvent(new SpawnEvent(generateBugs(2, 600.0), 1));
 
         // second wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(5,600.0), 30));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(5,600.0), 60));
 
         // third wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(10,600.0), 180));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(10,600.0), 120));
 
         this.timeline.addEvent(new GameOverEvent(360));
     }
