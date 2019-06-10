@@ -1,5 +1,7 @@
 package gameobjects;
 
+import core.ResourceManager;
+import ui.Icon;
 import utilities.Constants;
 import utilities.Timer;
 
@@ -24,6 +26,7 @@ public class Bug extends GameObject
         this.maxHealth = Constants.MAX_BUG_HEALTH;
         this.damageFactor = 20;
         this.attackTimer = new Timer(2);
+        this.icon = new Icon(ResourceManager.getInstance().getImage("ladybug"), -30, 0.50);
 
         this.opponent = this.world.getNest();   // a bug always has an opponent
 

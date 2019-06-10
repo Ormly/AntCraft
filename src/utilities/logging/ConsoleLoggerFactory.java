@@ -1,13 +1,13 @@
 package utilities.logging;
 
-public class ConsoleLoggerFactory extends AbstractLoggerFactory
+public class ConsoleLoggerFactory extends LoggerFactory
 {
     @Override
-    public AbstractLogger getLogger(String owner)
+    public Logger getLogger(String owner)
     {
         if(!this.loggers.containsKey(owner))
         {
-            AbstractLogger logger = new ConsoleLogger(owner);
+            Logger logger = new ConsoleLogger(owner);
             this.loggers.put(owner,logger);
         }
 

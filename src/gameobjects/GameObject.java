@@ -2,8 +2,9 @@ package gameobjects;
 
 import main.GameWorld;
 import utilities.Timer;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
+import ui.Icon;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public abstract class GameObject
 {
     public static GameWorld world;
 
-    protected AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    protected Logger logger = Logging.getLogger(this.getClass().getName());
 
     protected double xPos;
     protected double yPos;
@@ -31,7 +32,7 @@ public abstract class GameObject
     protected Timer healingTimer;
     protected GameObject opponent = null;
 
-    protected BufferedImage icon;
+    protected Icon icon;
 
     protected double destinationXPos;
     protected double destinationYPos;
@@ -163,7 +164,7 @@ public abstract class GameObject
 
     public static void setGameWorld(GameWorld world){ GameObject.world = world; }
 
-    public BufferedImage getIcon()
+    public Icon getIcon()
     {
         return this.icon;
     }

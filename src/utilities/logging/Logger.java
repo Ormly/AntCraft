@@ -1,8 +1,9 @@
 package utilities.logging;
 
 import java.text.SimpleDateFormat;
+import java.util.Observable;
 
-public abstract class AbstractLogger
+public abstract class Logger extends Observable
 {
     protected final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     protected String owner;

@@ -6,7 +6,7 @@ import ui.GraphicsSystem;
 import ui.InputSystem;
 import ui.UserInput;
 import utilities.*;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.util.*;
 
 public class GameWorld
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private GraphicsSystem graphicsSystem;
     private PhysicsSystem physicsSystem;
     private InputSystem inputSystem;
@@ -52,10 +52,9 @@ public class GameWorld
         this.physicsSystem = new PhysicsSystem(this);
         GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
-        this.nest = new Nest(400, 300, 50);
 
         this.mouseAreaSelection = new MouseAreaSelection();
-        nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 50);
+        nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 65);
         gameObjects.add(nest);
 
         this.initializeTimeline();
@@ -303,21 +302,33 @@ public class GameWorld
     private void initializeTimeline()
     {
         this.timeline = new Timeline();
+
+        // first wave
+        this.timeline.addEvent(new SpawnEvent(generateBugs(2, 600.0), 1));
+
+        // second wave
+        this.timeline.addEvent(new SpawnEvent(generateBugs(5,600.0), 60));
+
+        // third wave
+        this.timeline.addEvent(new SpawnEvent(generateBugs(10,600.0), 120));
+
+        this.timeline.addEvent(new GameOverEvent(360));
+    }
+
+    private ArrayList<GameObject> generateBugs(int count, double radius)
+    {
         Random rand = new Random();
 
         ArrayList<GameObject> bugs = new ArrayList();
-
-        for(int i=0; i<10; ++i)
+        for(int i=0; i<count; ++i)
         {
             double theta = rand.nextDouble()*Math.PI*2;
-            double radius = 600.0;
             double x = Constants.NEST_X_POS + radius * Math.cos(theta);
             double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
             bugs.add(new Bug(x,y,10,20));
         }
 
-//        this.timeline.addEvent(new GameOverEvent(20 * 1000));
-        this.timeline.addEvent(new SpawnEvent(bugs, 1 * 1000));
+        return bugs;
     }
 
     private void createNewObjects()

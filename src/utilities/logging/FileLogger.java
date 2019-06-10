@@ -3,7 +3,7 @@ package utilities.logging;
 import java.io.*;
 import java.util.Date;
 
-public class FileLogger extends AbstractLogger
+public class FileLogger extends Logger
 {
 
     private PrintWriter writer = null;

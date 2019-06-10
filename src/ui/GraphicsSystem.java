@@ -4,7 +4,7 @@ import gameobjects.*;
 import core.ResourceManager;
 import gameobjects.GameObject;
 import interfaces.IGraphicsSystem;
-import utilities.logging.AbstractLogger;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
 import javax.swing.*;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class GraphicsSystem extends JPanel implements IGraphicsSystem
 {
-    private AbstractLogger logger = Logging.getLogger(this.getClass().getName());
+    private Logger logger = Logging.getLogger(this.getClass().getName());
     private static final long serialVersionUID = 1L;
     private GraphicsConfiguration graphicsConf = GraphicsEnvironment
             .getLocalGraphicsEnvironment()
@@ -23,6 +23,8 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
             .getDefaultConfiguration();
 
     private BufferedImage imageBuffer;
+    private BufferedImage backgroundImage;
+
     private Graphics graphics;
     private InputSystem inputSystem = new InputSystem();
 
@@ -31,6 +33,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         this.setSize(width, height);
 
         this.imageBuffer = graphicsConf.createCompatibleImage(width, height);
+        this.backgroundImage = ResourceManager.getInstance().getImage("background");
         this.graphics = this.imageBuffer.getGraphics();
 
         this.addMouseListener(inputSystem);
@@ -44,24 +47,16 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         int yPos = (int) gameObject.getYPos() - gameObject.getRadius();
         int radius = gameObject.getRadius() * 2;
 
-        graphics.setColor(gameObject.getColor());
-        graphics.fillOval(xPos, yPos, radius, radius);
-        graphics.setColor(Color.BLACK);
-        graphics.drawOval(xPos, yPos, radius, radius);
+//        graphics.setColor(gameObject.getColor());
+//        graphics.fillOval(xPos, yPos, radius, radius);
+//        graphics.setColor(Color.BLACK);
+//        graphics.drawOval(xPos, yPos, radius, radius);
 
-        BufferedImage icon = gameObject.getIcon();
+        Icon icon = gameObject.getIcon();
         if(icon != null)
         {
-            AffineTransform at = new AffineTransform();
-            // image at bug
-            at.setToTranslation(xPos, yPos);
-
-
-            at.translate(-8, -8);
-            at.scale(0.5,0.5);
-            at.rotate(gameObject.getAngle()+Math.PI/2.0,icon.getWidth()/2,icon.getHeight()/2);
-
-            ((Graphics2D)graphics).drawImage(icon,at,null);
+            icon.update(gameObject.getXPos(),gameObject.getYPos(),gameObject.getAngle());
+            ((Graphics2D)graphics).drawImage(icon.getImage(),icon.getTransform(),null);
         }
 
         graphics.setColor(Color.GREEN);
@@ -79,7 +74,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
     public void clear()
     {
         graphics.setColor(Color.LIGHT_GRAY);
-        graphics.fillRect(0, 0, 1000, 600);
+        graphics.drawImage(this.backgroundImage,0,0,null);
     }
 
     public void draw(HUDObject hudObject)

@@ -3,7 +3,7 @@ package utilities.logging;
 import java.io.File;
 import java.io.IOException;
 
-public class FileLoggerFactory extends AbstractLoggerFactory
+public class FileLoggerFactory extends LoggerFactory
 {
     private File file;
     public FileLoggerFactory(String logFilePath){
@@ -21,11 +21,11 @@ public class FileLoggerFactory extends AbstractLoggerFactory
     }
 
     @Override
-    public AbstractLogger getLogger(String owner)
+    public Logger getLogger(String owner)
     {
         if(!this.loggers.containsKey(owner))
         {
-            AbstractLogger logger = new FileLogger(owner,file.getAbsolutePath());
+            Logger logger = new FileLogger(owner, file.getAbsolutePath());
             this.loggers.put(owner,logger);
         }
 

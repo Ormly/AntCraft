@@ -2,8 +2,8 @@ package utilities;
 
 public class GameOverEvent extends TimelineEvent
 {
-    public GameOverEvent(double scheduledTimeMs){
-        super(scheduledTimeMs);
+    public GameOverEvent(double scheduledTimeSec){
+        super(scheduledTimeSec);
         this.isGameOverEvent = true;
     }
 }

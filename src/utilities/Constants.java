@@ -2,11 +2,11 @@ package utilities;
 
 public final class Constants
 {
-    public final static int SCREEN_WIDTH = 800;
-    public final static int SCREEN_HEIGHT = 600;
+    public final static int SCREEN_WIDTH = 1024;
+    public final static int SCREEN_HEIGHT = 768;
 
-    public final static double NEST_X_POS = 400.0;
-    public final static double NEST_Y_POS = 300.0;
+    public final static double NEST_X_POS = SCREEN_WIDTH/2.0;
+    public final static double NEST_Y_POS = SCREEN_HEIGHT/2.0;
 
     public final static double MAX_ANT_HEALTH = 100.0;
     public final static double MAX_NEST_HEALTH = 5000.0;
