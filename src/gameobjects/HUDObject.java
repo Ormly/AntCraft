@@ -1,5 +1,7 @@
 package gameobjects;
 
+import main.GameWorld;
+
 public abstract class HUDObject
 {
     protected int xPos;
@@ -10,6 +12,8 @@ public abstract class HUDObject
 
     protected boolean isVisible;
 
+    protected static GameWorld gameWorld;
+
     public boolean isVisible()
     {
         return this.isVisible;
@@ -19,11 +23,11 @@ public abstract class HUDObject
         this.isVisible = isVisible;
     }
 
-    public int getxPos()
+    public int getXPos()
     {
         return xPos;
     }
-    public int getyPos()
+    public int getYPos()
     {
         return yPos;
     }
@@ -35,5 +39,10 @@ public abstract class HUDObject
     public int getHeight()
     {
         return height;
+    }
+
+    public void setGameWorld(GameWorld gameWorld)
+    {
+        this.gameWorld = gameWorld;
     }
 }

@@ -32,7 +32,9 @@ public class GameWorld
     private ArrayList<GameObject> gameObjectsToCreate;
     private ArrayList<GameObject> gameObjectsSelected;
     private Queue<Ant> antsInNest;
+
     private MouseAreaSelection mouseAreaSelection;
+    private AntStockIndicator antStockIndicator;
 
 
     private Nest nest;
@@ -53,13 +55,14 @@ public class GameWorld
         GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
 
-        this.mouseAreaSelection = new MouseAreaSelection();
         nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 65);
         gameObjects.add(nest);
 
         this.initializeTimeline();
         this.initAntsInNest();
 
+        this.mouseAreaSelection = new MouseAreaSelection();
+        this.antStockIndicator = new AntStockIndicator(this);
     }
 
     private void initAntsInNest()
@@ -134,6 +137,8 @@ public class GameWorld
             {
                 this.antsInNest.add((Ant)gameObject);
                 this.gameObjectsSelected.remove(gameObject);
+
+                antStockIndicator.increment();
             }
 
             gameObject.update(this.frameDuration);
@@ -168,8 +173,11 @@ public class GameWorld
 
         graphicsSystem.draw(nest);
 
+
         if(mouseAreaSelection.isVisible())
             graphicsSystem.draw(mouseAreaSelection);
+        if(antStockIndicator.isVisible())
+            graphicsSystem.draw(antStockIndicator);
 
         graphicsSystem.swapBuffers();
     }
@@ -229,6 +237,8 @@ public class GameWorld
                             {
                                 Ant ant = this.antsInNest.remove();
                                 ant.setDestination(userInput.getMousePressedX(), userInput.getMousePressedY());
+
+                                antStockIndicator.decrement();
                             }
                             else
                             {
@@ -369,6 +379,11 @@ public class GameWorld
     public GameObject getGameObjectAtCoordinate(int xPos, int yPos)
     {
         return this.physicsSystem.getGameObjectAtCoordinate(xPos,yPos);
+    }
+
+    public int getNumOfAnts()
+    {
+        return this.antsInNest.size();
     }
 
 }

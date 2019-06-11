@@ -9,7 +9,6 @@ import utilities.logging.Logging;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -24,6 +23,8 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
 
     private BufferedImage imageBuffer;
     private BufferedImage backgroundImage;
+
+    private Font font = new Font("Arial",Font.BOLD,35);
 
     private Graphics graphics;
     private InputSystem inputSystem = new InputSystem();
@@ -77,15 +78,34 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         graphics.drawImage(this.backgroundImage,0,0,null);
     }
 
-    public void draw(HUDObject hudObject)
+    public void draw(MouseAreaSelection mouseAreaSelection)
     {
-        int xPos = hudObject.getxPos();
-        int yPos = hudObject.getyPos();
-        int width = hudObject.getWidth();
-        int height = hudObject.getHeight();
+        int xPos = mouseAreaSelection.getXPos();
+        int yPos = mouseAreaSelection.getYPos();
+        int width = mouseAreaSelection.getWidth();
+        int height = mouseAreaSelection.getHeight();
 
         graphics.setColor(Color.MAGENTA);
         graphics.drawRect(xPos,yPos,width,height);
+    }
+
+    public void draw(AntStockIndicator antStockIndicator)
+    {
+        int xPos = antStockIndicator.getXPos();
+        int yPos = antStockIndicator.getYPos();
+        int width = antStockIndicator.getWidth();
+        int height = antStockIndicator.getHeight();
+
+        Icon icon = new Icon(ResourceManager.getInstance().getImage("ant"),0,0.55);
+        icon.update(xPos,yPos,(3*Math.PI)/2);
+        ((Graphics2D)graphics).drawImage(icon.getImage(),icon.getTransform(),null);
+
+        graphics.setColor(Color.BLACK);
+        graphics.drawRect(xPos,yPos,width,height);
+        graphics.drawRect(xPos-1,yPos-1,width+2,height+2);
+
+        graphics.setFont((font));
+        graphics.drawString(Integer.toString(antStockIndicator.getNumOfAnts()),xPos+53,yPos+50);
     }
 
     public void draw(ArrayList<GameObject> gameObjectsSelected)
