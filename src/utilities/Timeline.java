@@ -1,12 +1,10 @@
 package utilities;
 
+import gameobjects.GameObject;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class Timeline extends Thread
 {
@@ -30,6 +28,20 @@ public class Timeline extends Thread
         return this.occuredEvents.poll();
     }
 
+    public ArrayList<GameObject> getNextSpawn()
+    {
+        if(events.size() > 0)
+        {
+            for(TimelineEvent event : events)
+            {
+                if(event instanceof SpawnEvent)
+                    return event.getObjects();
+            }
+        }
+
+        return null;
+    }
+
     public void addEvent(TimelineEvent event)
     {
         this.events.add(event);
@@ -39,6 +51,10 @@ public class Timeline extends Thread
     public void run(){
         logger.debug("Timeline started");
         double startTime = System.currentTimeMillis();
+
+
+        //sort by scheduled time INCR
+        this.events.sort(Comparator.comparing(TimelineEvent::getScheduledTimeSec));
 
         while(true){
             double currTime = System.currentTimeMillis();

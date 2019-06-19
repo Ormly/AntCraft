@@ -35,6 +35,7 @@ public class GameWorld
 
     private MouseAreaSelection mouseAreaSelection;
     private AntStockIndicator antStockIndicator;
+    private BugQueue bugQueue;
 
 
     private Nest nest;
@@ -63,6 +64,7 @@ public class GameWorld
 
         this.mouseAreaSelection = new MouseAreaSelection();
         this.antStockIndicator = new AntStockIndicator(this);
+        this.bugQueue = new BugQueue(this);
     }
 
     private void initAntsInNest()
@@ -112,12 +114,16 @@ public class GameWorld
         if(!isRunning)
             return;
 
-        if(this.timeline.hasEvents()){
+        ArrayList<GameObject> temp = timeline.getNextSpawn();
+        if(temp != null)
+            bugQueue.update(temp);
+
+        if(this.timeline.hasEvents())
+        {
             TimelineEvent event = timeline.getNextEvent();
 
-            if(event.isGameOverEvent()){
+            if(event.isGameOverEvent())
                 gameOver(); // end the game
-            }
 
             ArrayList<GameObject> newObjects = event.getObjects();
 
@@ -178,6 +184,8 @@ public class GameWorld
             graphicsSystem.draw(mouseAreaSelection);
         if(antStockIndicator.isVisible())
             graphicsSystem.draw(antStockIndicator);
+        if(bugQueue.isVisible())
+            graphicsSystem.draw(bugQueue);
 
         graphicsSystem.swapBuffers();
     }
@@ -314,14 +322,18 @@ public class GameWorld
         this.timeline = new Timeline();
 
         // first wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(2, 600.0), 1));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1, 600.0), 10));
 
         // second wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(5,600.0), 60));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(2,600.0), 30));
 
         // third wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(10,600.0), 120));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(3,600.0), 50));
 
+        //fourth wave
+        this.timeline.addEvent(new SpawnEvent(generateBugs(4,600.0), 70));
+
+        //game Over
         this.timeline.addEvent(new GameOverEvent(360));
     }
 
@@ -384,6 +396,11 @@ public class GameWorld
     public int getNumOfAnts()
     {
         return this.antsInNest.size();
+    }
+
+    public Timeline getTimeline()
+    {
+        return this.timeline;
     }
 
 }

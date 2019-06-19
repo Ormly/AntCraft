@@ -108,6 +108,30 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         graphics.drawString(Integer.toString(antStockIndicator.getNumOfAnts()),xPos+53,yPos+50);
     }
 
+    public void draw(BugQueue bugQueue)
+    {
+        if(bugQueue.getUpcomingWave() == null)
+            return;
+
+        int xPos = bugQueue.getXPos();
+        int yPos = bugQueue.getYPos();
+        int width = bugQueue.getWidth();
+        int height = bugQueue.getHeight();
+        //int xOffset = 53;
+        int size = bugQueue.getUpcomingWave().size();
+        graphics.setFont((font));
+
+        //TODO do this for every bug type in wave, maybe define keys for resource manager in list in Constants
+        Icon icon = new Icon(ResourceManager.getInstance().getImage("ladybug"),5,0.4);
+        icon.update(xPos, yPos, (3 * Math.PI) / 2);
+        ((Graphics2D) graphics).drawImage(icon.getImage(), icon.getTransform(), null);
+        graphics.drawString("  x " + Integer.toString(size),xPos+50,yPos+45);
+
+        graphics.setColor(Color.BLACK);
+        graphics.drawRect(xPos,yPos,width,height);
+        graphics.drawRect(xPos-1,yPos-1,width+2,height+2);
+    }
+
     public void draw(ArrayList<GameObject> gameObjectsSelected)
     {
         int xPos;
