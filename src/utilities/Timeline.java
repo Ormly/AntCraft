@@ -1,5 +1,7 @@
 package utilities;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
 
@@ -99,6 +101,17 @@ public class Timeline extends Thread
             }
         }
 
+    }
+
+    public JSONArray getASJSONArray()
+    {
+        JSONArray events = new JSONArray();
+        for(TimelineEvent e:this.events)
+        {
+            events.add(e.getASJSONObject());
+        }
+
+        return events;
     }
 
 }

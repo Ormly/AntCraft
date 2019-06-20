@@ -1,5 +1,6 @@
 package main;
 
+import core.Level;
 import core.PhysicsSystem;
 import gameobjects.*;
 import ui.GraphicsSystem;
@@ -361,6 +362,14 @@ public class GameWorld
         this.timeline.addEvent(new SpawnEvent(generateBugs(10,600.0), 120));
 
         this.timeline.addEvent(new GameOverEvent(360));
+
+        Level l = new Level();
+        l.setName("level1");
+        l.setNumOfAnts(this.numOfAnts);
+        l.setTimeline(this.timeline);
+        ArrayList<Level> levels = new ArrayList<>();
+        levels.add(l);
+        Level.writeToFile(levels);
     }
 
     private ArrayList<GameObject> generateBugs(int count, double radius)
@@ -373,7 +382,7 @@ public class GameWorld
             double theta = rand.nextDouble()*Math.PI*2;
             double x = Constants.NEST_X_POS + radius * Math.cos(theta);
             double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
-            bugs.add(new Bug(x,y,10,20));
+            bugs.add(new Bug(x,y,20));
         }
 
         return bugs;

@@ -1,6 +1,7 @@
 package gameobjects;
 
 import main.GameWorld;
+import org.json.simple.JSONObject;
 import utilities.Timer;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
@@ -167,5 +168,16 @@ public abstract class GameObject
     public Icon getIcon()
     {
         return this.icon;
+    }
+
+    public JSONObject getASJSONObject()
+    {
+        JSONObject bug = new JSONObject();
+        bug.put("type",this.getClass().getName());
+        bug.put("xPos",this.xPos);
+        bug.put("yPos",this.yPos);
+        bug.put("speed",this.speed);
+
+        return bug;
     }
 }

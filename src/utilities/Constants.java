@@ -25,4 +25,5 @@ public final class Constants
     public final static double BUG_ATTACK_FREQ = 2.0;
 
     public final static String LOG_FILE_PATH = "antcraft.log";
+    public final static String LEVEL_FILE_PATH = "levels.ac";
 }
