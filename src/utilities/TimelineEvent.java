@@ -20,6 +20,11 @@ public abstract class TimelineEvent
         return this.scheduledTimeSec;
     }
 
+    public void setScheduledTimeSec(double scheduledTimeSec)
+    {
+        this.scheduledTimeSec = scheduledTimeSec;
+    }
+
     public ArrayList<GameObject> getObjects()
     {
         return this.objects;

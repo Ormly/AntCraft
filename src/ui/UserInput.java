@@ -35,6 +35,10 @@ public class UserInput
         this.isMousePressed = false;
     }
 
+    public int getMouseMovedX() { return this.mouseMovedX; };
+    public int getMouseMovedY() { return this.mouseMovedY; };
+
+
     public int getMousePressedX()
     {
         return mousePressedX;

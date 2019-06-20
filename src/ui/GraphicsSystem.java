@@ -116,6 +116,11 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         }
     }
 
+    public void draw(Menu menu)
+    {
+        menu.draw((Graphics2D) this.graphics);
+    }
+
     public void swapBuffers() { this.getGraphics().drawImage(this.imageBuffer, 0, 0, this); }
     public InputSystem getInputSystem() { return this.inputSystem; }
 }

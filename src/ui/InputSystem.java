@@ -59,6 +59,7 @@ public class InputSystem implements IInputSystem, KeyListener, MouseListener, Mo
     @Override
     public void mouseMoved(MouseEvent mouseEvent)
     {
+
         this.userInput.mouseMovedX = mouseEvent.getX();
         this.userInput.mouseMovedY = mouseEvent.getY();
     }

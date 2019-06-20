@@ -4,14 +4,18 @@ import core.PhysicsSystem;
 import gameobjects.*;
 import ui.GraphicsSystem;
 import ui.InputSystem;
+import ui.Menu;
 import ui.UserInput;
 import utilities.*;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
 
-import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Random;
 
 public class GameWorld
 {
@@ -20,6 +24,7 @@ public class GameWorld
     private PhysicsSystem physicsSystem;
     private InputSystem inputSystem;
     private UserInput userInput;
+    private Menu menu;
 
     private long timestampLast;
     private double frameDuration;
@@ -41,22 +46,37 @@ public class GameWorld
 
     public GameWorld()
     {
+        this.menu = new Menu();
+        this.physicsSystem = new PhysicsSystem(this);
         this.gameObjects = new ArrayList<>();
         this.gameObjectsToCreate = new ArrayList<>();
         this.gameObjectsSelected = new ArrayList<>();
         this.antsInNest = new LinkedList<>();
+
+    }
+
+    public void pauseGame()
+    {
+        this.isRunning = false;
+        this.timeline.freeze();
+    }
+
+    public void unPauseGame()
+    {
+        this.isRunning = true;
+        this.timeline.unFreeze();
     }
 
     public void init()
     {
-        this.physicsSystem = new PhysicsSystem(this);
-        GameObject.setGameWorld(this);
         setInputSystem(graphicsSystem.getInputSystem());
-
+        GameObject.setGameWorld(this);
         this.mouseAreaSelection = new MouseAreaSelection();
         nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 65);
         gameObjects.add(nest);
 
+        this.menu.setGameWorld(this);
+        this.menu.setInputSystem(graphicsSystem.getInputSystem());
         this.initializeTimeline();
         this.initAntsInNest();
 
@@ -78,9 +98,11 @@ public class GameWorld
 
     public void run()
     {
-        this.isRunning = true;
+        this.isRunning = false;
         this.timeline.start();
         this.timestampLast = System.currentTimeMillis();
+
+        this.pauseGame(); // start the game paused
 
         while(true)
             gameLoop();
@@ -95,6 +117,11 @@ public class GameWorld
         updateObjects();
 
         redrawObjects();
+    }
+
+    private void showMenu()
+    {
+        this.graphicsSystem.draw(this.menu);
     }
 
     private void calcFrameDuration()
@@ -158,18 +185,23 @@ public class GameWorld
     {
         graphicsSystem.clear();
 
-        for(GameObject gameObject : gameObjects)
+        if(!this.isRunning)
+            this.graphicsSystem.draw(this.menu);
+        else
         {
-            if(gameObject.isVisible()) // only draw visible objects
-                graphicsSystem.draw(gameObject);
+            for(GameObject gameObject : gameObjects)
+            {
+                if(gameObject.isVisible()) // only draw visible objects
+                    graphicsSystem.draw(gameObject);
+            }
+
+            graphicsSystem.draw(gameObjectsSelected);
+
+            graphicsSystem.draw(nest);
+
+            if(mouseAreaSelection.isVisible())
+                graphicsSystem.draw(mouseAreaSelection);
         }
-
-        graphicsSystem.draw(gameObjectsSelected);
-
-        graphicsSystem.draw(nest);
-
-        if(mouseAreaSelection.isVisible())
-            graphicsSystem.draw(mouseAreaSelection);
 
         graphicsSystem.swapBuffers();
     }
@@ -177,6 +209,22 @@ public class GameWorld
     private void checkUserInput()
     {
         userInput = inputSystem.getUserInput();
+
+        if(userInput.isKeyPressed())
+            if(userInput.getKeyPressedCode() == KeyEvent.VK_ESCAPE)
+            {
+                if(this.isRunning)
+                    this.pauseGame();
+                else
+                    this.unPauseGame();
+            }
+
+        if(!this.isRunning)
+        {
+            this.menu.processInput(userInput);
+            userInput.clear();
+            return;
+        }
 
         int mouseCode = userInput.getMousePressedCode();
         int keyCode = userInput.getKeyPressedCode();
