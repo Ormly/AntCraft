@@ -33,13 +33,13 @@ public class GameWorld
     private Timeline timeline;
 
     private boolean isRunning;
+    private boolean isGameOver;
 
     private ArrayList<GameObject> gameObjects;
     private ArrayList<GameObject> gameObjectsToCreate;
     private ArrayList<GameObject> gameObjectsSelected;
     private Queue<Ant> antsInNest;
     private MouseAreaSelection mouseAreaSelection;
-
 
     private Nest nest;
 
@@ -52,6 +52,7 @@ public class GameWorld
 
     private void resetGame()
     {
+        this.isGameOver = false;
         this.mainMenu = new Menu();
         this.physicsSystem = new PhysicsSystem(this);
         this.gameObjects = new ArrayList<>();
@@ -68,6 +69,13 @@ public class GameWorld
 
     public void unPauseGame()
     {
+        if(this.isGameOver)
+        {
+            this.resetGame();
+            this.init();
+            return;
+        }
+
         this.isRunning = true;
         if(!this.timeline.isAlive())
             this.timeline.start();
@@ -158,6 +166,9 @@ public class GameWorld
     {
         if(!isRunning)
             return;
+
+        if(this.nest.isDead())
+            gameOver();
 
         if(this.timeline.hasEvents()){
             TimelineEvent event = timeline.getNextEvent();
@@ -397,6 +408,8 @@ public class GameWorld
     private void gameOver()
     {
         this.isRunning = false;
+        this.isGameOver = true;
+        this.setCurrentMenu(new GameOverMenu(this.nest.getHealthStatus()>0));
         logger.info("Game is over!");
     }
 
