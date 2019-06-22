@@ -3,10 +3,7 @@ package main;
 import core.Level;
 import core.PhysicsSystem;
 import gameobjects.*;
-import ui.GraphicsSystem;
-import ui.InputSystem;
-import ui.Menu;
-import ui.UserInput;
+import ui.*;
 import utilities.*;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
@@ -76,8 +73,8 @@ public class GameWorld
         nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 65);
         gameObjects.add(nest);
 
-        this.menu.setGameWorld(this);
-        this.menu.setInputSystem(graphicsSystem.getInputSystem());
+        GUIMenu.setGameWorld(this);
+        GUIMenu.setInputSystem(graphicsSystem.getInputSystem());
         this.initializeTimeline();
         this.initAntsInNest();
         this.loadLevels();

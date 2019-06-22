@@ -1,29 +1,17 @@
 package ui;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import core.ResourceManager;
-import javafx.application.Platform;
-import main.GameWorld;
-import sun.rmi.runtime.Log;
 import utilities.Constants;
 import utilities.logging.Logging;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Menu
+public class Menu extends GUIMenu
 {
-    private ArrayList<MenuButton> buttons;
-    private Rectangle mainBox;
-    private int PADDING = 10;
-    private InputSystem inputSystem;
-    private GameWorld game;
+    private final int PADDING = 10;
     private BufferedImage logo;
 
     public Menu()
@@ -63,32 +51,7 @@ public class Menu
 
     public void draw(Graphics2D g)
     {
-
-        g.setColor(Color.LIGHT_GRAY);
-        g.fill(this.mainBox);
-
-        for(MenuButton b: this.buttons)
-        {
-            b.draw(g);
-        }
+        super.draw(g);
         g.drawImage(this.logo,Constants.MENU_X_POS,Constants.MENU_Y_POS, null);
-    }
-
-    public void processInput(UserInput input)
-    {
-        for(MenuButton b:this.buttons)
-        {
-            b.processInput(input);
-        }
-    }
-
-    public void setGameWorld(GameWorld world)
-    {
-        this.game = world;
-    }
-
-    public void setInputSystem(InputSystem inputSystem)
-    {
-        this.inputSystem = inputSystem;
     }
 }
