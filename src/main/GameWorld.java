@@ -371,30 +371,6 @@ public class GameWorld
         userInput.clear();
     }
 
-    private void initializeTimeline()
-    {
-        this.timeline = new Timeline();
-
-        // first wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(2, 600.0), 1));
-
-        // second wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(5,600.0), 60));
-
-        // third wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(10,600.0), 120));
-
-        this.timeline.addEvent(new GameOverEvent(360));
-
-//        Level l = new Level();
-//        l.setName("level1");
-//        l.setNumOfAnts(this.numOfAnts);
-//        l.setTimeline(this.timeline);
-//        ArrayList<Level> levels = new ArrayList<>();
-//        levels.add(l);
-//        Level.writeToFile(levels);
-    }
-
     private void setCurrentMenu(GUIMenu menu)
     {
         this.currentMenu = menu;
@@ -482,7 +458,7 @@ public class GameWorld
     {
         this.resetGame();
         this.init();
-        
+
         for(Level l:this.levels)
             if(l.getName().compareTo(name) == 0)
             {

@@ -5,7 +5,7 @@ public final class Constants
     public final static int SCREEN_WIDTH = 1024;
     public final static int SCREEN_HEIGHT = 768;
 
-    public final static int MENU_HEIGHT = (int)(((double)SCREEN_HEIGHT)*0.50);
+    public final static int MENU_HEIGHT = (int)(((double)SCREEN_HEIGHT)*0.70);
     public final static int MENU_WIDTH = (int)(((double)SCREEN_WIDTH)*0.35);
     public final static int MENU_X_POS = (int)(SCREEN_WIDTH/2.0 - MENU_WIDTH/2.0);
     public final static int MENU_Y_POS = (int)(SCREEN_HEIGHT/2.0 - MENU_HEIGHT/2.0);
