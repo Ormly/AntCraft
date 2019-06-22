@@ -22,11 +22,15 @@ public class GameWorld
     private PhysicsSystem physicsSystem;
     private InputSystem inputSystem;
     private UserInput userInput;
-    private Menu menu;
+    private GUIMenu currentMenu;
+    private Menu mainMenu;
+    private LevelMenu levelMenu;
 
     private long timestampLast;
     private double frameDuration;
 
+    private ArrayList<Level> levels;
+    private Level currentLevel;
     private Timeline timeline;
 
     private boolean isRunning;
@@ -44,13 +48,17 @@ public class GameWorld
 
     public GameWorld()
     {
-        this.menu = new Menu();
+        this.resetGame();
+    }
+
+    private void resetGame()
+    {
+        this.mainMenu = new Menu();
         this.physicsSystem = new PhysicsSystem(this);
         this.gameObjects = new ArrayList<>();
         this.gameObjectsToCreate = new ArrayList<>();
         this.gameObjectsSelected = new ArrayList<>();
         this.antsInNest = new LinkedList<>();
-
     }
 
     public void pauseGame()
@@ -62,7 +70,10 @@ public class GameWorld
     public void unPauseGame()
     {
         this.isRunning = true;
-        this.timeline.unFreeze();
+        if(!this.timeline.isAlive())
+            this.timeline.start();
+        else
+            this.timeline.unFreeze();
     }
 
     public void init()
@@ -73,21 +84,31 @@ public class GameWorld
         nest = new Nest(Constants.NEST_X_POS, Constants.NEST_Y_POS, 65);
         gameObjects.add(nest);
 
+        this.setCurrentMenu(this.mainMenu);
         GUIMenu.setGameWorld(this);
         GUIMenu.setInputSystem(graphicsSystem.getInputSystem());
-        this.initializeTimeline();
-        this.initAntsInNest();
         this.loadLevels();
-
+        this.initAntsInNest();
     }
 
     private void loadLevels()
     {
-        ArrayList<Level> levels = Level.readFromFile();
-        for(Level l:levels)
+        this.levels = Level.readFromFile();
+        if(this.levels.isEmpty())
         {
-            logger.debug("read level: " + l.getName() + " from file.");
+            logger.error("No levels found!");
+            System.exit(1);
         }
+        this.levelMenu = new LevelMenu();
+
+        this.setCurrentLevel(this.levels.get(0));
+    }
+
+    private void setCurrentLevel(Level level)
+    {
+        this.currentLevel = level;
+        this.timeline = this.currentLevel.getTimeline();
+        this.numOfAnts = this.currentLevel.getNumOfAnts();
     }
 
     private void initAntsInNest()
@@ -125,11 +146,6 @@ public class GameWorld
         updateObjects();
 
         redrawObjects();
-    }
-
-    private void showMenu()
-    {
-        this.graphicsSystem.draw(this.menu);
     }
 
     private void calcFrameDuration()
@@ -194,7 +210,7 @@ public class GameWorld
         graphicsSystem.clear();
 
         if(!this.isRunning)
-            this.graphicsSystem.draw(this.menu);
+            this.graphicsSystem.draw(this.currentMenu);
         else
         {
             for(GameObject gameObject : gameObjects)
@@ -229,7 +245,7 @@ public class GameWorld
 
         if(!this.isRunning)
         {
-            this.menu.processInput(userInput);
+            this.currentMenu.processInput(userInput);
             userInput.clear();
             return;
         }
@@ -379,6 +395,21 @@ public class GameWorld
 //        Level.writeToFile(levels);
     }
 
+    private void setCurrentMenu(GUIMenu menu)
+    {
+        this.currentMenu = menu;
+    }
+
+    public void showLevelMenu()
+    {
+        setCurrentMenu(this.levelMenu);
+    }
+
+    public void showMainMenu()
+    {
+        setCurrentMenu(this.mainMenu);
+    }
+
     private ArrayList<GameObject> generateBugs(int count, double radius)
     {
         Random rand = new Random();
@@ -433,6 +464,32 @@ public class GameWorld
     public GameObject getGameObjectAtCoordinate(int xPos, int yPos)
     {
         return this.physicsSystem.getGameObjectAtCoordinate(xPos,yPos);
+    }
+
+    public LinkedList<String> getLevelNames()
+    {
+        LinkedList<String> names = new LinkedList<>();
+
+        for(Level l:this.levels)
+        {
+            names.add(l.getName());
+        }
+
+        return names;
+    }
+
+    public void startLevelWithName(String name)
+    {
+        this.resetGame();
+        this.init();
+        
+        for(Level l:this.levels)
+            if(l.getName().compareTo(name) == 0)
+            {
+                this.setCurrentLevel(l);
+            }
+        this.setCurrentMenu(this.mainMenu);
+        this.unPauseGame();
     }
 
 }

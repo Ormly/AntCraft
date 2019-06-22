@@ -16,7 +16,9 @@ public class Menu extends GUIMenu
 
     public Menu()
     {
-        this.mainBox = new Rectangle(Constants.MENU_X_POS,Constants.MENU_Y_POS,Constants.MENU_WIDTH,Constants.MENU_HEIGHT);
+        this.setPosition(Constants.MENU_X_POS,Constants.MENU_Y_POS);
+        this.setSize(Constants.MENU_WIDTH,Constants.MENU_HEIGHT);
+
         this.logo = ResourceManager.getInstance().getImage("menulogo");
         this.buttons = new ArrayList<>();
         MenuButton play = new MenuButton((int)this.mainBox.getX()+15,(int)(this.mainBox.getY()+this.mainBox.getHeight()/2.5-PADDING), (int)(this.mainBox.width*0.9),70);
@@ -31,6 +33,14 @@ public class Menu extends GUIMenu
             public void actionPerformed(ActionEvent e)
             {
                 game.unPauseGame();
+            }
+        });
+
+        levels.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                game.showLevelMenu();
             }
         });
 

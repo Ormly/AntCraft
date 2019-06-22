@@ -116,7 +116,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         }
     }
 
-    public void draw(Menu menu)
+    public void draw(GUIMenu menu)
     {
         menu.draw((Graphics2D) this.graphics);
     }
