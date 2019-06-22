@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 
 public class GameWorld
 {
@@ -381,27 +380,6 @@ public class GameWorld
         setCurrentMenu(this.levelMenu);
     }
 
-    public void showMainMenu()
-    {
-        setCurrentMenu(this.mainMenu);
-    }
-
-    private ArrayList<GameObject> generateBugs(int count, double radius)
-    {
-        Random rand = new Random();
-
-        ArrayList<GameObject> bugs = new ArrayList();
-        for(int i=0; i<count; ++i)
-        {
-            double theta = rand.nextDouble()*Math.PI*2;
-            double x = Constants.NEST_X_POS + radius * Math.cos(theta);
-            double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
-            bugs.add(new Bug(x,y,20));
-        }
-
-        return bugs;
-    }
-
     private void createNewObjects()
     {
         if(!this.gameObjectsToCreate.isEmpty())
@@ -460,12 +438,13 @@ public class GameWorld
         this.init();
 
         for(Level l:this.levels)
+        {
             if(l.getName().compareTo(name) == 0)
             {
                 this.setCurrentLevel(l);
             }
+        }
         this.setCurrentMenu(this.mainMenu);
         this.unPauseGame();
     }
-
 }
