@@ -80,7 +80,17 @@ public class GameWorld
         this.menu.setInputSystem(graphicsSystem.getInputSystem());
         this.initializeTimeline();
         this.initAntsInNest();
+        this.loadLevels();
 
+    }
+
+    private void loadLevels()
+    {
+        ArrayList<Level> levels = Level.readFromFile();
+        for(Level l:levels)
+        {
+            logger.debug("read level: " + l.getName() + " from file.");
+        }
     }
 
     private void initAntsInNest()
@@ -363,13 +373,13 @@ public class GameWorld
 
         this.timeline.addEvent(new GameOverEvent(360));
 
-        Level l = new Level();
-        l.setName("level1");
-        l.setNumOfAnts(this.numOfAnts);
-        l.setTimeline(this.timeline);
-        ArrayList<Level> levels = new ArrayList<>();
-        levels.add(l);
-        Level.writeToFile(levels);
+//        Level l = new Level();
+//        l.setName("level1");
+//        l.setNumOfAnts(this.numOfAnts);
+//        l.setTimeline(this.timeline);
+//        ArrayList<Level> levels = new ArrayList<>();
+//        levels.add(l);
+//        Level.writeToFile(levels);
     }
 
     private ArrayList<GameObject> generateBugs(int count, double radius)

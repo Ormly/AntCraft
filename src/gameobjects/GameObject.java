@@ -8,6 +8,8 @@ import utilities.logging.Logging;
 import ui.Icon;
 
 import java.awt.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 
@@ -15,7 +17,7 @@ public abstract class GameObject
 {
     public static GameWorld world;
 
-    protected Logger logger = Logging.getLogger(this.getClass().getName());
+    protected static Logger logger = Logging.getLogger(GameObject.class.getName());
 
     protected double xPos;
     protected double yPos;
@@ -179,5 +181,30 @@ public abstract class GameObject
         bug.put("speed",this.speed);
 
         return bug;
+    }
+
+    public static GameObject parseFromJSON(JSONObject obj)
+    {
+        GameObject b = null;
+        try
+        {
+            Class cls = Class.forName((String) obj.get("type"));
+            double xPos = (double) obj.get("xPos");
+            double yPos = (double) obj.get("yPos");
+            double speed = (double) obj.get("speed");
+
+            b = (GameObject) cls.getConstructor(double.class, double.class,double.class).newInstance(xPos,yPos,speed);
+
+        }
+        catch(ClassNotFoundException e)
+        {
+            logger.error("class "+ (String) obj.get("type") + " not found");
+        }
+        catch(IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e)
+        {
+            logger.error("Bug from JSON just ate shit");
+        }
+
+        return b;
     }
 }

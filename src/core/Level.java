@@ -1,20 +1,21 @@
 package core;
-
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import utilities.Constants;
 import utilities.Timeline;
+import utilities.logging.Logger;
 import utilities.logging.Logging;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Level
 {
+    private static final File file = new File(Constants.LEVEL_FILE_PATH);
+    private static final Logger logger = Logging.getLogger(Level.class.getName());
+
     public int getNumOfAnts()
     {
         return numOfAnts;
@@ -52,7 +53,6 @@ public class Level
     public static void writeToFile(ArrayList<Level> levels)
     {
         JSONArray lvs = new JSONArray();
-        File file = new File(Constants.LEVEL_FILE_PATH);
         FileWriter writer = null;
 
         for(Level l:levels)
@@ -89,9 +89,38 @@ public class Level
         }
     }
 
-//    public static ArrayList<Level> readFromFile(String fileName)
-//    {
-//
-//    }
+    public static ArrayList<Level> readFromFile()
+    {
+        ArrayList<Level> levels = new ArrayList<>();
+        FileReader reader = null;
+        try
+        {
+            reader = new FileReader(file);
+            JSONParser parser = new JSONParser();
+
+            JSONArray jlevels = (JSONArray) parser.parse(reader);
+
+            jlevels.forEach(lvl -> parseLevelObject((JSONObject) lvl, levels));
+        }
+        catch(FileNotFoundException e)
+        {
+            logger.info("No level file found.");
+        }
+        catch(ParseException | IOException e)
+        {
+            logger.error("Error parsing levels file!");
+        }
+
+        return levels;
+    }
+
+    private static void parseLevelObject(JSONObject level, ArrayList<Level> levels)
+    {
+        Level l = new Level();
+        l.setName((String) level.get("name"));
+        l.setNumOfAnts(((Long)level.get("numOfAnts")).intValue());
+        l.setTimeline(Timeline.parseTimeLineFromJSON((JSONArray)level.get("events")));
+        levels.add(l);
+    }
 
 }

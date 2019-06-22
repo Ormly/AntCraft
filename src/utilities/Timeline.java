@@ -114,4 +114,15 @@ public class Timeline extends Thread
         return events;
     }
 
+    public static Timeline parseTimeLineFromJSON(JSONArray eventsArr)
+    {
+        Timeline tl = new Timeline();
+        for(Object o: eventsArr)
+        {
+            tl.addEvent(TimelineEvent.parseTimeLineEventFromJSON((JSONObject) o));
+        }
+
+        return tl;
+    }
+
 }
