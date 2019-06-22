@@ -43,7 +43,7 @@ public class GameWorld
 
     private Nest nest;
 
-    private int numOfAnts = 30;
+    private int numOfAnts;
 
     public GameWorld()
     {
@@ -59,6 +59,7 @@ public class GameWorld
         this.gameObjectsToCreate = new ArrayList<>();
         this.gameObjectsSelected = new ArrayList<>();
         this.antsInNest = new LinkedList<>();
+        this.currentLevel = null;
     }
 
     public void pauseGame()
@@ -108,7 +109,8 @@ public class GameWorld
         }
         this.levelMenu = new LevelMenu();
 
-        this.setCurrentLevel(this.levels.get(0));
+        if(this.currentLevel == null)
+            this.setCurrentLevel(this.levels.get(0));
     }
 
     private void setCurrentLevel(Level level)
@@ -247,6 +249,7 @@ public class GameWorld
         if(userInput.isKeyPressed())
             if(userInput.getKeyPressedCode() == KeyEvent.VK_ESCAPE)
             {
+                this.currentMenu = this.mainMenu;
                 if(this.isRunning)
                     this.pauseGame();
                 else
@@ -448,7 +451,6 @@ public class GameWorld
     public void startLevelWithName(String name)
     {
         this.resetGame();
-        this.init();
 
         for(Level l:this.levels)
         {
@@ -457,7 +459,11 @@ public class GameWorld
                 this.setCurrentLevel(l);
             }
         }
+
+        this.init();
+
         this.setCurrentMenu(this.mainMenu);
+
         this.unPauseGame();
     }
 }
