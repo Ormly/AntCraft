@@ -73,9 +73,7 @@ public abstract class GameObject
         double differenceY = Math.abs(yPos - destinationYPos);
 
         if(differenceX < 3 && differenceY < 3)
-        {
             return true;
-        }
 
         previousXPos = xPos;
         previousYPos = yPos;

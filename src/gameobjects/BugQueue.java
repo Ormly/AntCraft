@@ -9,7 +9,7 @@ public class BugQueue extends HUDObject
 
     public BugQueue(GameWorld gameWorld)
     {
-        this.setGameWorld(gameWorld);
+        super(gameWorld);
         upcomingWave = new ArrayList<>();
 
         this.isVisible = true;
@@ -20,10 +20,14 @@ public class BugQueue extends HUDObject
         this.height = 60;
     }
 
-    public void update(ArrayList<GameObject> wave)
+    public void update()
     {
-        this.upcomingWave.clear();
-        this.upcomingWave.addAll((ArrayList<GameObject>)wave.clone());
+        ArrayList<GameObject> wave = this.gameWorld.getTimeline().getNextSpawn();
+        if(wave != null)
+        {
+            this.upcomingWave.clear();
+            this.upcomingWave.addAll((ArrayList<GameObject>) wave.clone());
+        }
     }
 
     public ArrayList<GameObject> getUpcomingWave()

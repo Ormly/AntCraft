@@ -78,21 +78,33 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         graphics.drawImage(this.backgroundImage,0,0,null);
     }
 
+    public void draw(AttackIndicator attackIndicator)
+    {
+        //logger.debug("Entered AttackIndicator draw");
+        double xPos = attackIndicator.getXPos();
+        double yPos = attackIndicator.getYPos();
+        double angle = attackIndicator.getAngle();
+
+        Icon icon = new Icon(ResourceManager.getInstance().getImage("indicator"),-20,0.4);
+        icon.update(xPos,yPos,angle);
+        ((Graphics2D)graphics).drawImage(icon.getImage(),icon.getTransform(),null);
+    }
+
     public void draw(MouseAreaSelection mouseAreaSelection)
     {
-        int xPos = mouseAreaSelection.getXPos();
-        int yPos = mouseAreaSelection.getYPos();
+        double xPos = mouseAreaSelection.getXPos();
+        double yPos = mouseAreaSelection.getYPos();
         int width = mouseAreaSelection.getWidth();
         int height = mouseAreaSelection.getHeight();
 
         graphics.setColor(Color.MAGENTA);
-        graphics.drawRect(xPos,yPos,width,height);
+        graphics.drawRect((int)xPos,(int)yPos,width,height);
     }
 
     public void draw(AntStockIndicator antStockIndicator)
     {
-        int xPos = antStockIndicator.getXPos();
-        int yPos = antStockIndicator.getYPos();
+        double xPos = antStockIndicator.getXPos();
+        double yPos = antStockIndicator.getYPos();
         int width = antStockIndicator.getWidth();
         int height = antStockIndicator.getHeight();
 
@@ -101,11 +113,11 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         ((Graphics2D)graphics).drawImage(icon.getImage(),icon.getTransform(),null);
 
         graphics.setColor(Color.BLACK);
-        graphics.drawRect(xPos,yPos,width,height);
-        graphics.drawRect(xPos-1,yPos-1,width+2,height+2);
+        graphics.drawRect((int)xPos,(int)yPos,width,height);
+        graphics.drawRect((int)xPos-1,(int)yPos-1,width+2,height+2);
 
         graphics.setFont((font));
-        graphics.drawString(Integer.toString(antStockIndicator.getNumOfAnts()),xPos+53,yPos+50);
+        graphics.drawString(Integer.toString(antStockIndicator.getNumOfAnts()),(int)xPos+53,(int)yPos+50);
     }
 
     public void draw(BugQueue bugQueue)
@@ -113,8 +125,8 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         if(bugQueue.getUpcomingWave() == null)
             return;
 
-        int xPos = bugQueue.getXPos();
-        int yPos = bugQueue.getYPos();
+        double xPos = bugQueue.getXPos();
+        double yPos = bugQueue.getYPos();
         int width = bugQueue.getWidth();
         int height = bugQueue.getHeight();
         //int xOffset = 53;
@@ -125,11 +137,11 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         Icon icon = new Icon(ResourceManager.getInstance().getImage("ladybug"),5,0.4);
         icon.update(xPos, yPos, (3 * Math.PI) / 2);
         ((Graphics2D) graphics).drawImage(icon.getImage(), icon.getTransform(), null);
-        graphics.drawString("  x " + Integer.toString(size),xPos+50,yPos+45);
+        graphics.drawString("  x " + Integer.toString(size),(int)xPos+50,(int)yPos+45);
 
         graphics.setColor(Color.BLACK);
-        graphics.drawRect(xPos,yPos,width,height);
-        graphics.drawRect(xPos-1,yPos-1,width+2,height+2);
+        graphics.drawRect((int)xPos,(int)yPos,width,height);
+        graphics.drawRect((int)xPos-1,(int)yPos-1,width+2,height+2);
     }
 
     public void draw(ArrayList<GameObject> gameObjectsSelected)

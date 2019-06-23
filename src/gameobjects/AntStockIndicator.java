@@ -10,13 +10,14 @@ public class AntStockIndicator extends HUDObject
 
     public AntStockIndicator(GameWorld gameWorld)
     {
+        super(gameWorld);
+
         this.isVisible = true;
         this.xPos = Constants.SCREEN_WIDTH - 120;
         this.yPos = 15;
         this.width = 100;
         this.height = 69;
 
-        this.setGameWorld(gameWorld);
         this.maxNumOfAnts = this.gameWorld.getNumOfAnts();
         this.currentNumOfAnts = this.maxNumOfAnts;
     }

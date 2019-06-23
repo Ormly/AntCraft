@@ -4,8 +4,8 @@ import main.GameWorld;
 
 public abstract class HUDObject
 {
-    protected int xPos;
-    protected int yPos;
+    protected double xPos;
+    protected double yPos;
 
     protected int width;
     protected int height;
@@ -13,6 +13,16 @@ public abstract class HUDObject
     protected boolean isVisible;
 
     protected static GameWorld gameWorld;
+
+    public HUDObject()
+    {
+        
+    }
+
+    public HUDObject(GameWorld gameWorld)
+    {
+        this.gameWorld = gameWorld;
+    }
 
     public boolean isVisible()
     {
@@ -23,11 +33,11 @@ public abstract class HUDObject
         this.isVisible = isVisible;
     }
 
-    public int getXPos()
+    public double getXPos()
     {
         return xPos;
     }
-    public int getYPos()
+    public double getYPos()
     {
         return yPos;
     }

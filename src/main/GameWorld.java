@@ -36,7 +36,7 @@ public class GameWorld
     private MouseAreaSelection mouseAreaSelection;
     private AntStockIndicator antStockIndicator;
     private BugQueue bugQueue;
-
+    private ArrayList<AttackIndicator> attackIndicators;
 
     private Nest nest;
 
@@ -48,6 +48,7 @@ public class GameWorld
         this.gameObjectsToCreate = new ArrayList<>();
         this.gameObjectsSelected = new ArrayList<>();
         this.antsInNest = new LinkedList<>();
+        this.attackIndicators = new ArrayList<>();
     }
 
     public void init()
@@ -114,9 +115,7 @@ public class GameWorld
         if(!isRunning)
             return;
 
-        ArrayList<GameObject> temp = timeline.getNextSpawn();
-        if(temp != null)
-            bugQueue.update(temp);
+        bugQueue.update();
 
         if(this.timeline.hasEvents())
         {
@@ -135,7 +134,9 @@ public class GameWorld
 
         removeTheDead();
 
+
         // update all game objects
+        attackIndicators.clear();
         for(GameObject gameObject : gameObjects)
         {
             // is ant back to nest?
@@ -148,6 +149,21 @@ public class GameWorld
             }
 
             gameObject.update(this.frameDuration);
+            if(gameObject instanceof Bug)
+            {
+                if(!this.physicsSystem.isObjectOnScreen(gameObject))
+                {
+                    AttackIndicator indicator = new AttackIndicator(this);
+                    indicator.init((Bug) gameObject);
+                    attackIndicators.add(indicator);
+                }
+            }
+        }
+
+        if(!attackIndicators.isEmpty())
+        {
+            for(AttackIndicator attackIndicator : attackIndicators)
+                attackIndicator.updateIsVisible();
         }
     }
 
@@ -169,23 +185,42 @@ public class GameWorld
     {
         graphicsSystem.clear();
 
-        for(GameObject gameObject : gameObjects)
+        if(!gameObjects.isEmpty())
         {
-            if(gameObject.isVisible()) // only draw visible objects
-                graphicsSystem.draw(gameObject);
+            for(GameObject gameObject : gameObjects)
+            {
+                if(gameObject.isVisible()) // only draw visible objects
+                    graphicsSystem.draw(gameObject);
+            }
         }
 
-        graphicsSystem.draw(gameObjectsSelected);
+        if(!gameObjectsSelected.isEmpty())
+            graphicsSystem.draw(gameObjectsSelected);
 
         graphicsSystem.draw(nest);
 
-
         if(mouseAreaSelection.isVisible())
             graphicsSystem.draw(mouseAreaSelection);
+
         if(antStockIndicator.isVisible())
             graphicsSystem.draw(antStockIndicator);
+
         if(bugQueue.isVisible())
             graphicsSystem.draw(bugQueue);
+
+
+        ArrayList<AttackIndicator> toRemove = new ArrayList<>();
+        if(!attackIndicators.isEmpty())
+        {
+            for(AttackIndicator attackIndicator : attackIndicators)
+            {
+                if(attackIndicator.isVisible())
+                    graphicsSystem.draw(attackIndicator);
+                else
+                    toRemove.add(attackIndicator);
+            }
+        }
+        attackIndicators.removeAll(toRemove);
 
         graphicsSystem.swapBuffers();
     }
@@ -320,18 +355,30 @@ public class GameWorld
     private void initializeTimeline()
     {
         this.timeline = new Timeline();
+        double radius = 650.0;
 
         // first wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(1, 600.0), 10));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1, radius), 1));
 
         // second wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(2,600.0), 30));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 5));
 
         // third wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(3,600.0), 50));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 10));
 
         //fourth wave
-        this.timeline.addEvent(new SpawnEvent(generateBugs(4,600.0), 70));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 15));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 20));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 25));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 30));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 35));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 40));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 45));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 50));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 55));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 60));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 65));
+        this.timeline.addEvent(new SpawnEvent(generateBugs(1,radius), 70));
 
         //game Over
         this.timeline.addEvent(new GameOverEvent(360));
@@ -403,4 +450,8 @@ public class GameWorld
         return this.timeline;
     }
 
+    public PhysicsSystem getPhysicsSystem()
+    {
+        return this.physicsSystem;
+    }
 }
