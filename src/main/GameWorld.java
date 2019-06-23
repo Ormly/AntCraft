@@ -40,6 +40,9 @@ public class GameWorld
     private ArrayList<GameObject> gameObjectsSelected;
     private Queue<Ant> antsInNest;
     private MouseAreaSelection mouseAreaSelection;
+    private AntStockIndicator antStockIndicator;
+    private BugQueue bugQueue;
+    private ArrayList<AttackIndicator> attackIndicators;
 
     private Nest nest;
 
@@ -59,7 +62,9 @@ public class GameWorld
         this.gameObjectsToCreate = new ArrayList<>();
         this.gameObjectsSelected = new ArrayList<>();
         this.antsInNest = new LinkedList<>();
+        this.antStockIndicator = new AntStockIndicator(this);
         this.currentLevel = null;
+	    this.attackIndicators = new ArrayList<>();
     }
 
     public void pauseGame()
@@ -97,6 +102,8 @@ public class GameWorld
         GUIMenu.setInputSystem(graphicsSystem.getInputSystem());
         this.loadLevels();
         this.initAntsInNest();
+
+        this.bugQueue = new BugQueue(this);
     }
 
     private void loadLevels()
@@ -119,6 +126,7 @@ public class GameWorld
         this.timeline = this.currentLevel.getTimeline();
         this.numOfAnts = this.currentLevel.getNumOfAnts();
     }
+
 
     private void initAntsInNest()
     {
@@ -172,10 +180,15 @@ public class GameWorld
         if(this.nest.isDead())
             gameOver();
 
+	    bugQueue.update();
+
+	    antStockIndicator.update();
+
         if(this.timeline.hasEvents()){
             TimelineEvent event = timeline.getNextEvent();
 
-            if(event.isGameOverEvent()){
+            if(event.isGameOverEvent())
+	    {
                 gameOver(); // end the game
             }
 
@@ -190,6 +203,7 @@ public class GameWorld
         removeTheDead();
 
         // update all game objects
+        attackIndicators.clear();
         for(GameObject gameObject : gameObjects)
         {
             // is ant back to nest?
@@ -200,6 +214,21 @@ public class GameWorld
             }
 
             gameObject.update(this.frameDuration);
+            if(gameObject instanceof Bug)
+            {
+                if(!this.physicsSystem.isObjectOnScreen(gameObject))
+                {
+                    AttackIndicator indicator = new AttackIndicator(this);
+                    indicator.init((Bug) gameObject);
+                    attackIndicators.add(indicator);
+                }
+            }
+        }
+
+        if(!attackIndicators.isEmpty())
+        {
+            for(AttackIndicator attackIndicator : attackIndicators)
+                attackIndicator.updateIsVisible();
         }
     }
 
@@ -237,6 +266,26 @@ public class GameWorld
 
             if(mouseAreaSelection.isVisible())
                 graphicsSystem.draw(mouseAreaSelection);
+
+            if(antStockIndicator.isVisible())
+                graphicsSystem.draw(antStockIndicator);
+
+            if(bugQueue.isVisible())
+                graphicsSystem.draw(bugQueue);
+
+
+            ArrayList<AttackIndicator> toRemove = new ArrayList<>();
+            if(!attackIndicators.isEmpty())
+            {
+                for(AttackIndicator attackIndicator : attackIndicators)
+                {
+                    if(attackIndicator.isVisible())
+                        graphicsSystem.draw(attackIndicator);
+                    else
+                        toRemove.add(attackIndicator);
+                }
+            }
+            attackIndicators.removeAll(toRemove);
         }
 
         graphicsSystem.swapBuffers();
@@ -434,6 +483,21 @@ public class GameWorld
     public GameObject getGameObjectAtCoordinate(int xPos, int yPos)
     {
         return this.physicsSystem.getGameObjectAtCoordinate(xPos,yPos);
+    }
+
+    public int getNumOfAnts()
+    {
+        return this.antsInNest.size();
+    }
+
+    public Timeline getTimeline()
+    {
+        return this.timeline;
+    }
+
+    public PhysicsSystem getPhysicsSystem()
+    {
+        return this.physicsSystem;
     }
 
     public LinkedList<String> getLevelNames()

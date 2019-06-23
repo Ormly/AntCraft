@@ -1,0 +1,65 @@
+[{
+		"name": "level1",
+		"numOfAnts": 30,
+		"events": [{
+				"objects": [{
+						"yPos": -59.02611404625043,
+						"xPos": 107.36700298532418,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": -215.99289274529986,
+						"xPos": 509.0796138736337,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": -99.7367898003252,
+						"xPos": 866.9629814412708,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": -140.40327093366193,
+						"xPos": 220.45033110278388,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": -205.30495071557198,
+						"xPos": 624.7815368848879,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": 173.22644802932723,
+						"xPos": -49.760188861462666,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": 498.47058039527616,
+						"xPos": 1100.9791899753068,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": 604.2841578845223,
+						"xPos": -46.09935476141413,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": 926.1695719953287,
+						"xPos": 254.99386154723453,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}, {
+						"yPos": 515.23746436564,
+						"xPos": 1097.4713724400856,
+						"type": "gameobjects.Bug",
+						"speed": 20.0
+					}
+				],
+				"type": "utilities.SpawnEvent",
+				"schedTimeSec": 1.0
+			}, {
+				"type": "utilities.GameOverEvent",
+				"schedTimeSec": 4500.0
+			}
+		]
+	}
+]

@@ -1,14 +1,12 @@
 package utilities;
 
+import gameobjects.GameObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class Timeline extends Thread
 {
@@ -32,6 +30,25 @@ public class Timeline extends Thread
     public TimelineEvent getNextEvent()
     {
         return this.occuredEvents.poll();
+    }
+
+    public TimelineEvent peekNextEvent()
+    {
+        return this.events.get(0);
+    }
+
+    public ArrayList<GameObject> getNextSpawn()
+    {
+        if(events.size() > 0)
+        {
+            for(TimelineEvent event : events)
+            {
+                if(event instanceof SpawnEvent)
+                    return event.getObjects();
+            }
+        }
+
+        return null;
     }
 
     public void addEvent(TimelineEvent event)
@@ -68,7 +85,10 @@ public class Timeline extends Thread
     }
 
     public void run(){
-        while(true)
+        //sort by scheduled time INCR
+        this.events.sort(Comparator.comparing(TimelineEvent::getScheduledTimeSec));
+        
+	while(true)
         {
             // thread never runs if there's nothing here, for some reason..
             try
