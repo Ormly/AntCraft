@@ -1,6 +1,8 @@
 package gameobjects;
 
 import main.GameWorld;
+import utilities.Constants;
+
 import java.util.ArrayList;
 
 public class BugQueue extends HUDObject
@@ -14,10 +16,10 @@ public class BugQueue extends HUDObject
 
         this.isVisible = true;
         //TODO define in Constants
-        this.xPos = 20;
-        this.yPos = 15;
-        this.width = 320;
-        this.height = 60;
+        this.xPos = Constants.BUGQUEUE_X_POS;
+        this.yPos = Constants.BUGQUEUE_Y_POS;
+        this.width = Constants.BUGQUEUE_WIDTH;
+        this.height = Constants.BUGQUEUE_HEIGHT;
     }
 
     public void update()
