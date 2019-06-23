@@ -1,9 +1,6 @@
 package ui;
 
-import sun.awt.image.ImageWatched;
 import utilities.Constants;
-
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
