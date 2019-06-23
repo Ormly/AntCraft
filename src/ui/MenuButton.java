@@ -1,6 +1,4 @@
 package ui;
-
-import sun.rmi.runtime.Log;
 import utilities.DrawUtils;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
@@ -8,7 +6,6 @@ import utilities.logging.Logging;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class MenuButton
