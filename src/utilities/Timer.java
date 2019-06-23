@@ -4,11 +4,14 @@ public class Timer
 {
     private double secondsToExpire;
     private double startTime = 0.0;
-    public Timer(double secondsToExpire){
+
+    public Timer(double secondsToExpire)
+    {
         this.secondsToExpire = secondsToExpire;
     }
 
-    public void start(){
+    public void start()
+    {
         this.startTime = System.currentTimeMillis();
     }
 

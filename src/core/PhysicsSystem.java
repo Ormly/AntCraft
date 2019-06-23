@@ -4,8 +4,10 @@ import gameobjects.GameObject;
 import gameobjects.Nest;
 import interfaces.IPhysicsSystem;
 import main.GameWorld;
+import utilities.Constants;
 import utilities.logging.Logging;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
 public class PhysicsSystem implements IPhysicsSystem
@@ -83,6 +85,43 @@ public class PhysicsSystem implements IPhysicsSystem
                 areaSelectedObjects.add(gameObject);
         }
         return areaSelectedObjects;
+    }
+
+    public Point2D getLineEllipseIntersection(Point2D linePoint, Point2D ellipseCenterPoint, float ellipseHalfWidth, float ellipseHalfHeight)
+    {
+        double ellipseX = ellipseCenterPoint.getX();
+        double ellipseY = ellipseCenterPoint.getY();
+        double lineX = linePoint.getX();
+        double lineY = linePoint.getY();
+
+
+        double distanceX = ellipseX - lineX;
+        double distanceY = ellipseY - lineY;
+
+        double theta = Math.atan2(distanceY, distanceX);
+
+        distanceX = Math.abs(distanceX);
+        distanceY = Math.abs((distanceY));
+
+        double r = Math.hypot(distanceY,distanceX) - ((ellipseHalfWidth * ellipseHalfHeight) / Math.sqrt(Math.pow(ellipseHalfHeight * Math.cos(theta), 2) + Math.pow(ellipseHalfWidth * Math.sin(theta), 2)));
+
+        return new Point2D.Double((lineX + r * Math.cos(theta)), (lineY + r * Math.sin(theta)));
+    }
+
+    public boolean isObjectOnScreen(GameObject gameObject)
+    {
+        double objectX = gameObject.getXPos();
+        double objectY = gameObject.getYPos();
+
+        double topLeftX = 0;
+        double topLeftY = 0;
+        double bottomRightX = Constants.SCREEN_WIDTH;
+        double bottomRightY = Constants.SCREEN_HEIGHT;
+
+        if(objectX >= topLeftX && objectX <= bottomRightX && objectY >= topLeftY && objectY <= bottomRightY)
+            return true;
+        else
+            return false;
     }
 
 }
