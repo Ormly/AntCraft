@@ -28,6 +28,11 @@ public class Timeline extends Thread
         return this.occuredEvents.poll();
     }
 
+    public TimelineEvent peekNextEvent()
+    {
+        return this.events.get(0);
+    }
+
     public ArrayList<GameObject> getNextSpawn()
     {
         if(events.size() > 0)

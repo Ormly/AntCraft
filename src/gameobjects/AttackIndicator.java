@@ -5,9 +5,6 @@ import utilities.Constants;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
 
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 public class AttackIndicator extends HUDObject

@@ -15,7 +15,6 @@ public class BugQueue extends HUDObject
         upcomingWave = new ArrayList<>();
 
         this.isVisible = true;
-        //TODO define in Constants
         this.xPos = Constants.BUGQUEUE_X_POS;
         this.yPos = Constants.BUGQUEUE_Y_POS;
         this.width = Constants.BUGQUEUE_WIDTH;
