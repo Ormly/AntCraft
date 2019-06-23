@@ -1,6 +1,7 @@
 package gameobjects;
 
 import core.ResourceManager;
+import org.json.simple.JSONObject;
 import ui.Icon;
 import utilities.Constants;
 import utilities.Timer;
@@ -18,9 +19,9 @@ public class Bug extends GameObject
 
     private State state;
 
-    public Bug(double xPos, double yPos, double angle, double speed)
+    public Bug(double xPos, double yPos, double speed)
     {
-        super(xPos,yPos,angle,speed,22,new Color(220, 20, 60));
+        super(xPos,yPos,10,speed,22,new Color(220, 20, 60));
 
         this.healthStatus = Constants.MAX_BUG_HEALTH;
         this.maxHealth = Constants.MAX_BUG_HEALTH;

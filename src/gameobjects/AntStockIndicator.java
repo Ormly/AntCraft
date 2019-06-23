@@ -6,7 +6,6 @@ import utilities.Constants;
 public class AntStockIndicator extends HUDObject
 {
     protected int currentNumOfAnts;
-    protected int maxNumOfAnts;
 
     public AntStockIndicator(GameWorld gameWorld)
     {
@@ -17,27 +16,15 @@ public class AntStockIndicator extends HUDObject
         this.yPos = Constants.ANTSTOCKINDICATOR_Y_POS;
         this.width = Constants.ANTSTOCKINDICATOR_WIDTH;
         this.height = Constants.ANTSTOCKINDICATOR_HEIGHT;
-
-        this.maxNumOfAnts = this.gameWorld.getNumOfAnts();
-        this.currentNumOfAnts = this.maxNumOfAnts;
     }
 
-    public void decrement()
+    public void update()
     {
-        if(currentNumOfAnts > 0)
-            currentNumOfAnts--;
-    }
-
-    public void increment()
-    {
-        if(currentNumOfAnts < maxNumOfAnts)
-            currentNumOfAnts++;
+        this.currentNumOfAnts = this.gameWorld.getNumOfAnts();
     }
 
     public int getNumOfAnts()
     {
         return this.currentNumOfAnts;
     }
-
-
 }
