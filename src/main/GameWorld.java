@@ -43,6 +43,7 @@ public class GameWorld
     private AntStockIndicator antStockIndicator;
     private BugQueue bugQueue;
     private ArrayList<AttackIndicator> attackIndicators;
+    private ArrayList<Impact> impactEffects;
 
     private Nest nest;
 
@@ -65,6 +66,7 @@ public class GameWorld
         this.antStockIndicator = new AntStockIndicator(this);
         this.currentLevel = null;
 	    this.attackIndicators = new ArrayList<>();
+	    this.impactEffects = new ArrayList<>();
     }
 
     public void pauseGame()
@@ -230,6 +232,15 @@ public class GameWorld
             for(AttackIndicator attackIndicator : attackIndicators)
                 attackIndicator.updateIsVisible();
         }
+
+        for(int i=0; i < this.impactEffects.size(); ++i)
+        {
+            this.impactEffects.get(0).update(this.frameDuration);
+
+            if(this.impactEffects.get(i).isDead())
+                this.impactEffects.remove(this.impactEffects.get(i));
+        }
+
     }
 
     private void removeTheDead()
@@ -286,6 +297,9 @@ public class GameWorld
                 }
             }
             attackIndicators.removeAll(toRemove);
+
+            for(Impact i:this.impactEffects)
+                this.graphicsSystem.draw(i);
         }
 
         graphicsSystem.swapBuffers();
@@ -529,5 +543,10 @@ public class GameWorld
         this.setCurrentMenu(this.mainMenu);
 
         this.unPauseGame();
+    }
+
+    public void spawnImpactEffect(double x, double y)
+    {
+        this.impactEffects.add(new Impact(x,y));
     }
 }

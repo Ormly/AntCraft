@@ -1,4 +1,5 @@
 package ui;
+import utilities.Constants;
 import utilities.DrawUtils;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
@@ -33,10 +34,10 @@ public class MenuButton
 
     public void draw(Graphics2D g)
     {
-        g.setColor(Color.BLUE);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
+        g.setColor(Constants.BUTTON_COLOR);
+        g.setFont(new Font("Arial", Font.PLAIN, 24));
         g.fill(this.box);
-        g.setColor(Color.ORANGE);
+        g.setColor(Constants.TEXT_COLOR);
         g.drawString(this.text, DrawUtils.getTextCenterX(this.text,g.getFont(),this.box),(int)(this.box.getY()+this.box.getHeight()/2 + 5));
     }
 

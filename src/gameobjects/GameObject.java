@@ -110,6 +110,10 @@ public abstract class GameObject
             if(this.opponent != null)
             {
                 this.opponent.damage(this.damageFactor);
+
+                world.spawnImpactEffect(this.getXPos()+this.getRadius()*Math.cos(this.getAngle()),
+                                        this.getYPos()+this.getRadius()*Math.sin(this.getAngle()));
+
                 if(this.opponent.isDead())
                 {
                     this.logger.debug("opponent is dead!");

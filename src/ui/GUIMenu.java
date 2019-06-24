@@ -1,6 +1,8 @@
 package ui;
 
 import main.GameWorld;
+import utilities.Constants;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -21,7 +23,7 @@ public abstract class GUIMenu
 
     public void draw(Graphics2D g)
     {
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(Constants.MENU_COLOR);
         g.fill(this.mainBox);
 
         for(MenuButton b: this.buttons)

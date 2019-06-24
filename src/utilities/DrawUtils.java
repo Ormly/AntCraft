@@ -9,6 +9,8 @@ import java.util.Random;
 
 public class DrawUtils
 {
+    public static Random rand = new Random();
+
     public static int getTextCenterX(String text, Font font, Rectangle box)
     {
         int size = (int)(text.length()*font.getSize()/2.0);
@@ -29,6 +31,11 @@ public class DrawUtils
         }
 
         return bugs;
+    }
+
+    public static double getRandomDouble()
+    {
+        return rand.nextDouble();
     }
 
 }
