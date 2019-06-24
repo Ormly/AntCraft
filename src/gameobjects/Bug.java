@@ -1,12 +1,5 @@
 package gameobjects;
 
-import core.ResourceManager;
-import org.json.simple.JSONObject;
-import ui.Icon;
-import utilities.Constants;
-import utilities.Timer;
-
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Bug extends GameObject
@@ -19,18 +12,11 @@ public class Bug extends GameObject
 
     private State state;
 
-    public Bug(double xPos, double yPos, double speed)
+    public Bug(double xPos, double yPos)
     {
-        super(xPos,yPos,10,speed,22,new Color(220, 20, 60));
-
-        this.healthStatus = Constants.MAX_BUG_HEALTH;
-        this.maxHealth = Constants.MAX_BUG_HEALTH;
-        this.damageFactor = 20;
-        this.attackTimer = new Timer(2);
-        this.icon = new Icon(ResourceManager.getInstance().getImage("ladybug"), -30, 0.50);
+        super(xPos,yPos,10,22);
 
         this.opponent = this.world.getNest();   // a bug always has an opponent
-
         this.state = State.HUNTING;
     }
 

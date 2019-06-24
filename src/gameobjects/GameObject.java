@@ -25,8 +25,6 @@ public abstract class GameObject
     protected double speed;
     protected int radius;
 
-    protected Color color;
-
     protected double maxHealth;
     protected double healthStatus;
     protected double damageFactor;
@@ -44,14 +42,13 @@ public abstract class GameObject
     protected double previousXPos;
     protected double previousYPos;
 
-    public GameObject(double xPos, double yPos, double angle, double speed, int radius, Color color)
+    public GameObject(double xPos, double yPos, double angle, int radius)
     {
         this.xPos = xPos;
         this.yPos = yPos;
         this.angle = angle;
         this.speed = speed;
         this.radius = radius;
-        this.color = color;
     }
 
     public void setDestination(double destinationXPos, double destinationYPos)
@@ -150,8 +147,6 @@ public abstract class GameObject
 
     public double getSpeed() { return this.speed; }
 
-    public Color getColor() { return this.color; }
-    public void setColor(Color color) { this.color = color; }
 
     public double getMaxHealth()
     {
@@ -176,7 +171,6 @@ public abstract class GameObject
         bug.put("type",this.getClass().getName());
         bug.put("xPos",this.xPos);
         bug.put("yPos",this.yPos);
-        bug.put("speed",this.speed);
 
         return bug;
     }
@@ -189,9 +183,8 @@ public abstract class GameObject
             Class cls = Class.forName((String) obj.get("type"));
             double xPos = (double) obj.get("xPos");
             double yPos = (double) obj.get("yPos");
-            double speed = (double) obj.get("speed");
 
-            b = (GameObject) cls.getConstructor(double.class, double.class,double.class).newInstance(xPos,yPos,speed);
+            b = (GameObject) cls.getConstructor(double.class, double.class).newInstance(xPos,yPos);
 
         }
         catch(ClassNotFoundException e)

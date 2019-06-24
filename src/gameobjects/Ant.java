@@ -26,8 +26,9 @@ public class Ant extends GameObject
 
     public Ant()
     {
-        super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 100.0, 15, new Color(128, 0, 0));
+        super(Constants.NEST_X_POS, Constants.NEST_Y_POS, 0, 15);
 
+        this.speed = Constants.ANT_SPEED;
         this.healthStatus = Constants.MAX_ANT_HEALTH;
         this.maxHealth = Constants.MAX_ANT_HEALTH;
         this.damageFactor = Constants.ANT_DAMAGE_FACTOR;
