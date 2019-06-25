@@ -10,6 +10,7 @@ import utilities.logging.Logging;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GraphicsSystem extends JPanel implements IGraphicsSystem
@@ -125,19 +126,44 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         if(bugQueue.getUpcomingWave() == null)
             return;
 
+        graphics.setFont((font));
+
         double xPos = bugQueue.getXPos();
         double yPos = bugQueue.getYPos();
         int width = bugQueue.getWidth();
         int height = bugQueue.getHeight();
-        //int xOffset = 53;
         int size = bugQueue.getUpcomingWave().size();
-        graphics.setFont((font));
 
-        //TODO do this for every bug type in wave, maybe define keys for resource manager in list in Constants
-        Icon icon = new Icon(ResourceManager.getInstance().getImage("ladybug"),5,0.4);
-        icon.update(xPos, yPos, (3 * Math.PI) / 2);
-        ((Graphics2D) graphics).drawImage(icon.getImage(), icon.getTransform(), null);
-        graphics.drawString("  x " + Integer.toString(size),(int)xPos+50,(int)yPos+45);
+        int xOffset = 53;
+        int cumulativeXOffset = 0;
+
+        Icon icon;
+        for(String str : bugQueue.waveContains())
+        {
+            logger.debug(str);
+            if(str.equals("ladybug"))
+                icon = new Icon(ResourceManager.getInstance().getImage(str), 8, 0.37);
+            else if(str.equals("spider"))
+                icon = new Icon(ResourceManager.getInstance().getImage(str), 8, 0.3);
+            else
+                icon = new Icon(ResourceManager.getInstance().getImage(str), 5, 0.42);
+
+            icon.update(xPos+cumulativeXOffset+(str.equals("spider") ? +5 : +0),
+                        yPos+(str.equals("spider") ? -5 : +0),
+                        (3 * Math.PI) / 2);
+
+            cumulativeXOffset += xOffset;
+
+            ((Graphics2D) graphics).drawImage(icon.getImage(), icon.getTransform(), null);
+            graphics.drawString("  x " + Integer.toString(size), (int) icon.getTransform().getTranslateX() + 40
+                                                                      +(str.equals("ladybug") ? -5 : +0)
+                                                                      +(str.equals("spider") ? -15 : +0)
+                                                                      +(str.equals("kingdong") ? -10 : +0),
+                                                                   (int) icon.getTransform().getTranslateY() + 45
+                                                                      +(str.equals("ladybug") ? -5 : +0)
+                                                                      +(str.equals("kingdong") ? -2 : +0));
+            cumulativeXOffset += 50;
+        }
 
         graphics.setColor(Color.BLACK);
         graphics.drawRect((int)xPos,(int)yPos,width,height);
