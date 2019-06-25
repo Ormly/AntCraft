@@ -15,6 +15,11 @@ public final class Constants
     public final static double NEST_X_POS = SCREEN_WIDTH/2.0;
     public final static double NEST_Y_POS = SCREEN_HEIGHT/2.0;
 
+    public final static int ANT_RADIUS = 15;
+    public final static int LADYBUG_RADIUS = 22;
+    public final static int SPIDER_RADIUS = 17;
+    public final static int DONG_RADIUS = 22;
+
     public final static double MAX_ANT_HEALTH = 100.0;
     public final static double MAX_NEST_HEALTH = 5000.0;
     public final static double MAX_LADYBUG_HEALTH = 350.0;

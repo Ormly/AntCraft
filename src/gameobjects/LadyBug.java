@@ -9,7 +9,7 @@ public class LadyBug extends Bug
 {
     public LadyBug(double xPos, double yPos)
     {
-        super(xPos,yPos);
+        super(xPos,yPos,Constants.LADYBUG_RADIUS);
 
         this.speed = Constants.LADYBUG_SPEED;
         this.healthStatus = Constants.MAX_LADYBUG_HEALTH;

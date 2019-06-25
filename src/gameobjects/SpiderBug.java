@@ -9,7 +9,7 @@ public class SpiderBug extends Bug
 {
     public SpiderBug(double xPos, double yPos)
     {
-        super(xPos,yPos);
+        super(xPos,yPos,Constants.SPIDER_RADIUS);
 
         this.speed = Constants.SPIDER_SPEED;
         this.healthStatus = Constants.MAX_SPIDER_HEALTH;

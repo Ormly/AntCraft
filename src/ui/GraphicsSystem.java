@@ -135,7 +135,6 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         Icon icon;
         for(String str : bugQueue.waveContains())
         {
-            logger.debug(str);
             if(str.equals("ladybug"))
                 icon = new Icon(ResourceManager.getInstance().getImage(str), 8, 0.37);
             else if(str.equals("spider"))

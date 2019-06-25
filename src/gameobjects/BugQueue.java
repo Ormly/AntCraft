@@ -2,8 +2,6 @@ package gameobjects;
 
 import main.GameWorld;
 import utilities.Constants;
-import utilities.logging.Logger;
-import utilities.logging.Logging;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +9,6 @@ import java.util.Arrays;
 public class BugQueue extends HUDObject
 {
     protected ArrayList<GameObject> upcomingWave;
-    private Logger logger = Logging.getLogger(this.getClass().getName());
 
     public BugQueue(GameWorld gameWorld)
     {

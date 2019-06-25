@@ -12,9 +12,9 @@ public class Bug extends GameObject
 
     private State state;
 
-    public Bug(double xPos, double yPos)
+    public Bug(double xPos, double yPos, int radius)
     {
-        super(xPos,yPos,10,22);
+        super(xPos,yPos,10,radius);
 
         this.opponent = this.world.getNest();   // a bug always has an opponent
         this.state = State.HUNTING;
