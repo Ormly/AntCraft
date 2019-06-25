@@ -105,13 +105,18 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         int width = antStockIndicator.getWidth();
         int height = antStockIndicator.getHeight();
 
-        Icon icon = new Icon(ResourceManager.getInstance().getImage("ant"),0,0.55);
+        Icon icon;
+        icon = new Icon(ResourceManager.getInstance().getImage("squareFrameColor"),0.0,1.0);
+        icon.update(Constants.ANTSTOCKINDICATOR_X_POS,Constants.ANTSTOCKINDICATOR_Y_POS,(3 * Math.PI) / 2);
+        ((Graphics2D) graphics).drawImage(icon.getImage(), icon.getTransform(), null);
+
+        icon = new Icon(ResourceManager.getInstance().getImage("ant"),0,0.53);
         icon.update(xPos,yPos,(3*Math.PI)/2);
         ((Graphics2D)graphics).drawImage(icon.getImage(),icon.getTransform(),null);
 
         graphics.setColor(Color.BLACK);
-        graphics.drawRect((int)xPos,(int)yPos,width,height);
-        graphics.drawRect((int)xPos-1,(int)yPos-1,width+2,height+2);
+        //graphics.drawRect((int)xPos,(int)yPos,width,height);
+        //graphics.drawRect((int)xPos-1,(int)yPos-1,width+2,height+2);
 
         graphics.setFont((font));
         graphics.drawString(Integer.toString(antStockIndicator.getNumOfAnts()),(int)xPos+53,(int)yPos+50);
