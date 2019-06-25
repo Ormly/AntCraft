@@ -9,7 +9,7 @@ public class DongBug extends Bug
 {
     public DongBug(double xPos, double yPos)
     {
-        super(xPos,yPos);
+        super(xPos,yPos,Constants.DONG_RADIUS);
 
         this.speed = Constants.DONG_SPEED;
         this.healthStatus = Constants.MAX_DONG_HEALTH;

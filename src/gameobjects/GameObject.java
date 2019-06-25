@@ -47,7 +47,6 @@ public abstract class GameObject
         this.xPos = xPos;
         this.yPos = yPos;
         this.angle = angle;
-        this.speed = speed;
         this.radius = radius;
     }
 

@@ -27,7 +27,7 @@ public class DrawUtils
             double theta = rand.nextDouble()*Math.PI*2;
             double x = Constants.NEST_X_POS + radius * Math.cos(theta);
             double y = Constants.NEST_Y_POS + radius * Math.sin(theta);
-            bugs.add(new Bug(x, y));
+            bugs.add(new Bug(x, y,10));
         }
 
         return bugs;
