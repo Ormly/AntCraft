@@ -48,11 +48,6 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         int yPos = (int) gameObject.getYPos() - gameObject.getRadius();
         int radius = gameObject.getRadius() * 2;
 
-//        graphics.setColor(gameObject.getColor());
-//        graphics.fillOval(xPos, yPos, radius, radius);
-//        graphics.setColor(Color.BLACK);
-//        graphics.drawOval(xPos, yPos, radius, radius);
-
         Icon icon = gameObject.getIcon();
         if(icon != null)
         {
@@ -175,6 +170,15 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
     public void draw(GUIMenu menu)
     {
         menu.draw((Graphics2D) this.graphics);
+    }
+
+    public void draw(Impact impact)
+    {
+        graphics.setColor(Color.yellow);
+        graphics.drawOval((int)(impact.getXPos()-impact.getRadius()/2.0),
+                          (int)(impact.getYPos()-impact.getRadius()/2.0),
+                          impact.getRadius(),
+                          impact.getRadius());
     }
 
     public void swapBuffers() { this.getGraphics().drawImage(this.imageBuffer, 0, 0, this); }

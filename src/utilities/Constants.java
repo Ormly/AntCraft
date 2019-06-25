@@ -1,11 +1,13 @@
 package utilities;
 
+import java.awt.*;
+
 public final class Constants
 {
     public final static int SCREEN_WIDTH = 1024;
     public final static int SCREEN_HEIGHT = 768;
 
-    public final static int MENU_HEIGHT = (int)(((double)SCREEN_HEIGHT)*0.70);
+    public final static int MENU_HEIGHT = (int)(((double)SCREEN_HEIGHT)*0.65);
     public final static int MENU_WIDTH = (int)(((double)SCREEN_WIDTH)*0.35);
     public final static int MENU_X_POS = (int)(SCREEN_WIDTH/2.0 - MENU_WIDTH/2.0);
     public final static int MENU_Y_POS = (int)(SCREEN_HEIGHT/2.0 - MENU_HEIGHT/2.0);
@@ -50,4 +52,8 @@ public final class Constants
 
     public final static String LOG_FILE_PATH = "antcraft.log";
     public final static String LEVEL_FILE_PATH = "levels.json";
+
+    public final static Color MENU_COLOR = new Color(188,123,95);
+    public final static Color BUTTON_COLOR = new Color( 225, 164, 110);
+    public final static Color TEXT_COLOR = new Color(33,62, 74);
 }

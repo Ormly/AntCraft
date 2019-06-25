@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class Menu extends GUIMenu
 {
-    private final int PADDING = 10;
+    private final int PADDING = 20;
     private BufferedImage logo;
 
     public Menu()
@@ -21,7 +21,7 @@ public class Menu extends GUIMenu
 
         this.logo = ResourceManager.getInstance().getImage("menulogo");
         this.buttons = new ArrayList<>();
-        MenuButton play = new MenuButton((int)this.mainBox.getX()+15,(int)(this.mainBox.getY()+this.mainBox.getHeight()/2.5-PADDING), (int)(this.mainBox.width*0.9),70);
+        MenuButton play = new MenuButton((int)this.mainBox.getX()+15,(int)(this.mainBox.getY()+this.mainBox.getHeight()/2.5), (int)(this.mainBox.width*0.9),70);
         MenuButton levels = new MenuButton((int)play.getX(), (int)play.getY()+play.getHeight()+PADDING,(int)(this.mainBox.width*0.9),70);
         MenuButton exit = new MenuButton((int)levels.getX(), (int)levels.getY()+levels.getHeight()+PADDING,(int)(this.mainBox.width*0.9),70);
         play.setText("Play");
