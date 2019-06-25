@@ -2,12 +2,16 @@ package gameobjects;
 
 import main.GameWorld;
 import utilities.Constants;
+import utilities.logging.Logger;
+import utilities.logging.Logging;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BugQueue extends HUDObject
 {
     protected ArrayList<GameObject> upcomingWave;
+    private Logger logger = Logging.getLogger(this.getClass().getName());
 
     public BugQueue(GameWorld gameWorld)
     {
@@ -34,5 +38,37 @@ public class BugQueue extends HUDObject
     public ArrayList<GameObject> getUpcomingWave()
     {
         return this.upcomingWave;
+    }
+
+    public ArrayList<String> waveContains()
+    {
+        boolean ladyFlag = false;
+        boolean spiderFlag = false;
+        boolean dongFlag = false;
+
+        String str = "";
+
+        for(GameObject gameObject : upcomingWave)
+        {
+            if(gameObject instanceof LadyBug)
+                ladyFlag = true;
+            if(gameObject instanceof SpiderBug)
+                spiderFlag = true;
+            if(gameObject instanceof DongBug)
+                dongFlag = true;
+        }
+
+        if(ladyFlag)
+            str += "ladybug,";
+        if(spiderFlag)
+            str += "spider,";
+        if(dongFlag)
+            str += "kingdong,";
+
+        StringBuilder sb = new StringBuilder(str);
+        sb.deleteCharAt(str.length()-1);
+
+        ArrayList<String> result = new ArrayList<>(Arrays.asList(sb.toString().split(",")));
+        return result;
     }
 }
