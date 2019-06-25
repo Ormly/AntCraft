@@ -1,43 +1,29 @@
 package gameobjects;
 
-import core.ResourceManager;
-import ui.Icon;
 import utilities.Constants;
+import utilities.Timer;
 
 import java.util.ArrayList;
 
-public class Powerup extends GameObject
+public abstract class Powerup extends GameObject
 {
 
-    private enum State
-    {
-        PICKEDUP,
-        WAITING
-    }
+    protected boolean isDead;
+    public Timer timer;
 
-    PowerUpType type;
-    State state;
-
-    public Powerup(double xPos, double yPos, PowerUpType type)
+    //TODO add type to constructor, I don't know how that works with JSON
+    public Powerup(double xPos, double yPos)
     {
-        super(xPos, yPos, 0, Constants.POWERUP_RADIUS);
-        this.type = type;
-        this.state = State.WAITING;
-        this.icon = new Icon(ResourceManager.getInstance().getImage("health"), -30, 0.3);
+        super(xPos, yPos, (3 * Math.PI) / 2, Constants.POWERUP_RADIUS);
+        this.isDead = false;
     }
 
     @Override
     public void update(double lastFrameDuration)
     {
-        switch(this.state)
-        {
-            case WAITING:
-                if(this.handleCollisionWithAnt())
-                    this.state = State.PICKEDUP;
-        }
     }
 
-    private boolean handleCollisionWithAnt()
+    protected boolean handleCollisionWithAnt()
     {
         ArrayList<GameObject> collisions = this.getCollisions();
         if(!collisions.isEmpty() && collisions.get(0) instanceof Ant)
@@ -51,18 +37,13 @@ public class Powerup extends GameObject
     @Override
     public boolean isVisible()
     {
-        return (this.state == State.PICKEDUP ? false : true);
-    }
-
-    public PowerUpType getType()
-    {
-        return this.type;
+        return !isDead;
     }
 
     @Override
     public boolean isDead()
     {
-        return !isVisible();
+        return isDead;
     }
 }
 

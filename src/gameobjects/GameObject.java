@@ -2,6 +2,7 @@ package gameobjects;
 
 import main.GameWorld;
 import org.json.simple.JSONObject;
+import utilities.Constants;
 import utilities.Timer;
 import utilities.logging.Logger;
 import utilities.logging.Logging;
@@ -133,13 +134,18 @@ public abstract class GameObject
         }
     }
 
-    public  void powerUpHeal(double healingFactor)
+    public void powerUpHeal()
     {
         if(this.healthStatus < this.maxHealth)
-            this.healthStatus+=this.healingFactor;
+            this.healthStatus+= Constants.POWERUP_HEALING_FACTOR;
 
         if(this.healthStatus > this.maxHealth) // just in case we overshoot
             this.healthStatus = this.maxHealth;
+    }
+
+    public void powerUpDamage(double factor)
+    {
+        this.damageFactor = this.damageFactor + factor;
     }
 
     public abstract boolean isVisible();
@@ -205,7 +211,7 @@ public abstract class GameObject
         }
         catch(IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e)
         {
-            logger.error("Bug from JSON just ate shit");
+            logger.error(e.getMessage());
         }
 
         return b;

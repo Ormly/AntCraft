@@ -36,6 +36,8 @@ public final class Constants
     public final static double LADYBUG_DAMAGE_FACTOR = 20.0;
     public final static double SPIDER_DAMAGE_FACTOR = 35.0;
     public final static double DONG_DAMAGE_FACTOR = 50.0;
+    public final static double POWERUP_DAMAGE_FACTOR = 5.0;
+    public final static double POWERUP_DAMAGE_DURATION = 10.0;
 
     public final static double ANT_HEALING_FACTOR = 20.0;
     public final static double POWERUP_HEALING_FACTOR = 100.0;

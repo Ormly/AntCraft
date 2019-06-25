@@ -40,6 +40,7 @@ public class Ant extends GameObject
 
     public void update(double lastFrameDuration)
     {
+        //logger.debug(Double.toString(this.damageFactor));
         switch(this.state)
         {
             case MOVING:

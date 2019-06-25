@@ -225,13 +225,6 @@ public class GameWorld
                     attackIndicators.add(indicator);
                 }
             }
-
-            if(gameObject instanceof Powerup && gameObject.isVisible())
-            {
-                Powerup temp = (Powerup) gameObject;
-                if(temp.getType() == PowerUpType.HEALING)
-                    this.powerUpHeal();
-            }
         }
 
         if(!attackIndicators.isEmpty())
@@ -255,13 +248,7 @@ public class GameWorld
         ArrayList<GameObject> toRemove = new ArrayList<>();
         for(GameObject gameObject : gameObjects)
         {
-            if(gameObject instanceof Powerup)
-            {
-                Powerup temp = (Powerup) gameObject;
-                if(temp.isDead())
-                    toRemove.add(gameObject);
-            }
-            else
+            if(gameObject.isDead())
                 toRemove.add(gameObject);
         }
 
@@ -478,11 +465,18 @@ public class GameWorld
         }
     }
 
-    private void powerUpHeal()
+    public void powerUpHeal()
     {
         for(GameObject gameObject : gameObjects)
             if(!(gameObject instanceof Bug || gameObject instanceof Powerup))
-                gameObject.powerUpHeal(Constants.POWERUP_HEALING_FACTOR);
+                gameObject.powerUpHeal();
+    }
+
+    public void powerUpDamage(double factor)
+    {
+        for(GameObject gameObject : gameObjects)
+            if(!(gameObject instanceof Bug || gameObject instanceof Powerup))
+                gameObject.powerUpDamage(factor);
     }
 
     public Nest getNest()
