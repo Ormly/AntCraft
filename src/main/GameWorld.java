@@ -186,7 +186,7 @@ public class GameWorld
 
 	    antStockIndicator.update();
 
-        if(this.timeline.hasEvents()){
+        if(this.timeline.hasEvents()) {
             TimelineEvent event = timeline.getNextEvent();
 
             if(event.isGameOverEvent())
@@ -225,6 +225,13 @@ public class GameWorld
                     attackIndicators.add(indicator);
                 }
             }
+
+            if(gameObject instanceof Powerup && gameObject.isVisible())
+            {
+                Powerup temp = (Powerup) gameObject;
+                if(temp.getType() == PowerUpType.HEALING)
+                    this.powerUpHeal();
+            }
         }
 
         if(!attackIndicators.isEmpty())
@@ -248,9 +255,14 @@ public class GameWorld
         ArrayList<GameObject> toRemove = new ArrayList<>();
         for(GameObject gameObject : gameObjects)
         {
-            if(gameObject.isDead())
+            if(gameObject instanceof Powerup)
+            {
+                Powerup temp = (Powerup) gameObject;
+                if(temp.isDead())
+                    toRemove.add(gameObject);
+            }
+            else
                 toRemove.add(gameObject);
-
         }
 
         this.gameObjects.removeAll(toRemove);
@@ -464,6 +476,13 @@ public class GameWorld
             gameObjects.addAll(this.gameObjectsToCreate);
             this.gameObjectsToCreate.clear();
         }
+    }
+
+    private void powerUpHeal()
+    {
+        for(GameObject gameObject : gameObjects)
+            if(!(gameObject instanceof Bug || gameObject instanceof Powerup))
+                gameObject.powerUpHeal(Constants.POWERUP_HEALING_FACTOR);
     }
 
     public Nest getNest()

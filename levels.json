@@ -151,6 +151,32 @@
 		]
 	},
 	{
+		"name": "Powerup Test",
+		"numOfAnts": 10,
+		"events": [{
+			"objects": [{
+				"yPos": 600.3051820389454,
+				"xPos": 1071.6535251591818,
+				"type": "gameobjects.LadyBug"
+			}, {
+				"yPos": 772.429332679634,
+				"xPos": 54.700695917811174,
+				"type": "gameobjects.LadyBug"
+			}, {
+				"yPos": 500.0,
+				"xPos": 300.0,
+				"type": "gameObjects.Powerup"
+			}
+			],
+			"type": "utilities.SpawnEvent",
+			"schedTimeSec": 1.0
+		},{
+			"type": "utilities.GameOverEvent",
+			"schedTimeSec": 360.0
+		}
+		]
+	},
+	{
 		"name": "MissionImpossible",
 		"numOfAnts": 5,
 		"events": [{

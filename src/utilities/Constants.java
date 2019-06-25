@@ -19,6 +19,7 @@ public final class Constants
     public final static int LADYBUG_RADIUS = 22;
     public final static int SPIDER_RADIUS = 17;
     public final static int DONG_RADIUS = 22;
+    public final static int POWERUP_RADIUS = 15;
 
     public final static double MAX_ANT_HEALTH = 100.0;
     public final static double MAX_NEST_HEALTH = 5000.0;
@@ -37,6 +38,7 @@ public final class Constants
     public final static double DONG_DAMAGE_FACTOR = 50.0;
 
     public final static double ANT_HEALING_FACTOR = 20.0;
+    public final static double POWERUP_HEALING_FACTOR = 100.0;
     public final static double ANT_HEALING_FREQ = 1.0;
 
     public final static double ANT_ATTACK_FREQ = 1.0;
