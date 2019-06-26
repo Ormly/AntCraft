@@ -59,14 +59,17 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
 
         graphics.setColor(Color.GREEN);
 
-        double health = (gameObject.getHealthStatus() / gameObject.getMaxHealth()) * 100.0;
-        double barLength = 100.0;
+        if(!(gameObject instanceof Powerup))
+        {
+            double health = (gameObject.getHealthStatus() / gameObject.getMaxHealth()) * 100.0;
+            double barLength = 100.0;
 
-        yPos = (int) gameObject.getYPos() - gameObject.getRadius() - 15;
-        xPos = (int) (gameObject.getXPos() - (barLength/2.0));
+            yPos = (int) gameObject.getYPos() - gameObject.getRadius() - 15;
+            xPos = (int) (gameObject.getXPos() - (barLength / 2.0));
 
-        graphics.drawRect(xPos,yPos,(int)barLength,10);
-        graphics.fillRect(xPos,yPos,(int)health,10);
+            graphics.drawRect(xPos, yPos, (int) barLength, 10);
+            graphics.fillRect(xPos, yPos, (int) health, 10);
+        }
     }
 
     public void clear()
@@ -186,7 +189,7 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
 
         for(GameObject gameObject : gameObjectsSelected)
         {
-            if(!(gameObject instanceof Bug))
+            if(!(gameObject instanceof Bug || gameObject instanceof Powerup))
             {
                 //TODO selection rings right now is just some rings stacked, not sure if solid ring is possible, maybe figure that out later
                 for(int i = 2; i < ringThickness; ++i)

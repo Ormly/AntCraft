@@ -1,5 +1,6 @@
 package utilities;
 
+import gameobjects.Bug;
 import gameobjects.GameObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -43,8 +44,14 @@ public class Timeline extends Thread
         {
             for(TimelineEvent event : events)
             {
+                ArrayList<GameObject> temp = new ArrayList<>();
                 if(event instanceof SpawnEvent)
-                    return event.getObjects();
+                {
+                    for(GameObject gameObject : event.getObjects())
+                        if(gameObject instanceof Bug)
+                            temp.add(gameObject);
+                    return temp;
+                }
             }
         }
 

@@ -2,7 +2,7 @@ package gameobjects;
 
 import java.util.ArrayList;
 
-public class Bug extends GameObject
+public abstract class Bug extends GameObject
 {
     private enum State
     {
