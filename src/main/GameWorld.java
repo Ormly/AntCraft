@@ -186,7 +186,7 @@ public class GameWorld
 
 	    antStockIndicator.update();
 
-        if(this.timeline.hasEvents()){
+        if(this.timeline.hasEvents()) {
             TimelineEvent event = timeline.getNextEvent();
 
             if(event.isGameOverEvent())
@@ -250,7 +250,6 @@ public class GameWorld
         {
             if(gameObject.isDead())
                 toRemove.add(gameObject);
-
         }
 
         this.gameObjects.removeAll(toRemove);
@@ -464,6 +463,20 @@ public class GameWorld
             gameObjects.addAll(this.gameObjectsToCreate);
             this.gameObjectsToCreate.clear();
         }
+    }
+
+    public void powerUpHeal()
+    {
+        for(GameObject gameObject : gameObjects)
+            if(!(gameObject instanceof Bug || gameObject instanceof Powerup))
+                gameObject.powerUpHeal();
+    }
+
+    public void powerUpDamage(double factor)
+    {
+        for(GameObject gameObject : gameObjects)
+            if(!(gameObject instanceof Bug || gameObject instanceof Powerup))
+                gameObject.powerUpDamage(factor);
     }
 
     public Nest getNest()
