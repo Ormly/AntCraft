@@ -21,20 +21,20 @@ public final class Constants
     public final static int DONG_RADIUS = 22;
     public final static int POWERUP_RADIUS = 15;
 
-    public final static double MAX_ANT_HEALTH = 100.0;
+    public final static double MAX_ANT_HEALTH = 80.0;
     public final static double MAX_NEST_HEALTH = 5000.0;
     public final static double MAX_LADYBUG_HEALTH = 350.0;
     public final static double MAX_SPIDER_HEALTH = 650.0;
     public final static double MAX_DONG_HEALTH = 1500.0;
 
     public final static double ANT_SPEED = 100.0;
-    public final static double LADYBUG_SPEED = 65.0;
-    public final static double SPIDER_SPEED = 40.0;
+    public final static double LADYBUG_SPEED = 27.0;
+    public final static double SPIDER_SPEED = 35.0;
     public final static double DONG_SPEED = 15.0;
 
-    public final static double ANT_DAMAGE_FACTOR = 50.0;
-    public final static double LADYBUG_DAMAGE_FACTOR = 20.0;
-    public final static double SPIDER_DAMAGE_FACTOR = 35.0;
+    public final static double ANT_DAMAGE_FACTOR = 20.0;
+    public final static double LADYBUG_DAMAGE_FACTOR = 27.0;
+    public final static double SPIDER_DAMAGE_FACTOR = 40.0;
     public final static double DONG_DAMAGE_FACTOR = 50.0;
     public final static double POWERUP_DAMAGE_FACTOR = 5.0;
     public final static double POWERUP_DAMAGE_DURATION = 10.0;
@@ -46,7 +46,7 @@ public final class Constants
     public final static double ANT_ATTACK_FREQ = 1.0;
     public final static double LADYBUG_ATTACK_FREQ = 1.0;
     public final static double SPIDER_ATTACK_FREQ = 2.0;
-    public final static double DONG_ATTACK_FREQ = 4.0;
+    public final static double DONG_ATTACK_FREQ = 3.0;
 
     //HUD elements
     public final static double ANTSTOCKINDICATOR_X_POS = SCREEN_WIDTH - 120.0;
