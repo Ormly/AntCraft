@@ -12,7 +12,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Logging.setLoggerFactory(new ConsoleLoggerFactory());
+        Logging.setLoggerFactory(new QuiteLoggerFactory());
         Logger logger = Logging.getLogger(Main.class.getName());
 
         logger.info("Starting Game");

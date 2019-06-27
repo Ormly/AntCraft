@@ -1,0 +1,287 @@
+[{
+		"name": "Level1",
+		"numOfAnts": 14,
+		"events": [{
+				"objects": [{
+						"yPos": 600.3051820389454,
+						"xPos": 1071.6535251591818,
+						"type": "gameobjects.LadyBug"
+					}
+				],
+				"type": "utilities.SpawnEvent",
+				"schedTimeSec": 3.0
+			}, {
+				"objects": [{
+						"yPos": 958.8320095676022,
+						"xPos": 683.9539495809039,
+						"type": "gameobjects.LadyBug"
+					}, {
+						"yPos": 515.1120325856665,
+						"xPos": -73.49947473183533,
+						"type": "gameobjects.LadyBug"
+					}, {
+						"yPos": 761.8051872061772,
+						"xPos": 978.1150507332984,
+						"type": "gameobjects.LadyBug"
+					}
+				],
+				"type": "utilities.SpawnEvent",
+				"schedTimeSec": 20.0
+			}, {
+				"objects": [
+				{"xPos": 846.8605963578786,
+				"yPos": 881.8638177321645,
+				"type": "gameobjects.LadyBug"
+				},
+				{"xPos": -51.36817076745649,
+				"yPos": 177.562832401406,
+				"type": "gameobjects.LadyBug"
+				},
+				{"xPos": 663.7760680134352,
+				"yPos": -196.48602496389276,
+				"type": "gameobjects.LadyBug"
+				},
+				{"xPos": 579.3952961473881,
+				"yPos": 980.2028799470913,
+				"type": "gameobjects.LadyBug"
+				},
+				{"xPos": 1008.1211003735943,
+				"yPos": 46.56281508391248,
+				"type": "gameobjects.LadyBug"
+				},
+				{"xPos": 1020.4427126128026,
+				"yPos": 65.43131354300522,
+				"type": "gameobjects.LadyBug"
+				},
+				{"xPos": 946.3443304246314,
+				"yPos": -29.938404388839842,
+				"type": "gameobjects.LadyBug"
+				}
+				],
+				"type": "utilities.SpawnEvent",
+				"schedTimeSec": 40.0
+			}, {
+				"type": "utilities.GameOverEvent",
+				"schedTimeSec": 100.0
+			}
+		]
+	},
+	{
+		"name": "Level2",
+		"numOfAnts": 17,
+		"events": [{
+			"objects": [
+			{"xPos": 1093.4164795740526,
+			"yPos": 532.1717830078164,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": -71.83943058886177,
+			"yPos": 522.3167353926256,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 4.445731646981585,
+			"yPos": 64.01771193293814,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 1017.7492178579065,
+			"yPos": 61.17229264495302,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 837.5507045792992,
+			"yPos": -120.0007328843102,
+			"type": "gameobjects.LadyBug"
+			}
+			],
+			"type": "utilities.SpawnEvent",
+			"schedTimeSec": 3.0
+		}, {
+			"objects": [
+			{"xPos": 846.9910458280726,
+			"yPos": 881.7760532759828,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 182.7067967808788,
+			"yPos": -117.56354165119552,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 996.8976609964332,
+			"yPos": 30.624479681758146,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 394.96479483032397,
+			"yPos": 972.4749448794671,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 7.4346566759404595,
+			"yPos": 59.32506361550804,
+			"type": "gameobjects.SpiderBug"
+			}
+			],
+			"type": "utilities.SpawnEvent",
+			"schedTimeSec": 20.0
+		}, {
+		"objects" : [
+			{"xPos": 126.6453128103941,
+			"yPos": 843.8932104967423,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 319.47373222216504,
+			"yPos": -184.2725017238978,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 1032.9438985278043,
+			"yPos": 681.6868397941917,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": -168.07335613736086,
+			"yPos": 637.3456927974778,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": -65.56326510607835,
+			"yPos": 546.5443779403206,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 58.56925522975382,
+			"yPos": 776.9383662829323,
+			"type": "gameobjects.SpiderBug"
+			},
+			{"xPos": 320.4831035279682,
+			"yPos": 952.6134700881795,
+			"type": "gameobjects.SpiderBug"
+			},
+			{"xPos": 177.72258266122475,
+			"yPos": 280.2762888375165,
+			"type": "gameobjects.PowerupDamage"
+			}
+			],
+			"type": "utilities.SpawnEvent",
+			"schedTimeSec": 40.0
+		}, {
+			"type": "utilities.GameOverEvent",
+			"schedTimeSec": 125.0
+		}
+		]
+	},
+	{
+		"name": "Level3",
+		"numOfAnts": 25,
+		"events": [{
+			"objects": [
+			{"xPos": 1092.2837823489645,
+			"yPos": 536.5474743900385,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 366.7807455142482,
+			"yPos": 966.160946926709,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 454.38427101911736,
+			"yPos": 981.2272831795291,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 772.3820277758992,
+			"yPos": -156.5563796786704,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 638.1814435920987,
+			"yPos": 970.5818300058518,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 839.0577341768468,
+			"yPos": 887.0240933743701,
+			"type": "gameobjects.SpiderBug"
+			}
+			],
+			"type": "utilities.SpawnEvent",
+			"schedTimeSec": 3.0
+		},{
+		"objects":[
+			{"xPos": 554.9488577273053,
+			"yPos": -214.46085554522256,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 1108.8955454449008,
+			"yPos": 323.04339389340663,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 1075.5881002154708,
+			"yPos": 178.1640136042377,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 744.6038263027325,
+			"yPos": 937.0781680642694,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 800.1816148467922,
+			"yPos": -142.26168097657956,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 590.2989209580347,
+			"yPos": -214.28756276563,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": -0.5576048103744142,
+			"yPos": 695.9049562784343,
+			"type": "gameobjects.SpiderBug"
+			},
+			{"xPos": 345.23984676717646,
+			"yPos": 960.3601749720093,
+			"type": "gameobjects.DongBug"
+			},
+			{"xPos": 396.8238539057777,
+			"yPos": 106.99015293516669,
+			"type": "gameobjects.PowerupHeal"
+			}
+		],
+		"type" : "utilities.SpawnEvent",
+		"schedTimeSec": 20.0
+		},
+		{
+		"objects":[
+			{"xPos": 1014.5491248968399,
+			"yPos": 711.7870910597617,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 1111.0556757380646,
+			"yPos": 350.3503734640211,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 1081.3820089469764,
+			"yPos": 194.78021274849382,
+			"type": "gameobjects.LadyBug"
+			},
+			{"xPos": 319.6514506372333,
+			"yPos": -184.33268035371623,
+			"type": "gameobjects.SpiderBug"
+			},
+			{"xPos": 1111.8280577162745,
+			"yPos": 369.63681176333813,
+			"type": "gameobjects.SpiderBug"
+			},
+			{"xPos": 693.3542589909832,
+			"yPos": -187.9358641891863,
+			"type": "gameobjects.DongBug"
+			},
+			{"xPos": 440.6473017436007,
+			"yPos": -211.74221979941228,
+			"type": "gameobjects.DongBug"
+			},
+			{"xPos": 856.8989639146027,
+			"yPos": 324.4625773934279,
+			"type": "gameobjects.PowerupDamage"
+			},
+			{"xPos": 326.0860719240677,
+			"yPos": 680.5400670185685,
+			"type": "gameobjects.PowerupDamage"
+			}
+		],
+		"type" : "utilities.SpawnEvent",
+		"schedTimeSec" : 40.0
+		},
+		{
+			"type": "utilities.GameOverEvent",
+			"schedTimeSec": 125.0
+		}
+		]
+	}
+]

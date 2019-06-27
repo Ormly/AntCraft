@@ -28,19 +28,19 @@ public final class Constants
     public final static double MAX_DONG_HEALTH = 1500.0;
 
     public final static double ANT_SPEED = 100.0;
-    public final static double LADYBUG_SPEED = 27.0;
-    public final static double SPIDER_SPEED = 35.0;
+    public final static double LADYBUG_SPEED = 35.0;
+    public final static double SPIDER_SPEED = 45.0;
     public final static double DONG_SPEED = 15.0;
 
     public final static double ANT_DAMAGE_FACTOR = 20.0;
-    public final static double LADYBUG_DAMAGE_FACTOR = 27.0;
-    public final static double SPIDER_DAMAGE_FACTOR = 40.0;
-    public final static double DONG_DAMAGE_FACTOR = 50.0;
+    public final static double LADYBUG_DAMAGE_FACTOR = 23.0;
+    public final static double SPIDER_DAMAGE_FACTOR = 42.0;
+    public final static double DONG_DAMAGE_FACTOR = 55.0;
     public final static double POWERUP_DAMAGE_FACTOR = 5.0;
     public final static double POWERUP_DAMAGE_DURATION = 10.0;
 
     public final static double ANT_HEALING_FACTOR = 20.0;
-    public final static double POWERUP_HEALING_FACTOR = 100.0;
+    public final static double POWERUP_HEALING_FACTOR = 1000.0;
     public final static double ANT_HEALING_FREQ = 1.0;
 
     public final static double ANT_ATTACK_FREQ = 1.0;
@@ -60,7 +60,7 @@ public final class Constants
     public final static int BUGQUEUE_HEIGHT = 60;
 
     public final static String LOG_FILE_PATH = "antcraft.log";
-    public final static String LEVEL_FILE_PATH = "levels.json";
+    public final static String LEVEL_FILE_PATH = "demo.json";
 
     public final static Color MENU_COLOR = new Color(188,123,95);
     public final static Color BUTTON_COLOR = new Color( 225, 164, 110);

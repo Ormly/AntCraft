@@ -245,11 +245,18 @@ public class GameWorld
 
     private void removeTheDead()
     {
+
         ArrayList<GameObject> toRemove = new ArrayList<>();
         for(GameObject gameObject : gameObjects)
         {
-            if(gameObject.isDead())
-                toRemove.add(gameObject);
+            try{
+                if(gameObject.isDead())
+                    toRemove.add(gameObject);
+
+            }catch(NullPointerException e)
+            {
+                logger.error(e.getMessage());
+            }
         }
 
         this.gameObjects.removeAll(toRemove);
