@@ -4,8 +4,9 @@ import gameobjects.Bug;
 import gameobjects.GameObject;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
+import static java.util.Collections.reverseOrder;
 
 public class DrawUtils
 {
@@ -38,4 +39,15 @@ public class DrawUtils
         return rand.nextDouble();
     }
 
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
+    }
 }

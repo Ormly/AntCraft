@@ -7,7 +7,8 @@ public abstract class Logger extends Observable
 {
     protected final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     protected String owner;
-
+    protected boolean isSurpressed;
+    
     public void info(String msg) {
         log("INFO::"+msg);
     }

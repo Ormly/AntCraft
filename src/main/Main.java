@@ -6,12 +6,13 @@ import utilities.Constants;
 import utilities.logging.Logger;
 import utilities.logging.ConsoleLoggerFactory;
 import utilities.logging.Logging;
+import utilities.logging.QuiteLoggerFactory;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        Logging.setLoggerFactory(new ConsoleLoggerFactory());
+        Logging.setLoggerFactory(new QuiteLoggerFactory());
         Logger logger = Logging.getLogger(Main.class.getName());
 
         logger.info("Starting Game");
