@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GraphicsSystem extends JPanel implements IGraphicsSystem
 {
@@ -134,9 +136,6 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
 
         double xPos = bugQueue.getXPos();
         double yPos = bugQueue.getYPos();
-        int width = bugQueue.getWidth();
-        int height = bugQueue.getHeight();
-        int size = bugQueue.getUpcomingWave().size();
 
         int xOffset = 53;
         int cumulativeXOffset = 0;
@@ -146,35 +145,42 @@ public class GraphicsSystem extends JPanel implements IGraphicsSystem
         icon.update(Constants.BUGQUEUE_X_POS-10,Constants.BUGQUEUE_Y_POS,(3 * Math.PI) / 2);
         ((Graphics2D) graphics).drawImage(icon.getImage(), icon.getTransform(), null);
 
-        for(String str : bugQueue.waveContains())
-        {
-            if(str.equals("ladybug"))
-                icon = new Icon(ResourceManager.getInstance().getImage(str), 8, 0.37);
-            else if(str.equals("spider"))
-                icon = new Icon(ResourceManager.getInstance().getImage(str), 8, 0.3);
-            else
-                icon = new Icon(ResourceManager.getInstance().getImage(str), 5, 0.42);
+        HashMap<String,Integer> wave = bugQueue.getUpcomingWave();
 
-            icon.update(xPos+cumulativeXOffset+(str.equals("spider") ? +5 : +0),
-                        yPos+(str.equals("spider") ? -5 : +0),
+        for(Map.Entry<String,Integer> entry: wave.entrySet())
+        {
+            int quantity = entry.getValue();
+
+            if(quantity == 0)
+                continue;
+
+            String type = entry.getKey();
+
+            if(type.equals("ladybug"))
+                icon = new Icon(ResourceManager.getInstance().getImage(type), 8, 0.37);
+            else if(type.equals("spider"))
+                icon = new Icon(ResourceManager.getInstance().getImage(type), 8, 0.3);
+            else
+                icon = new Icon(ResourceManager.getInstance().getImage(type), 5, 0.42);
+
+            icon.update(xPos+cumulativeXOffset+(type.equals("spider") ? +5 : +0),
+                        yPos+(type.equals("spider") ? -5 : +0),
                         (3 * Math.PI) / 2);
 
             cumulativeXOffset += xOffset;
 
             ((Graphics2D) graphics).drawImage(icon.getImage(), icon.getTransform(), null);
-            graphics.drawString("  x " + Integer.toString(size), (int) icon.getTransform().getTranslateX() + 40
-                                                                      +(str.equals("ladybug") ? -5 : +0)
-                                                                      +(str.equals("spider") ? -15 : +0)
-                                                                      +(str.equals("kingdong") ? -10 : +0),
-                                                                   (int) icon.getTransform().getTranslateY() + 45
-                                                                      +(str.equals("ladybug") ? -5 : +0)
-                                                                      +(str.equals("kingdong") ? -2 : +0));
+            graphics.drawString("  x " + quantity, (int) icon.getTransform().getTranslateX() + 40
+                                                                 +(type.equals("ladybug") ? -5 : +0)
+                                                                 +(type.equals("spider") ? -15 : +0)
+                                                                 +(type.equals("kingdong") ? -10 : +0),
+                                (int) icon.getTransform().getTranslateY() + 45
+                                +(type.equals("ladybug") ? -5 : +0)
+                                +(type.equals("kingdong") ? -2 : +0));
             cumulativeXOffset += 50;
         }
 
         graphics.setColor(Color.BLACK);
-        //graphics.drawRect((int)xPos,(int)yPos,width,height);
-        //graphics.drawRect((int)xPos-1,(int)yPos-1,width+2,height+2);
     }
 
     public void draw(ArrayList<GameObject> gameObjectsSelected)

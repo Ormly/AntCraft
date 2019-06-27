@@ -40,21 +40,17 @@ public class Timeline extends Thread
 
     public ArrayList<GameObject> getNextSpawn()
     {
-        if(events.size() > 0)
+        for(TimelineEvent event : events)
         {
-            for(TimelineEvent event : events)
+            ArrayList<GameObject> temp = new ArrayList<>();
+            if(event instanceof SpawnEvent)
             {
-                ArrayList<GameObject> temp = new ArrayList<>();
-                if(event instanceof SpawnEvent)
-                {
-                    for(GameObject gameObject : event.getObjects())
-                        if(gameObject instanceof Bug)
-                            temp.add(gameObject);
-                    return temp;
-                }
+                for(GameObject gameObject : event.getObjects())
+                    if(gameObject instanceof Bug)
+                        temp.add(gameObject);
+                return temp;
             }
         }
-
         return null;
     }
 

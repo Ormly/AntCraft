@@ -38,7 +38,7 @@
 					}
 				],
 				"type": "utilities.SpawnEvent",
-				"schedTimeSec": 60.0
+				"schedTimeSec": 20.0
 			}, {
 				"objects": [{
 						"yPos": -59.02611404625043,

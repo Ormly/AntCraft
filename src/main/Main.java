@@ -6,6 +6,7 @@ import utilities.Constants;
 import utilities.logging.Logger;
 import utilities.logging.ConsoleLoggerFactory;
 import utilities.logging.Logging;
+import utilities.logging.QuiteLoggerFactory;
 
 public class Main
 {

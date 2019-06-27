@@ -2,18 +2,18 @@ package gameobjects;
 
 import main.GameWorld;
 import utilities.Constants;
-
+import utilities.DrawUtils;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 public class BugQueue extends HUDObject
 {
-    protected ArrayList<GameObject> upcomingWave;
+    private HashMap<String,Integer> upcomingWave;
 
     public BugQueue(GameWorld gameWorld)
     {
         super(gameWorld);
-        upcomingWave = new ArrayList<>();
+        upcomingWave = new HashMap<>();
 
         this.isVisible = true;
         this.xPos = Constants.BUGQUEUE_X_POS;
@@ -26,46 +26,36 @@ public class BugQueue extends HUDObject
     {
         ArrayList<GameObject> wave = this.gameWorld.getTimeline().getNextSpawn();
         if(wave != null)
-        {
-            this.upcomingWave.clear();
-            this.upcomingWave.addAll((ArrayList<GameObject>) wave.clone());
-        }
+            this.processWave(wave);
     }
 
-    public ArrayList<GameObject> getUpcomingWave()
+    public HashMap<String, Integer> getUpcomingWave()
     {
         return this.upcomingWave;
     }
 
-    public ArrayList<String> waveContains()
+    private void clear()
     {
-        boolean ladyFlag = false;
-        boolean spiderFlag = false;
-        boolean dongFlag = false;
+        this.upcomingWave.clear();
+        this.upcomingWave.put("ladybug",0);
+        this.upcomingWave.put("spider",0);
+        this.upcomingWave.put("kingdong",0);
+    }
 
-        String str = "";
+    private void processWave(ArrayList<GameObject> objects)
+    {
+        this.clear();
 
-        for(GameObject gameObject : upcomingWave)
+        for(GameObject gameObject : objects)
         {
             if(gameObject instanceof LadyBug)
-                ladyFlag = true;
+                this.upcomingWave.put("ladybug", ((int)this.upcomingWave.get("ladybug"))+1);
             if(gameObject instanceof SpiderBug)
-                spiderFlag = true;
+                this.upcomingWave.put("spider", ((int)this.upcomingWave.get("spider"))+1);
             if(gameObject instanceof DongBug)
-                dongFlag = true;
+                this.upcomingWave.put("kingdong", ((int)this.upcomingWave.get("kingdong"))+1);
         }
 
-        if(ladyFlag)
-            str += "ladybug,";
-        if(spiderFlag)
-            str += "spider,";
-        if(dongFlag)
-            str += "kingdong,";
-
-        StringBuilder sb = new StringBuilder(str);
-        sb.deleteCharAt(str.length()-1);
-
-        ArrayList<String> result = new ArrayList<>(Arrays.asList(sb.toString().split(",")));
-        return result;
+        DrawUtils.sortByValue(this.upcomingWave);
     }
 }
